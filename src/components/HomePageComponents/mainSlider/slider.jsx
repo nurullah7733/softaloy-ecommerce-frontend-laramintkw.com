@@ -6,7 +6,7 @@ const MainSlider = () => {
   var settings = {
     dots: true,
     infinite: true,
-    autoplay: false,
+    autoplay: true,
     fade: true,
     speed: 500,
     slidesToShow: 1,
