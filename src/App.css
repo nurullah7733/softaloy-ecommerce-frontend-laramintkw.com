@@ -1,0 +1,101 @@
+/* start main slider slick slider */
+.slick-dots {
+  bottom: 30px !important;
+  left: 550px;
+}
+@media only screen and (min-width: 700px) and (max-width: 1300px) {
+  .slick-dots {
+    left: 300px !important;
+  }
+}
+@media only screen and (min-width: 300px) and (max-width: 700px) {
+  .slick-dots {
+    left: 0 !important;
+    bottom: 0 !important;
+  }
+}
+.slick-dots li button:before {
+  width: 10px !important;
+  height: 10px !important;
+  border: 2px solid white;
+  border-radius: 50%;
+  content: "" !important;
+  opacity: 1 !important;
+}
+.slick-dots li.slick-active button:before {
+  opacity: 1;
+  color: white !important;
+  background-color: white;
+}
+/* end main slider slick slider */
+
+/* start brands section style */
+.brand_logo_shadow {
+  box-shadow: 4px 4px 1px 0px #f2f2f2;
+}
+/* end brands section style */
+
+/* start button slider animate button */
+.button_slider_animate {
+  display: block;
+  position: relative;
+  text-decoration: none;
+  color: white;
+  background: black;
+  padding: 14px 25px;
+  text-transform: uppercase;
+  font-size: 12px;
+  border: 1px solid black;
+  overflow: hidden;
+}
+@media screen and (max-width: 768px) {
+  .button_slider_animate {
+    padding: 12px 20px;
+  }
+}
+
+.content {
+  z-index: 5;
+  position: relative;
+  transition: color 350ms ease;
+}
+.button_slider_animate:hover .content {
+  color: black;
+}
+
+.button_slider_animate::after,
+.button_slider_animate::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: white;
+  z-index: -1;
+}
+
+.button_slider_animate::before {
+  transform: translateX(-100%);
+  z-index: 1;
+}
+
+.button_slider_animate:hover:before {
+  transform: translateX(0);
+  transition: transform 350ms ease;
+}
+
+.button_slider_animate::after {
+  z-index: 0;
+  transform: translateX(100%);
+  transition: none;
+  transition: transform 350ms ease;
+}
+
+.button_slider_animate:hover:after {
+  opacity: 1;
+  transform: translateX(0);
+  transition: transform 350ms 360ms ease;
+}
+/* End button slider animate button */

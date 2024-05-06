@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.slick-slider {
+  width: 100%;
+  z-index: 10 !important;
+}
+.react-slick {
+  z-index: 20;
+}
