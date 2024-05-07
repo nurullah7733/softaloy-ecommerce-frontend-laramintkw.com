@@ -4,6 +4,7 @@ import { GrSearch } from "react-icons/gr";
 import { BsBag } from "react-icons/bs";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { useWindowSize } from "../../../utils/windowSize/useWindowSize";
 
 import { Link } from "react-router-dom";
 import MobileMenu from "./mobileMenu";
@@ -13,6 +14,8 @@ const Header = () => {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchbarOpen, setSearchbarOpen] = useState(false);
+  const [multipleCurrency, setMultipleCurrency] = useState(false);
+
   const handleMenuHover = (index) => {
     setIsMegaMenuOpen(index !== 0 ? index : 0);
   };
@@ -22,17 +25,17 @@ const Header = () => {
   };
 
   return (
-    <div className=" z-50 bg-white min-h-12 border-b  flex items-center justify-between  sticky  top-[-1px]   ">
+    <div className=" z-50 bg-white !min-h-14 border-b  flex items-center justify-between  sticky  top-[-1px]   ">
       {/* <Searchbar isOpen={searchbarOpen} onClose={false} /> */}
 
-      <nav className="px-8 w-full">
+      <nav className="px-8 md:px-4 w-full">
         {/* desktop navbar */}
         <div className="flex justify-between items-center ">
           <div className="gap-x-6 xl:hidden flex  ">
             <div
               onMouseEnter={() => handleMenuHover(1)}
               onMouseLeave={() => handleMenuHover(0)}
-              className={`relative   cursor-pointer w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left after:bottom-[-2px] py-8 ${
+              className={`relative   cursor-pointer w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left after:bottom-[-2px] py-8 ${
                 isMegaMenuOpen === 1 ? "after:scale-x-100" : ""
               }`}
             >
@@ -45,7 +48,7 @@ const Header = () => {
               <div
                 onMouseEnter={() => handleMenuHover(1)}
                 onMouseLeave={() => handleMenuHover(0)}
-                className=" !z-[9999999] absolute top-[86px] left-0 bg-white p-4 border-b  shadow-sm w-[100vw]  "
+                className="absolute top-[85px] left-0 bg-white p-4 border-b  shadow-sm w-[100vw]  "
               >
                 <div className="p-6 flex justify-between   ">
                   <div className="w-1/4 mr-10">
@@ -266,7 +269,7 @@ const Header = () => {
             <div
               onMouseEnter={() => handleMenuHover(2)}
               onMouseLeave={() => handleMenuHover(0)}
-              className={`relative  cursor-pointer w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left after:bottom-[-2px] py-8 ${
+              className={`relative  cursor-pointer w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left after:bottom-[-2px] py-8 ${
                 isMegaMenuOpen === 2 ? "after:scale-x-100" : ""
               }`}
             >
@@ -277,7 +280,7 @@ const Header = () => {
               <div
                 onMouseEnter={() => handleMenuHover(2)}
                 onMouseLeave={() => handleMenuHover(0)}
-                className=" z-10 absolute top-[86px] left-0 bg-white p-4 border-b shadow-sm w-[100vw]"
+                className=" z-10 absolute top-[85px] left-0 bg-white p-4 border-b shadow-sm w-[100vw]"
               >
                 <div className="p-6 flex justify-between  ">
                   <div className="w-1/4 mr-10">
@@ -374,7 +377,7 @@ const Header = () => {
             <div
               onMouseEnter={() => handleMenuHover(3)}
               onMouseLeave={() => handleMenuHover(0)}
-              className={`relative  cursor-pointer w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left after:bottom-[-2px] py-8 ${
+              className={`relative  cursor-pointer w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left after:bottom-[-2px] py-8 ${
                 isMegaMenuOpen === 3 ? "after:scale-x-100" : ""
               }`}
             >
@@ -385,7 +388,7 @@ const Header = () => {
               <div
                 onMouseEnter={() => handleMenuHover(3)}
                 onMouseLeave={() => handleMenuHover(0)}
-                className=" z-10 absolute top-[86px] left-0 bg-white p-4 border-b shadow-sm w-[100vw]"
+                className=" z-10 absolute top-[85px] left-0 bg-white p-4 border-b shadow-sm w-[100vw]"
               >
                 <div className="p-6 flex justify-center">
                   <div className="w-1/4 mr-10">
@@ -488,62 +491,67 @@ const Header = () => {
             {/* country dropdown */}
             <div>
               <button
-                id="dropdownUsersButton"
-                data-dropdown-toggle="dropdownUsers"
-                data-dropdown-placement="bottom"
-                className="text-white  font-medium rounded-lg text-sm text-center inline-flex items-center  "
+                className="text-white   font-medium rounded-lg text-sm text-center inline-flex items-center  "
                 type="button"
+                onClick={() => setMultipleCurrency(!multipleCurrency)}
               >
-                <img src="/in.png" className="w-6 h-6 " />
-                <MdKeyboardArrowUp color="black" size={20} className="ml-1.5" />
-              </button>
+                <img
+                  src="/in.png"
+                  className={`${
+                    useWindowSize().width > 768 ? "w-6" : "w-20"
+                  } h-6`}
+                />
 
-              <div
-                id="dropdownUsers"
-                className="z-10 hidden bg-white rounded-lg shadow w-40 dark:bg-gray-700"
-              >
-                <ul
-                  className="h-48 py-2 overflow-y-auto text-gray-700 dark:text-gray-200"
-                  aria-labelledby="dropdownUsersButton"
-                >
-                  <li>
-                    <Link
-                      href="#"
-                      className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >
-                      <img src="/in.png" className="w-6 h-6 mr-2" />
-                      India
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="#"
-                      className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >
-                      <img src="/us.png" className="w-6 h-6 mr-2" />
-                      Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="#"
-                      className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >
-                      <img src="/us.png" className="w-6 h-6 mr-2" />
-                      Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="#"
-                      className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >
-                      <img src="/us.png" className="w-6 h-6 mr-2" />
-                      Us
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+                {useWindowSize().width > 768 ? (
+                  <MdKeyboardArrowUp
+                    color="black"
+                    size={20}
+                    className="ml-1.5 "
+                  />
+                ) : null}
+              </button>
+              {multipleCurrency && (
+                <div className="z-10 absolute right-1 !bg-white rounded-lg shadow w-40 dark:bg-gray-700">
+                  <ul className="h-48 py-2 overflow-y-auto text-gray-700 dark:text-gray-200">
+                    <li onClick={() => setMultipleCurrency(false)}>
+                      <Link
+                        href="#"
+                        className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        <img src="/in.png" className="w-6 h-6 mr-2" />
+                        India
+                      </Link>
+                    </li>
+                    <li onClick={() => setMultipleCurrency(false)}>
+                      <Link
+                        href="#"
+                        className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        <img src="/us.png" className="w-6 h-6 mr-2" />
+                        Us
+                      </Link>
+                    </li>
+                    <li onClick={() => setMultipleCurrency(false)}>
+                      <Link
+                        href="#"
+                        className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        <img src="/us.png" className="w-6 h-6 mr-2" />
+                        Us
+                      </Link>
+                    </li>
+                    <li onClick={() => setMultipleCurrency(false)}>
+                      <Link
+                        href="#"
+                        className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        <img src="/us.png" className="w-6 h-6 mr-2" />
+                        Us
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>

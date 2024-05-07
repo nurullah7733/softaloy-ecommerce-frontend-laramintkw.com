@@ -99,3 +99,20 @@
   transition: transform 350ms 360ms ease;
 }
 /* End button slider animate button */
+
+/* start google translate */
+/* google translate write hidden */
+.VIpgJd-ZVi9od-l4eHX-hSRGPd {
+  display: none;
+}
+.goog-te-gadget {
+  position: fixed;
+  right: 0px;
+  bottom: -19px;
+  z-index: 99999;
+}
+.VIpgJd-ZVi9od-ORHb-OEVmcd {
+  /* display: none;
+  visibility: hidden; */
+}
+/* end google translate */

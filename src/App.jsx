@@ -1,34 +1,26 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "../redux/store";
+
 import Header from "./components/header/header";
 import AnnouncementBar from "./components/header/AnnouncementBar";
-import { BrowserRouter } from "react-router-dom";
-import MainSlider from "./components/HomePageComponents/mainSlider/slider";
-import Brands from "./components/HomePageComponents/brands/brands";
-
-import BestSales from "./components/HomePageComponents/bestSales/bestSales";
-import TrandingAndRecomended from "./components/HomePageComponents/trandingAndRecomended/trandingAndRecomended";
-import NewArrivals from "./components/HomePageComponents/newArrivals/newArrivals";
 import Footer from "./components/footer/footer";
+
+import HomePage from "./pages/homePage/homePage";
+import GoogleTranslate from "../utils/googleTranslate/googleTranslate";
 
 function App() {
   return (
-    <div>
+    <Provider store={store}>
       <BrowserRouter>
         <AnnouncementBar />
         <Header />
-        <div className="z-[-1px] ">
-          <MainSlider />
-        </div>
-        <Brands />
-        <BestSales />
-        <TrandingAndRecomended />
-        <NewArrivals />
+        <HomePage />
+        <GoogleTranslate />
         <Footer />
       </BrowserRouter>
-    </div>
+    </Provider>
   );
 }
 
