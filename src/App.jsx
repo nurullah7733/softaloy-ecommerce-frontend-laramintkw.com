@@ -7,7 +7,7 @@ import Header from "./components/header/header";
 import AnnouncementBar from "./components/header/AnnouncementBar";
 import Footer from "./components/footer/footer";
 
-import HomePage from "./pages/homePage/homePage";
+import HomePage from "./pages/home/home";
 import GoogleTranslate from "../utils/googleTranslate/googleTranslate";
 
 function App() {

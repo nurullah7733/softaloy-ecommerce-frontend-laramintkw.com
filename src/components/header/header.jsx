@@ -9,12 +9,19 @@ import { useWindowSize } from "../../../utils/windowSize/useWindowSize";
 import { Link } from "react-router-dom";
 import MobileMenu from "./mobileMenu";
 import Searchbar from "./searchbar";
+import useGetMultipleCurrency from "../../hooks/useGetMultipleCurrency";
+import { useSelector } from "react-redux";
+import store from "../../../redux/store";
+import { setSelectedCurrency } from "../../../redux/features/multipleCurrencySlice/multipleCurrencySlice";
+import { getMultipleCurrencyRequest } from "../../APIRequest/multipleCurrencyApi";
 
 const Header = () => {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchbarOpen, setSearchbarOpen] = useState(false);
   const [multipleCurrency, setMultipleCurrency] = useState(false);
+
+  const multipleCurrencies = useSelector((state) => state.multipleCurrency);
 
   const handleMenuHover = (index) => {
     setIsMegaMenuOpen(index !== 0 ? index : 0);
@@ -23,6 +30,12 @@ const Header = () => {
   const handleSearchbar = () => {
     setSearchbarOpen(!searchbarOpen);
   };
+
+  useEffect(() => {
+    (async () => {
+      await getMultipleCurrencyRequest();
+    })();
+  }, []);
 
   return (
     <div className=" z-50 bg-white !min-h-14 border-b  flex items-center justify-between  sticky  top-[-1px]   ">
@@ -495,12 +508,24 @@ const Header = () => {
                 type="button"
                 onClick={() => setMultipleCurrency(!multipleCurrency)}
               >
-                <img
-                  src="/in.png"
-                  className={`${
-                    useWindowSize().width > 768 ? "w-6" : "w-20"
-                  } h-6`}
-                />
+                {multipleCurrencies.loading ? (
+                  <img
+                    src="/loading-speaner.svg"
+                    className={`${
+                      useWindowSize().width > 768 ? "w-6" : "w-20"
+                    } h-6`}
+                  />
+                ) : (
+                  <img
+                    src={
+                      multipleCurrencies?.selectedCurrency?.img?.slice(-1)[0]
+                        ?.secure_url
+                    }
+                    className={`${
+                      useWindowSize().width > 768 ? "w-6" : "w-20"
+                    } h-6`}
+                  />
+                )}
 
                 {useWindowSize().width > 768 ? (
                   <MdKeyboardArrowUp
@@ -511,44 +536,26 @@ const Header = () => {
                 ) : null}
               </button>
               {multipleCurrency && (
-                <div className="z-10 absolute right-1 !bg-white rounded-lg shadow w-40 dark:bg-gray-700">
-                  <ul className="h-48 py-2 overflow-y-auto text-gray-700 dark:text-gray-200">
-                    <li onClick={() => setMultipleCurrency(false)}>
-                      <Link
-                        href="#"
-                        className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        <img src="/in.png" className="w-6 h-6 mr-2" />
-                        India
-                      </Link>
-                    </li>
-                    <li onClick={() => setMultipleCurrency(false)}>
-                      <Link
-                        href="#"
-                        className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        <img src="/us.png" className="w-6 h-6 mr-2" />
-                        Us
-                      </Link>
-                    </li>
-                    <li onClick={() => setMultipleCurrency(false)}>
-                      <Link
-                        href="#"
-                        className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        <img src="/us.png" className="w-6 h-6 mr-2" />
-                        Us
-                      </Link>
-                    </li>
-                    <li onClick={() => setMultipleCurrency(false)}>
-                      <Link
-                        href="#"
-                        className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        <img src="/us.png" className="w-6 h-6 mr-2" />
-                        Us
-                      </Link>
-                    </li>
+                <div className="z-10 absolute h-auto right-1 !bg-white rounded-lg shadow w-40 dark:bg-gray-700">
+                  <ul className="h-auto py-2 overflow-y-auto text-gray-700 dark:text-gray-200">
+                    {multipleCurrencies?.multipleCurrency?.map(
+                      (item, index) => (
+                        <li
+                          className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                          key={index}
+                          onClick={() => {
+                            setMultipleCurrency(false);
+                            store.dispatch(setSelectedCurrency(item));
+                          }}
+                        >
+                          <img
+                            src={item?.img?.slice(-1)[0]?.secure_url}
+                            className="w-6 h-6 mr-2"
+                          />
+                          {item?.countryName}
+                        </li>
+                      )
+                    )}
                   </ul>
                 </div>
               )}

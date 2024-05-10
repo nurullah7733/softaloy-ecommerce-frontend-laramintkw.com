@@ -1,14 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  loading: false,
   multipleCurrency: [],
-  selectedCurrency: "",
+  selectedCurrency: [],
 };
 
 const multipleCurrencySlice = createSlice({
-  name: "mode",
+  name: "multipleCurrency",
   initialState,
   reducers: {
+    setLoading(state, actions) {
+      state.loading = actions.payload;
+    },
     setMultipleCurrency(state, actions) {
       state.multipleCurrency = actions.payload;
     },
@@ -18,7 +22,7 @@ const multipleCurrencySlice = createSlice({
   },
 });
 
-export const { setMultipleCurrency, setSelectedCurrency } =
+export const { setLoading, setMultipleCurrency, setSelectedCurrency } =
   multipleCurrencySlice.actions;
 
 export default multipleCurrencySlice.reducer;

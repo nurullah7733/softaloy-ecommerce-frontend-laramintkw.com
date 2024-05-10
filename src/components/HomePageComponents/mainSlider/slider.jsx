@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
+import { getMainSlidersRequest } from "../../../APIRequest/getMainSliders";
+import { useSelector } from "react-redux";
 
 const MainSlider = () => {
+  const mainSliders = useSelector((state) => state.mainSliders);
+
   var settings = {
     dots: true,
     infinite: true,
@@ -12,6 +16,13 @@ const MainSlider = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
+  useEffect(() => {
+    (async () => {
+      await getMainSlidersRequest();
+    })();
+  }, []);
+
   return (
     <div
       className="md:!p-0 "
@@ -23,21 +34,16 @@ const MainSlider = () => {
       }}
     >
       <Slider {...settings}>
-        <div>
-          <Link href="#">
-            <img src="/slider-1.webp" className="w-full" />
-          </Link>
-        </div>
-        <div>
-          <Link href="#">
-            <img src="/slider-2.webp" className="w-full" />
-          </Link>
-        </div>
-        <div>
-          <Link href="#">
-            <img src="/slider-3.webp" className="w-full" />
-          </Link>
-        </div>
+        {mainSliders.mainSliders
+          ?.slice()
+          ?.reverse()
+          .map((slider) => (
+            <div key={slider?._id}>
+              <Link href={slider?.link ? slider?.link : "#"}>
+                <img src={slider?.img[0]?.secure_url} className="w-full" />
+              </Link>
+            </div>
+          ))}
       </Slider>
     </div>
   );

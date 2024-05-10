@@ -1,41 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
+import { getBrandsRequest } from "../../../APIRequest/getBrandsApi";
+import { useSelector } from "react-redux";
+import { useWindowSize } from "../../../../utils/windowSize/useWindowSize";
+import LoadingHomePageBrands from "../../common/loading/LoadingHomePageBrands";
 
 const Brands = () => {
+  const brands = useSelector((state) => state.brands);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      await getBrandsRequest();
+    })();
+  }, []);
+
   var settings = {
+    className: "center",
+    centerMode: true,
     infinite: true,
-    autoplay: false,
+    centerPadding: "60px",
+    slidesToShow: 1,
+    slidesToScroll: 1,
     speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 6,
+    rows: 3,
+    slidesPerRow: 3,
     responsive: [
       {
         breakpoint: 767,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToShow: 1,
+          slidesToScroll: 1,
           infinite: true,
           autoplay: true,
           dots: true,
+          rows: 3,
+          slidesPerRow: 3,
         },
       },
       {
         breakpoint: 575,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToShow: 1,
+          slidesToScroll: 1,
           infinite: true,
           autoplay: true,
+          rows: 3,
+          slidesPerRow: 3,
         },
       },
       {
         breakpoint: 400,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToShow: 1,
+          slidesToScroll: 1,
           infinite: true,
           autoplay: true,
+          rows: 3,
+          slidesPerRow: 3,
         },
       },
     ],
@@ -45,133 +67,39 @@ const Brands = () => {
       <div className="py-10 border-b px-8">
         <h1 className="uppercase text-2xl font-light">BRANDS</h1>
       </div>
-      <div
-        className=" "
-        style={{
-          paddingTop: "0",
-          textAlign: "center",
-          fontSize: "0px",
-        }}
-      >
-        <Slider
-          {...settings}
-          className="lg:w-full max-w-4xl  !mx-auto py-10 lg:px-4 "
-        >
-          <div className="!flex flex-col gap-y-4 items-center">
-            <Link href="#" className="w-[100px]">
-              <img
-                src="/brands/1.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#" className="w-[100px]">
-              <img
-                src="/brands/2.avif"
-                className="w-[100px] border  brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#" className="w-[100px]">
-              <img
-                src="/brands/3.avif"
-                className="w-[100px] border  brand_logo_shadow h-auto"
-              />
-            </Link>
+      <div className=" pt-10 ">
+        {brands?.loading ? (
+          <LoadingHomePageBrands />
+        ) : (
+          <div className="lg:w-full max-w-4xl mx-auto">
+            <div className={`grid-cols-6  gap-10 lg:hidden grid   `}>
+              {brands?.brands?.map((item, idx) => (
+                <div key={idx}>
+                  <Link href="#" className="w-[100px]">
+                    <img
+                      src={item?.img[0]?.secure_url}
+                      className="w-[100px]  border brand_logo_shadow h-auto"
+                    />
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            <div className={`lg:block hidden w-full lg:px-8`}>
+              <Slider {...settings}>
+                {brands?.brands?.map((item, idx) => (
+                  <div key={idx}>
+                    <img
+                      className="w-[100px] border brand_logo_shadow m-3 px-2"
+                      src={item?.img[0]?.secure_url}
+                      alt={`Image ${idx + 1}`}
+                    />
+                  </div>
+                ))}
+              </Slider>
+            </div>
           </div>
-          <div className="!flex flex-col gap-y-4 items-center">
-            <Link href="#">
-              <img
-                src="/brands/4.avif"
-                className="w-[100px] border  brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#">
-              <img
-                src="/brands/5.avif"
-                className="w-[100px] border  brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#">
-              <img
-                src="/brands/6.avif"
-                className="w-[100px] border brand_logo_shadow  h-auto"
-              />
-            </Link>
-          </div>
-          <div className="!flex flex-col gap-y-4 items-center">
-            <Link href="#">
-              <img
-                src="/brands/7.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#">
-              <img
-                src="/brands/8.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#">
-              <img
-                src="/brands/9.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-          </div>
-          <div className="!flex flex-col gap-y-4 items-center">
-            <Link href="#">
-              <img
-                src="/brands/10.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#">
-              <img
-                src="/brands/11.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#">
-              <img
-                src="/brands/12.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-          </div>
-          <div className="!flex flex-col gap-y-4 items-center">
-            <Link href="#">
-              <img
-                src="/brands/13.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#">
-              <img
-                src="/brands/14.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#">
-              <img
-                src="/brands/15.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-          </div>
-          <div className="!flex flex-col gap-y-4 items-center">
-            <Link href="#">
-              <img
-                src="/brands/16.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-            <Link href="#">
-              <img
-                src="/brands/17.avif"
-                className="w-[100px] border brand_logo_shadow h-auto"
-              />
-            </Link>
-          </div>
-        </Slider>
+        )}
       </div>
     </div>
   );
