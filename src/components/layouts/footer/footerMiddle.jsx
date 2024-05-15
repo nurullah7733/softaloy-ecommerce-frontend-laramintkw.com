@@ -1,6 +1,4 @@
 import React from "react";
-import { PiPhoneThin } from "react-icons/pi";
-import { PiWhatsappLogoThin } from "react-icons/pi";
 import {
   FaFacebookF,
   FaInstagram,
@@ -8,7 +6,7 @@ import {
   FaPinterest,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Button from "../common/button";
+import Button from "../../common/button";
 const FooterMiddle = () => {
   return (
     <div className=" py-20 px-14">

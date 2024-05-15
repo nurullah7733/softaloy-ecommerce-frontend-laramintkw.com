@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const Button = ({ link, text }) => {
   return (
     <div>
-      <Link href={link}>
-        <button className="button_slider_animate ">
+      <Link to={link}>
+        <button className="button_slider_animate w-full">
           <span className="content">{text}</span>
         </button>
       </Link>

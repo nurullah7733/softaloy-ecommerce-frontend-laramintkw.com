@@ -4,22 +4,23 @@ import { GrSearch } from "react-icons/gr";
 import { BsBag } from "react-icons/bs";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { useWindowSize } from "../../../utils/windowSize/useWindowSize";
+import { useWindowSize } from "../../../../utils/windowSize/useWindowSize";
 
 import { Link } from "react-router-dom";
 import MobileMenu from "./mobileMenu";
 import Searchbar from "./searchbar";
-import useGetMultipleCurrency from "../../hooks/useGetMultipleCurrency";
 import { useSelector } from "react-redux";
-import store from "../../../redux/store";
-import { setSelectedCurrency } from "../../../redux/features/multipleCurrencySlice/multipleCurrencySlice";
-import { getMultipleCurrencyRequest } from "../../APIRequest/multipleCurrencyApi";
+import store from "../../../../redux/store";
+import { setSelectedCurrency } from "../../../../redux/features/multipleCurrencySlice/multipleCurrencySlice";
+import { getMultipleCurrencyRequest } from "../../../APIRequest/multipleCurrencyApi";
+import CartDrowser from "../../cartDrower/cartDrower";
 
 const Header = () => {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchbarOpen, setSearchbarOpen] = useState(false);
   const [multipleCurrency, setMultipleCurrency] = useState(false);
+  const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
 
   const multipleCurrencies = useSelector((state) => state.multipleCurrency);
 
@@ -30,6 +31,8 @@ const Header = () => {
   const handleSearchbar = () => {
     setSearchbarOpen(!searchbarOpen);
   };
+
+  const handleCartSidebarClose = () => setIsCartSidebarOpen(!isCartSidebarOpen);
 
   useEffect(() => {
     (async () => {
@@ -498,8 +501,14 @@ const Header = () => {
                 onClick={handleSearchbar}
               />
             </div>
-            <div>
-              <BsBag size={25} className="cursor-pointer" />
+            <div
+              onClick={() => setIsCartSidebarOpen(!isCartSidebarOpen)}
+              className="relative cursor-pointer"
+            >
+              <div className="absolute bg-black w-4 h-4 left-4 text-[10px] rounded-full flex justify-center items-center text-white">
+                4
+              </div>
+              <BsBag size={25} />
             </div>
             {/* country dropdown */}
             <div>
@@ -578,6 +587,11 @@ const Header = () => {
           handleSearchbar={handleSearchbar}
         />
       )}
+      <CartDrowser
+        handleCartSidebarClose={handleCartSidebarClose}
+        isCartSidebarOpen={isCartSidebarOpen}
+        setIsCartSidebarOpen={setIsCartSidebarOpen}
+      />
     </div>
   );
 };
