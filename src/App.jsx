@@ -13,10 +13,10 @@ import PrivacyPolicyPage from "./pages/privacyPolicy/privacyPolicy";
 import TermAndConditionsPage from "./pages/termAndConditions/termAndConditions";
 import TermOfServicesPage from "./pages/termOfServices/termOfServices";
 import ReturnAndRefundPage from "./pages/returnAndRefund/returnAndRefund";
-import ReturnPage from "./pages/return/return";
 import SearchPage from "./pages/search/search";
 import SigninPage from "./pages/signin/signin";
 import SignupPage from "./pages/signup/signup";
+import RefundPage from "./pages/refundPolicy/refundPolicy";
 
 function App() {
   return (
@@ -40,7 +40,7 @@ function App() {
               path="/return-and-refund"
               element={<ReturnAndRefundPage />}
             />
-            <Route path="/return" element={<ReturnPage />} />
+            <Route path="/refund-policy" element={<RefundPage />} />
             <Route path="/search" element={<SearchPage />} />
 
             <Route path="/login" element={<SigninPage />} />

@@ -50,37 +50,40 @@ const FooterMiddle = () => {
           </h2>
           <ul>
             <li className="mb-1">
-              <Link href="#" className="text-gray-500 text-sm ">
+              <Link to="/search" className="text-gray-500 text-sm ">
                 Search
               </Link>
             </li>
             <li className="mb-1">
-              <Link href="#" className="text-gray-500 text-sm ">
+              <Link to="/privacy-policy" className="text-gray-500 text-sm ">
                 Privacy Policy
               </Link>
             </li>
             <li className="mb-1">
-              <Link href="#" className="text-gray-500 text-sm ">
+              <Link to="/return-and-refund" className="text-gray-500 text-sm ">
                 Return & Refund
               </Link>
             </li>
             <li className="mb-1">
-              <Link href="#" className="text-gray-500 text-sm ">
+              <Link
+                to="/term-and-conditions"
+                className="text-gray-500 text-sm "
+              >
                 Terms & Conditions
               </Link>
             </li>
             <li className="mb-1">
-              <Link href="#" className="text-gray-500 text-sm ">
+              <Link to="/contact-us" className="text-gray-500 text-sm ">
                 Contact us
               </Link>
             </li>
             <li className="mb-1">
-              <Link href="#" className="text-gray-500 text-sm ">
+              <Link to="/term-of-services" className="text-gray-500 text-sm ">
                 Terms of Service
               </Link>
             </li>
             <li className="mb-1">
-              <Link href="#" className="text-gray-500 text-sm ">
+              <Link to="/refund-policy" className="text-gray-500 text-sm ">
                 Refund policy
               </Link>
             </li>
