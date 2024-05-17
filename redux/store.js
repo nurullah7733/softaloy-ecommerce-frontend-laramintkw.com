@@ -5,6 +5,8 @@ import trendingProductsSlice from "./features/trendingProductsSlice/trendingProd
 import newProductsSlice from "./features/newProductsSlice/newProductsSlice";
 import mainSlidersSlice from "./features/getMainSliders/getMainSliders";
 import brandsSlice from "./features/getBrands/getBrands";
+import getCategorySlice from "./features/getCategorySlice/getCategorySlice";
+import megaMenuProductsSlice from "./features/megaMenuProductsSlice/megaMenuProductsSlice";
 
 export default configureStore({
   reducer: {
@@ -14,5 +16,7 @@ export default configureStore({
     newProducts: newProductsSlice,
     mainSliders: mainSlidersSlice,
     brands: brandsSlice,
+    categories: getCategorySlice,
+    megaMenuProducts: megaMenuProductsSlice,
   },
 });

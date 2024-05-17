@@ -4,10 +4,13 @@ import { FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { FaMinus } from "react-icons/fa6";
 import HeaderBottom from "./headerBottom";
+import { useSelector } from "react-redux";
 
 const MobileMenu = ({ mobileMenuOpen, setMobileMenuOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(0);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
+
+  const categories = useSelector((state) => state.categories);
 
   const handleMenuOpen = (index) => {
     if (isMenuOpen === index) {
@@ -25,8 +28,8 @@ const MobileMenu = ({ mobileMenuOpen, setMobileMenuOpen }) => {
   };
   return (
     <div
-      className={`flex flex-col  fixed  top-0 left-0 z-40 h-screen  transition-transform bg-white w-80  ${
-        mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+      className={`flex flex-col  fixed  top-0 left-0 z-40 h-screen  border-r transition-transform bg-white w-80  ${
+        mobileMenuOpen ? "translate-x-0" : "-translate-x-full "
       }`}
     >
       <div className="sticky top-0 right-0 p-8 z-30 bg-white ">
@@ -44,409 +47,98 @@ const MobileMenu = ({ mobileMenuOpen, setMobileMenuOpen }) => {
         <div className="px-8 py-8 z-10 ">
           <div>
             <ul>
-              <li className="py-4  border-b text-sm uppercase">
-                <div
-                  className="flex justify-between  "
-                  onClick={() => handleMenuOpen(1)}
-                >
-                  <p>skin care</p>
-                  {isMenuOpen === 1 ? <FaMinus /> : <FaPlus />}
-                </div>
-                <ul
-                  className={`pl-4 `}
-                  style={{
-                    display: "grid",
-                    gridTemplateRows: isMenuOpen === 1 ? "1fr" : "0fr",
-                    transition: " all 0.3s ease-in-out",
-                  }}
-                >
-                  <div className="overflow-hidden">
-                    {/* brand */}
-                    <li>
-                      <div
-                        className="flex justify-between py-2"
-                        onClick={() => handleSubMenuOpen(1)}
-                      >
-                        <p className="text-gray-400 hover:text-gray-600 text-[12px]">
-                          brand
-                        </p>
-
-                        {isSubMenuOpen === 1 ? (
-                          <FaMinus className="text-gray-400 capitalize" />
+              {/* category */}
+              {categories?.categories?.map((category, categoryIndex) => (
+                <li className="py-4  border-b text-sm uppercase">
+                  <div
+                    className="flex justify-between  "
+                    onClick={() => handleMenuOpen(categoryIndex + 1)}
+                  >
+                    {category?.subCategoryId?.length > 0 ? (
+                      <p>{category?.name}</p>
+                    ) : (
+                      <Link to={"#"}>{category?.name}</Link>
+                    )}
+                    {category?.subCategoryId?.length > 0 && (
+                      <>
+                        {isMenuOpen === categoryIndex + 1 ? (
+                          <FaMinus />
                         ) : (
-                          <FaPlus className="text-gray-400 capitalize" />
+                          <FaPlus />
                         )}
-                      </div>
-                      <ul
-                        className={`pl-4 border-l`}
-                        style={{
-                          display: "grid",
-                          gridTemplateRows: isSubMenuOpen === 1 ? "1fr" : "0fr",
-                          transition: " all 0.3s ease-in-out",
-                        }}
-                      >
-                        <div className="overflow-hidden">
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">filorga</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">la roche posay</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">the ordinary</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">vichy</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Obagi</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Zo skin health</Link>
-                          </li>
-                        </div>
-                      </ul>
-                    </li>
-
-                    {/* concern */}
-                    <li>
-                      <div
-                        className="flex justify-between py-2"
-                        onClick={() => handleSubMenuOpen(2)}
-                      >
-                        <p className="text-gray-400 hover:text-gray-600 text-[12px]">
-                          concern
-                        </p>
-
-                        {isSubMenuOpen === 2 ? (
-                          <FaMinus className="text-gray-400 capitalize" />
-                        ) : (
-                          <FaPlus className="text-gray-400 capitalize" />
-                        )}
-                      </div>
-                      <ul
-                        className={`pl-4 border-l`}
-                        style={{
-                          display: "grid",
-                          gridTemplateRows: isSubMenuOpen === 2 ? "1fr" : "0fr",
-                          transition: " all 0.3s ease-in-out",
-                        }}
-                      >
-                        <div className="overflow-hidden ">
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">filorga</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">la roche posay</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">the ordinary</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">vichy</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Obagi</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Zo skin health</Link>
-                          </li>
-                        </div>
-                      </ul>
-                    </li>
-                    {/* category type */}
-                    <li>
-                      <div
-                        className="flex justify-between py-2"
-                        onClick={() => handleSubMenuOpen(3)}
-                      >
-                        <p className="text-gray-400 hover:text-gray-600 text-[12px]">
-                          category type
-                        </p>
-
-                        {isSubMenuOpen === 3 ? (
-                          <FaMinus className="text-gray-400 capitalize" />
-                        ) : (
-                          <FaPlus className="text-gray-400 capitalize" />
-                        )}
-                      </div>
-                      <ul
-                        className={`pl-4 border-l`}
-                        style={{
-                          display: "grid",
-                          gridTemplateRows: isSubMenuOpen === 3 ? "1fr" : "0fr",
-                          transition: " all 0.3s ease-in-out",
-                        }}
-                      >
-                        <div className="overflow-hidden">
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">filorga</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">la roche posay</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">the ordinary</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">vichy</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Obagi</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Zo skin health</Link>
-                          </li>
-                        </div>
-                      </ul>
-                    </li>
-
-                    {/* ingredient*/}
-                    <li>
-                      <div
-                        className="flex justify-between py-2"
-                        onClick={() => handleSubMenuOpen(4)}
-                      >
-                        <p className="text-gray-400 hover:text-gray-600 text-[12px]">
-                          ingredient
-                        </p>
-
-                        {isSubMenuOpen === 4 ? (
-                          <FaMinus className="text-gray-400 capitalize" />
-                        ) : (
-                          <FaPlus className="text-gray-400 capitalize" />
-                        )}
-                      </div>
-                      <ul
-                        className={`pl-4 border-l`}
-                        style={{
-                          display: "grid",
-                          gridTemplateRows: isSubMenuOpen === 4 ? "1fr" : "0fr",
-                          transition: " all 0.3s ease-in-out",
-                        }}
-                      >
-                        <div className="overflow-hidden">
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">filorga</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">la roche posay</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">the ordinary</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">vichy</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Obagi</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Zo skin health</Link>
-                          </li>
-                        </div>
-                      </ul>
-                    </li>
+                      </>
+                    )}
                   </div>
-                </ul>
-              </li>
+                  <ul
+                    className={`pl-4 `}
+                    style={{
+                      display: "grid",
+                      gridTemplateRows:
+                        isMenuOpen === categoryIndex + 1 &&
+                        category?.subCategoryId?.length > 0
+                          ? "1fr"
+                          : "0fr",
+                      transition: " all 0.3s ease-in-out",
+                    }}
+                  >
+                    <div className="overflow-hidden">
+                      {/* sub category */}
+                      {category?.subCategories?.map(
+                        (subCategory, subCategoryIndex) => (
+                          <li>
+                            <div
+                              className="flex justify-between py-2"
+                              onClick={() =>
+                                handleSubMenuOpen(subCategoryIndex + 1)
+                              }
+                            >
+                              <p className="text-gray-400 hover:text-gray-600 text-[12px]">
+                                {subCategory?.name}
+                              </p>
 
-              <li className="py-4  border-b text-sm uppercase">
-                <div
-                  className="flex justify-between  "
-                  onClick={() => handleMenuOpen(2)}
-                >
-                  <p>hire care</p>
-                  {isMenuOpen === 2 ? <FaMinus /> : <FaPlus />}
-                </div>
-                <ul
-                  className={`pl-4 `}
-                  style={{
-                    display: "grid",
-                    gridTemplateRows: isMenuOpen === 2 ? "1fr" : "0fr",
-                    transition: " all 0.3s ease-in-out",
-                  }}
-                >
-                  <div className="overflow-hidden">
-                    {/* brand */}
-                    <li>
-                      <div
-                        className="flex justify-between py-2"
-                        onClick={() => handleSubMenuOpen(5)}
-                      >
-                        <p className="text-gray-400 hover:text-gray-600 text-[12px]">
-                          brand
-                        </p>
-
-                        {isSubMenuOpen === 5 ? (
-                          <FaMinus className="text-gray-400 capitalize" />
-                        ) : (
-                          <FaPlus className="text-gray-400 capitalize" />
-                        )}
-                      </div>
-                      <ul
-                        className={`pl-4 border-l`}
-                        style={{
-                          display: "grid",
-                          gridTemplateRows: isSubMenuOpen === 5 ? "1fr" : "0fr",
-                          transition: " all 0.3s ease-in-out",
-                        }}
-                      >
-                        <div className="overflow-hidden">
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">filorga</Link>
+                              {isSubMenuOpen === subCategoryIndex + 1 ? (
+                                <FaMinus className="text-gray-400 capitalize" />
+                              ) : (
+                                <FaPlus className="text-gray-400 capitalize" />
+                              )}
+                            </div>
+                            <ul
+                              className={`pl-4 border-l`}
+                              style={{
+                                display: "grid",
+                                gridTemplateRows:
+                                  isSubMenuOpen === subCategoryIndex + 1
+                                    ? "1fr"
+                                    : "0fr",
+                                transition: " all 0.3s ease-in-out",
+                              }}
+                            >
+                              <div className="overflow-hidden">
+                                {/* sub sub category */}
+                                {subCategory?.subsubCategories?.map(
+                                  (subsubCategory) => (
+                                    <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
+                                      <Link href="#">
+                                        {subsubCategory?.name}
+                                      </Link>
+                                    </li>
+                                  )
+                                )}
+                              </div>
+                            </ul>
                           </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">la roche posay</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">the ordinary</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">vichy</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Obagi</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Zo skin health</Link>
-                          </li>
-                        </div>
-                      </ul>
-                    </li>
-
-                    {/* category */}
-                    <li>
-                      <div
-                        className="flex justify-between py-2"
-                        onClick={() => handleSubMenuOpen(6)}
-                      >
-                        <p className="text-gray-400 hover:text-gray-600 text-[12px]">
-                          category
-                        </p>
-
-                        {isSubMenuOpen === 6 ? (
-                          <FaMinus className="text-gray-400 capitalize" />
-                        ) : (
-                          <FaPlus className="text-gray-400 capitalize" />
-                        )}
-                      </div>
-                      <ul
-                        className={`pl-4 border-l`}
-                        style={{
-                          display: "grid",
-                          gridTemplateRows: isSubMenuOpen === 6 ? "1fr" : "0fr",
-                          transition: " all 0.3s ease-in-out",
-                        }}
-                      >
-                        <div className="overflow-hidden ">
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">filorga</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">la roche posay</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">the ordinary</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">vichy</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Obagi</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Zo skin health</Link>
-                          </li>
-                        </div>
-                      </ul>
-                    </li>
-                  </div>
-                </ul>
-              </li>
-
-              <li className="py-4  border-b text-sm uppercase">
-                <div
-                  className="flex justify-between  "
-                  onClick={() => handleMenuOpen(3)}
-                >
-                  <p>body care</p>
-                  {isMenuOpen === 3 ? <FaMinus /> : <FaPlus />}
-                </div>
-                <ul
-                  className={`pl-4 `}
-                  style={{
-                    display: "grid",
-                    gridTemplateRows: isMenuOpen === 3 ? "1fr" : "0fr",
-                    transition: " all 0.3s ease-in-out",
-                  }}
-                >
-                  <div className="overflow-hidden">
-                    {/* category */}
-                    <li>
-                      <div
-                        className="flex justify-between py-2"
-                        onClick={() => handleSubMenuOpen(7)}
-                      >
-                        <p className="text-gray-400 hover:text-gray-600 text-[12px]">
-                          category
-                        </p>
-
-                        {isSubMenuOpen === 7 ? (
-                          <FaMinus className="text-gray-400 capitalize" />
-                        ) : (
-                          <FaPlus className="text-gray-400 capitalize" />
-                        )}
-                      </div>
-                      <ul
-                        className={`pl-4 border-l`}
-                        style={{
-                          display: "grid",
-                          gridTemplateRows: isSubMenuOpen === 7 ? "1fr" : "0fr",
-                          transition: " all 0.3s ease-in-out",
-                        }}
-                      >
-                        <div className="overflow-hidden ">
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">filorga</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">la roche posay</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">the ordinary</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">vichy</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Obagi</Link>
-                          </li>
-                          <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                            <Link href="#">Zo skin health</Link>
-                          </li>
-                        </div>
-                      </ul>
-                    </li>
-                  </div>
-                </ul>
-              </li>
-
-              <li className="py-4  border-b text-sm uppercase">
-                <Link href="#">offers</Link>
-              </li>
-              <li className="py-4  border-b text-sm uppercase">
-                <Link href="#"> new arrivals</Link>
-              </li>
-              <li className="py-4   text-gray-400 text-sm uppercase">
-                <Link href="#"> accounts</Link>
-              </li>
+                        )
+                      )}
+                    </div>
+                  </ul>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
       </div>
 
-      {/* header bottom */}
+      {/* header bottom only visible mobile */}
       <div>
         <HeaderBottom />
       </div>
