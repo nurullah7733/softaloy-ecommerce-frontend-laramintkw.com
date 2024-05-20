@@ -6,7 +6,7 @@ import { FiMinus } from "react-icons/fi";
 const ButtonProductsIncreaseAndDecrease = ({ link, text }) => {
   return (
     <div>
-      <Link href={link}>
+      <Link to={link}>
         <button className=" border flex items-center justify-between p-4  w-[140px] h-[45px]">
           <span className="text-lg font-light text-gray-600">
             <FiPlus />

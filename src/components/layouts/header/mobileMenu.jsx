@@ -49,7 +49,10 @@ const MobileMenu = ({ mobileMenuOpen, setMobileMenuOpen }) => {
             <ul>
               {/* category */}
               {categories?.categories?.map((category, categoryIndex) => (
-                <li className="py-4  border-b text-sm uppercase">
+                <li
+                  className="py-4  border-b text-sm uppercase"
+                  key={categoryIndex}
+                >
                   <div
                     className="flex justify-between  "
                     onClick={() => handleMenuOpen(categoryIndex + 1)}
@@ -85,7 +88,7 @@ const MobileMenu = ({ mobileMenuOpen, setMobileMenuOpen }) => {
                       {/* sub category */}
                       {category?.subCategories?.map(
                         (subCategory, subCategoryIndex) => (
-                          <li>
+                          <li key={subCategoryIndex}>
                             <div
                               className="flex justify-between py-2"
                               onClick={() =>
@@ -117,8 +120,16 @@ const MobileMenu = ({ mobileMenuOpen, setMobileMenuOpen }) => {
                                 {/* sub sub category */}
                                 {subCategory?.subsubCategories?.map(
                                   (subsubCategory) => (
-                                    <li className="py-2 text-gray-400 hover:text-gray-600 capitalize">
-                                      <Link href="#">
+                                    <li
+                                      onClick={() =>
+                                        setMobileMenuOpen(!mobileMenuOpen)
+                                      }
+                                      key={subsubCategory?._id}
+                                      className="py-2 text-gray-400 hover:text-gray-600 capitalize"
+                                    >
+                                      <Link
+                                        to={`/collections?pageNo=1&perPage=30&searchKeyword=0&subsubcategory=${subsubCategory?.name}`}
+                                      >
                                         {subsubCategory?.name}
                                       </Link>
                                     </li>

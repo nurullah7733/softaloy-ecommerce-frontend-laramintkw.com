@@ -17,15 +17,22 @@ import SearchPage from "./pages/search/search";
 import SigninPage from "./pages/signin/signin";
 import SignupPage from "./pages/signup/signup";
 import RefundPage from "./pages/refundPolicy/refundPolicy";
+import ScrollToTop from "../utils/scrollToTop/scrollToTop";
+import BestSalesPage from "./pages/bestSales/bestSales";
 
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="/products" element={<ProductDetailsPage />} />
+            <Route
+              path="/product-details/:id"
+              element={<ProductDetailsPage />}
+            />
+            <Route path="/best-sales-products" element={<BestSalesPage />} />
             <Route path="/collections" element={<CollectionsPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
 

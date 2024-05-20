@@ -7,8 +7,11 @@ const Concern = () => {
   let content = (
     <>
       {arr?.map((item, index) => (
-        <div className="flex items-center gap-x-2" key={index}>
-          <label className="dark:text-white sm:text-[14px] flex items-center capitalize">
+        <div
+          className="flex items-center gap-x-2 border-b py-3 mx-5"
+          key={index}
+        >
+          <label className="dark:text-white sm:text-[14px]   flex items-center capitalize">
             <input
               className=" bg-gray-50 focus:ring-0  w-4 h-4 text-gray-400   mr-2 border-gray-300 rounded"
               name={item}
@@ -24,7 +27,8 @@ const Concern = () => {
   );
 
   return (
-    <div className=" max-w-[275px] px-5 border border-gray-200 rounded-lg shadow card w-96 bg-base-100 bg-white dark:bg-gray-700">
+    <div className=" max-w-[275px]  ">
+      {/* <LoadingFilter /> */}
       <Accordion title={"Concern"} content={content} />
     </div>
   );

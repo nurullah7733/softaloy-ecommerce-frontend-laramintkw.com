@@ -27,12 +27,12 @@ const TrandingAndRecomended = () => {
           {trandingProducts?.products?.length > 0 ? (
             <>
               <div>
-                <div className="grid lg:grid-cols-2 grid-cols-4 gap-5">
+                <div className="grid   lg:grid-cols-2 grid-cols-4 gap-5">
                   {trandingProducts?.products?.map((item) => (
                     <Fragment key={item?._id}>
                       <Product
                         img={item?.img?.slice(-1)[0]?.secure_url}
-                        id
+                        id={item?._id}
                         productName={item?.name}
                         price={item?.finalPrice}
                       />
@@ -41,7 +41,10 @@ const TrandingAndRecomended = () => {
                 </div>
               </div>
               <div className="flex justify-center mt-20">
-                <Button link="#" text="view all products" />
+                <Button
+                  link="/collections?pageNo=1&perPage=30&searchKeyword=0&remark=trending"
+                  text="view all products"
+                />
               </div>
             </>
           ) : (

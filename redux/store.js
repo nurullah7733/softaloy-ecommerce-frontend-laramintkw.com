@@ -7,6 +7,11 @@ import mainSlidersSlice from "./features/getMainSliders/getMainSliders";
 import brandsSlice from "./features/getBrands/getBrands";
 import getCategorySlice from "./features/getCategorySlice/getCategorySlice";
 import megaMenuProductsSlice from "./features/megaMenuProductsSlice/megaMenuProductsSlice";
+import productDetailsSlice from "./features/productDetailsSlice/productDetailsSlice";
+import relatedProductsSlice from "./features/relatedProductsSlice/relatedProductsSlice";
+import allProductsSlice from "./features/allProductsSlice/allProductsSlice";
+import subSubCategoriesSlice from "./features/subSubCategorySlice/subSubCategorySlice";
+import searchProductsSlice from "./features/searchProductsSlice/searchProductsSlice";
 
 export default configureStore({
   reducer: {
@@ -18,5 +23,10 @@ export default configureStore({
     brands: brandsSlice,
     categories: getCategorySlice,
     megaMenuProducts: megaMenuProductsSlice,
+    productDetails: productDetailsSlice,
+    relatedProducts: relatedProductsSlice,
+    allProducts: allProductsSlice,
+    subSubCategories: subSubCategoriesSlice,
+    searchProducts: searchProductsSlice,
   },
 });

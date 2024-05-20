@@ -35,7 +35,7 @@ const NewArrivals = () => {
                     <Fragment key={item?._id}>
                       <Product
                         img={item?.img[0]?.secure_url}
-                        id
+                        id={item?._id}
                         productName={item?.name}
                         price={item?.finalPrice}
                       />
@@ -44,7 +44,10 @@ const NewArrivals = () => {
                 </div>
               </div>
               <div className="flex justify-center mt-20">
-                <Button link="#" text="view all products" />
+                <Button
+                  link="/collections?pageNo=1&perPage=30&searchKeyword=0&remark=new"
+                  text="view all products"
+                />
               </div>
             </>
           ) : (

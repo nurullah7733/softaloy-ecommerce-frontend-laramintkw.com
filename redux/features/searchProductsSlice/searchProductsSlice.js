@@ -6,8 +6,8 @@ const initialState = {
   products: [],
 };
 
-const bestSalesSlice = createSlice({
-  name: "bestSales",
+const searchProductsSlice = createSlice({
+  name: "searchproducts",
   initialState,
   reducers: {
     setLoading(state, actions) {
@@ -16,12 +16,13 @@ const bestSalesSlice = createSlice({
     setTotal(state, actions) {
       state.total = actions.payload;
     },
-    setProducts(state, actions) {
+    setAllProducts(state, actions) {
       state.products = actions.payload;
     },
   },
 });
 
-export const { setLoading, setTotal, setProducts } = bestSalesSlice.actions;
+export const { setLoading, setTotal, setAllProducts } =
+  searchProductsSlice.actions;
 
-export default bestSalesSlice.reducer;
+export default searchProductsSlice.reducer;

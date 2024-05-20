@@ -16,7 +16,7 @@ let AxiosHeader = {
 export let getBrandsRequest = async () => {
   try {
     store.dispatch(setLoading(true));
-    let URL = baseUrl + "/list-brand/1/100/0";
+    let URL = baseUrl + "/list-brand/1/1000/0";
     let res = await axios.get(URL, AxiosHeader);
     store.dispatch(setLoading(false));
     if (res.data.status === "success" && res?.data?.data[0]?.rows?.length > 0) {

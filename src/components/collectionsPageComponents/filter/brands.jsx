@@ -1,23 +1,60 @@
 import { useEffect, useState } from "react";
 import Accordion from "../../common/acordian";
-import LoadingFilter from "./loading/loadingFilter";
+import { getBrandsRequest } from "../../../APIRequest/getBrandsApi";
+import { useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const arr = ["one", "two", "three", "four", "five"];
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 const Brand = () => {
+  const navigate = useNavigate();
+  const query = useQuery();
+  const [checkboxIndex, setCheckboxIndex] = useState("");
+  const { loading, brands } = useSelector((state) => state.brands);
+
+  const handleCheckbox = (e, index) => {
+    const newQuery = new URLSearchParams();
+    setCheckboxIndex(index);
+
+    if (query.has("pageNo")) {
+      newQuery.set("pageNo", "1");
+    }
+    if (query.has("perPage")) {
+      newQuery.set("perPage", query.get("perPage"));
+    }
+    if (query.has("searchKeyword")) {
+      newQuery.set("searchKeyword", "0");
+    }
+
+    newQuery.set("brand", e.target.value);
+    navigate({ search: newQuery.toString() });
+  };
+
+  useEffect(() => {
+    (async () => {
+      await getBrandsRequest();
+    })();
+  }, []);
+
   let content = (
     <>
-      {arr?.map((item, index) => (
-        <div className="flex items-center gap-x-2" key={index}>
-          <label className="dark:text-white sm:text-[14px] flex items-center capitalize">
+      {brands?.map((brand, index) => (
+        <div
+          key={brand?._id}
+          className="flex items-center gap-x-2 border-b py-3 mx-5"
+        >
+          <label className="dark:text-white sm:text-[14px]   flex items-center capitalize">
             <input
+              onChange={(e) => handleCheckbox(e, index + 1)}
               className=" bg-gray-50 focus:ring-0  w-4 h-4 text-gray-400   mr-2 border-gray-300 rounded"
-              name={item}
+              name={brand?.name}
               type="checkbox"
-              value={item}
-              //   checked={checkboxIndex == index + 1}
+              value={brand?.name}
+              checked={checkboxIndex == index + 1}
             />
-            {item}
+            {brand?.name}
           </label>
         </div>
       ))}
@@ -25,9 +62,8 @@ const Brand = () => {
   );
 
   return (
-    <div className=" max-w-[275px] px-5 border border-gray-200 rounded-lg shadow card w-96 bg-base-100 bg-white dark:bg-gray-700">
-      {/* <LoadingFilter /> */}
-      <Accordion title={"Brand"} content={content} />
+    <div className=" w-[275px]  ">
+      <Accordion loading={loading} title={"Filter Brand"} content={content} />
     </div>
   );
 };

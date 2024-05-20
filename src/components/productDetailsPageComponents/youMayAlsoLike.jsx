@@ -1,9 +1,15 @@
 import React, { Fragment } from "react";
 import Product from "../common/product";
+import { useSelector } from "react-redux";
+import NoProductsFound from "../common/noProductsFound";
 
 let arr = Array.from(Array(4).keys());
 
-const YouMayAlsoLike = () => {
+const YouMayAlsoLike = ({ relatedProductsFilterWithoutMainProductById }) => {
+  const { loading, products } = useSelector((state) => state.relatedProducts);
+  const filterRelatedProducts = products?.filter(
+    (product) => product?._id !== relatedProductsFilterWithoutMainProductById
+  );
   return (
     <div className="mb-20">
       <div className="border-t pt-20">
@@ -11,18 +17,24 @@ const YouMayAlsoLike = () => {
           You may also like
         </h1>
       </div>
-      <div className="grid lg:grid-cols-2 grid-cols-4 gap-5">
-        {arr?.map((item, index) => (
-          <Fragment key={index}>
-            <Product
-              img={"/products/3.webp"}
-              id
-              productName={"highlights"}
-              price={22.5}
-            />
-          </Fragment>
-        ))}
-      </div>
+      {filterRelatedProducts?.length > 0 ? (
+        <>
+          <div className="grid lg:grid-cols-2 grid-cols-4 gap-5">
+            {filterRelatedProducts?.map((product, index) => (
+              <Fragment key={index}>
+                <Product
+                  img={product?.img?.slice(-1)[0]?.secure_url}
+                  id={product?._id}
+                  productName={product?.name}
+                  price={product?.finalPrice}
+                />
+              </Fragment>
+            ))}
+          </div>
+        </>
+      ) : (
+        <NoProductsFound />
+      )}
     </div>
   );
 };

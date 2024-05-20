@@ -2,9 +2,8 @@ import axios from "axios";
 import store from "../../redux/store";
 import {
   setLoading,
-  setTotal,
-  setProducts,
-} from "../../redux/features/bestSalesSlice/bestSalesSlice";
+  setSubSubCategories,
+} from "../../redux/features/subSubCategorySlice/subSubCategorySlice";
 
 let baseUrl = import.meta.env.VITE_API_URL;
 let AxiosHeader = {
@@ -13,15 +12,16 @@ let AxiosHeader = {
   },
 };
 
-export let getBestSalesRequest = async (pageNo, PerPage, searchKeyword) => {
+export let getAllSubSubCategoryRequest = async () => {
   try {
     store.dispatch(setLoading(true));
-    let URL = baseUrl + `/best-sales/${pageNo}/${PerPage}/${searchKeyword}/`;
+    let URL = baseUrl + "/list-sub-subcategory/1/5000/0";
+
     let res = await axios.get(URL, AxiosHeader);
+    console.log(res.data.data, "res");
     store.dispatch(setLoading(false));
     if (res.data.status === "success" && res?.data?.data[0]?.rows?.length > 0) {
-      store.dispatch(setTotal(res?.data?.data[0]?.total[0]?.count));
-      store.dispatch(setProducts(res?.data?.data[0]?.rows));
+      store.dispatch(setSubSubCategories(res?.data?.data[0]?.rows));
       return true;
     } else {
       return false;

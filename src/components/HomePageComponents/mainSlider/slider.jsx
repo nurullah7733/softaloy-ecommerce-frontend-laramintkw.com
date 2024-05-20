@@ -39,7 +39,7 @@ const MainSlider = () => {
           ?.reverse()
           .map((slider) => (
             <div key={slider?._id}>
-              <Link href={slider?.link ? slider?.link : "#"}>
+              <Link to={slider?.link ? slider?.link : "#"}>
                 <img src={slider?.img[0]?.secure_url} className="w-full" />
               </Link>
             </div>

@@ -34,6 +34,9 @@ const Header = () => {
   const megaMenuProducts = useSelector(
     (state) => state.megaMenuProducts?.products
   );
+  const selectedCurrency = useSelector(
+    (state) => state.multipleCurrency.selectedCurrency
+  );
 
   const handleMenuHover = (index) => {
     setIsMegaMenuOpen(index !== 0 ? index : 0);
@@ -55,8 +58,6 @@ const Header = () => {
 
   return (
     <div className=" z-50 bg-white !min-h-14 border-b  flex items-center justify-between  sticky  top-[-1px]   ">
-      {/* <Searchbar isOpen={searchbarOpen} onClose={false} /> */}
-
       <nav className="px-8 md:px-4 w-full ">
         {/* desktop navbar */}
         <div className="flex justify-between items-center  ">
@@ -71,20 +72,19 @@ const Header = () => {
                     handleMenuHover(categoryindex + 1);
                   }}
                   onMouseLeave={() => handleMenuHover(0)}
-                  className={`relative   cursor-pointer w-fit block after:block after:content-[''] after:absolute after:h-[${
-                    category?.subCategories?.length > 0 &&
-                    ignoreBlankMegaMenuWhenMegaMenuIsEmpty > 0
-                      ? "3"
-                      : "2"
-                  }px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left after:bottom-[-2px]  py-8 ${
+                  className={`relative   cursor-pointer w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left after:bottom-[-2px]  py-8 ${
                     isMegaMenuOpen === categoryindex + 1
                       ? "after:scale-x-100"
                       : ""
                   }`}
                 >
-                  <div className=" ">
+                  <div onClick={() => handleMenuHover(0)}>
                     <p className="uppercase text-sm">
-                      <Link href="#">{category?.name}</Link>
+                      <Link
+                        to={`/collections?pageNo=1&perPage=30&searchKeyword=0&category=${category?.name}`}
+                      >
+                        {category?.name}
+                      </Link>
                     </p>
                   </div>
                 </div>
@@ -98,23 +98,30 @@ const Header = () => {
                             handleMenuHover(categoryindex + 1)
                           }
                           onMouseLeave={() => handleMenuHover(0)}
-                          className="absolute top-[85px] left-0 bg-white p-4 border-b  shadow-sm w-[100%]  "
+                          className={`absolute top-[85px] left-0 bg-white p-4 border-b  shadow-sm w-[100%]`}
                         >
                           <div className="p-6  ">
                             <div>
                               <ul className="flex justify-between ">
                                 {category?.subCategories?.map(
                                   (subcategory, index) => (
-                                    <>
+                                    <Fragment key={subcategory?._id}>
                                       <li className="font-medium text-gray-400  text-sm uppercase">
                                         <p className="pb-2">
                                           {subcategory?.name}
                                         </p>
                                         {subcategory?.subsubCategories?.map(
                                           (subsubCategory) => (
-                                            <ul>
-                                              <li className="font-light text-[12px] pb-1.5">
-                                                <Link href="#">
+                                            <ul key={subsubCategory?._id}>
+                                              <li
+                                                className="font-light text-[12px] pb-1.5"
+                                                onClick={() =>
+                                                  handleMenuHover(0)
+                                                }
+                                              >
+                                                <Link
+                                                  to={`/collections?pageNo=1&perPage=30&searchKeyword=0&subsubcategory=${subsubCategory?.name}`}
+                                                >
                                                   {subsubCategory?.name}
                                                 </Link>
                                               </li>
@@ -122,7 +129,7 @@ const Header = () => {
                                           )
                                         )}
                                       </li>
-                                    </>
+                                    </Fragment>
                                   )
                                 )}
                                 {/* products in mega menu */}
@@ -135,8 +142,13 @@ const Header = () => {
                                     )
                                     ?.slice(-2)
                                     ?.map((product) => (
-                                      <Fragment key={product._id}>
-                                        <Link to={"#"}>
+                                      <div
+                                        key={product._id}
+                                        onClick={() => handleMenuHover(0)}
+                                      >
+                                        <Link
+                                          to={`/product-details/${product._id}`}
+                                        >
                                           <center>
                                             <img
                                               src={
@@ -148,12 +160,18 @@ const Header = () => {
                                             <h2 className="pb-1 text-sm">
                                               {product?.name}
                                             </h2>
-                                            <p className="pb-1 text-[12px] text-gray-600">
-                                              KWM {product?.finalPrice}
+                                            <p className="pb-1 text-[12px] text-gray-600 uppercase">
+                                              {(
+                                                Number(product?.finalPrice) *
+                                                Number(
+                                                  selectedCurrency?.currency
+                                                )
+                                              ).toFixed(2)}{" "}
+                                              {selectedCurrency?.currencyCode}
                                             </p>
                                           </center>
                                         </Link>
-                                      </Fragment>
+                                      </div>
                                     ))}
                                 </div>
                               </ul>
@@ -176,8 +194,7 @@ const Header = () => {
             </button>
           </div>
           <div>
-            <Link href="/">
-              {" "}
+            <Link to="/">
               <img src="/lara-mint-logo.jpg" width={200} />
             </Link>
           </div>

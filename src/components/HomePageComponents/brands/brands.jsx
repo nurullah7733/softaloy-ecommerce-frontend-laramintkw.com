@@ -75,7 +75,7 @@ const Brands = () => {
             <div className={`grid-cols-6  gap-10 lg:hidden grid   `}>
               {brands?.brands?.map((item, idx) => (
                 <div key={idx}>
-                  <Link href="#" className="w-[100px]">
+                  <Link to="#" className="w-[100px]">
                     <img
                       src={item?.img[0]?.secure_url}
                       className="w-[100px]  border brand_logo_shadow h-auto"

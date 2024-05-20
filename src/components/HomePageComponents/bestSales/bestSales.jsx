@@ -11,7 +11,7 @@ const BestSales = () => {
 
   useEffect(() => {
     (async () => {
-      await getBestSalesRequest();
+      await getBestSalesRequest("1", "4", "0");
     })();
   }, []);
 
@@ -32,7 +32,7 @@ const BestSales = () => {
                     <Fragment key={item?._id}>
                       <Product
                         img={item?.img?.slice(-1)[0]?.secure_url}
-                        id
+                        id={item?._id}
                         productName={item?.name}
                         price={item?.finalPrice}
                       />
@@ -41,7 +41,10 @@ const BestSales = () => {
                 </div>
               </div>
               <div className="flex justify-center mt-20">
-                <Button link="#" text="view all products" />
+                <Button
+                  link={`/best-sales-products`}
+                  text="view all products"
+                />
               </div>
             </>
           ) : (
