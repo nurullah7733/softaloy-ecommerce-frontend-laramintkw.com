@@ -37,6 +37,7 @@ const Header = () => {
   const selectedCurrency = useSelector(
     (state) => state.multipleCurrency.selectedCurrency
   );
+  const addToCartsProducts = useSelector((state) => state.addToCarts.products);
 
   const handleMenuHover = (index) => {
     setIsMegaMenuOpen(index !== 0 ? index : 0);
@@ -184,7 +185,7 @@ const Header = () => {
               </div>
             ))}
           </div>
-          {/* Mobile Hamburger */}
+          {/*  Hamburger */}
           <div className="xl:block hidden ">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -213,9 +214,11 @@ const Header = () => {
               onClick={() => setIsCartSidebarOpen(!isCartSidebarOpen)}
               className="relative cursor-pointer"
             >
-              <div className="absolute bg-black w-4 h-4 left-4 text-[10px] rounded-full flex justify-center items-center text-white">
-                4
-              </div>
+              {addToCartsProducts?.length > 0 && (
+                <div className="absolute bg-black w-4 h-4 left-4 text-[10px] rounded-full flex justify-center items-center text-white">
+                  {addToCartsProducts?.length}
+                </div>
+              )}
               <BsBag size={25} />
             </div>
             {/* country dropdown */}

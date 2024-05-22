@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { FaFacebookF, FaTwitter, FaPinterest } from "react-icons/fa";
 import Button from "../../components/common/button";
 import ButtonProductsIncreaseAndDecrease from "../../components/common/buttonPrdouctsIncreaseAndDecrease";
@@ -7,6 +7,9 @@ import NoProductsFound from "../common/noProductsFound";
 import parse from "html-react-parser";
 import { getRelatedProductsRequest } from "../../APIRequest/productsApi";
 import LoadingPrductDetailsPage from "../common/loading/LoadingProductDetailsPage";
+import store from "../../../redux/store";
+import { setAddToCart } from "../../../redux/features/addToCartSlice/addToCartSlice";
+import { AddTocartButton, AddedTocartButton } from "../common/cartButton";
 
 const ProductDetails = () => {
   const [selectionDescriptionTab, setSelectionDescriptionTab] =
@@ -16,6 +19,17 @@ const ProductDetails = () => {
   );
   const { loading, productDetails } = useSelector(
     (state) => state.productDetails
+  );
+  const addTocartProducts = useSelector((state) => state.addToCarts.products);
+
+  const handleAddToCart = () => {
+    const product = { ...productDetails[0], customerChoiceProductQuantity: 1 };
+    store.dispatch(setAddToCart(product));
+  };
+
+  // conditionally rendering cart button and product order quantity
+  let exitsProducts = addTocartProducts?.find(
+    (prod) => prod?._id === productDetails[0]?._id
   );
 
   useEffect(() => {
@@ -158,9 +172,32 @@ const ProductDetails = () => {
                 {/* add to cart buttons */}
                 <div>
                   <div className="py-5">
-                    <ButtonProductsIncreaseAndDecrease />
+                    <ButtonProductsIncreaseAndDecrease
+                      productId={productDetails[0]?._id}
+                      customerChoiceProductQuantity={
+                        exitsProducts === undefined
+                          ? 1
+                          : exitsProducts?.customerChoiceProductQuantity
+                      }
+                      width="140px"
+                      height="45px"
+                    />
                   </div>
-                  <Button link="/cart" text="Add to cart" />
+                  <div>
+                    {productDetails[0]?.quantity > 0 ? (
+                      <>
+                        {exitsProducts === undefined ? (
+                          <div onClick={handleAddToCart}>
+                            <AddTocartButton text="Add to cart" />
+                          </div>
+                        ) : (
+                          <AddedTocartButton text="Added to cart" />
+                        )}
+                      </>
+                    ) : (
+                      <AddTocartButton text="Out of stock" />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

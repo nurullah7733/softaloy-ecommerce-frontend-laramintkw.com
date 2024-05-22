@@ -2,21 +2,40 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 import { FiMinus } from "react-icons/fi";
+import store from "../../../redux/store";
+import {
+  decreaseQuantity,
+  increaseQuantity,
+} from "../../../redux/features/addToCartSlice/addToCartSlice";
 
-const ButtonProductsIncreaseAndDecrease = ({ link, text }) => {
+const ButtonProductsIncreaseAndDecrease = ({
+  productId,
+  customerChoiceProductQuantity,
+  width = "140px",
+  height = "40px",
+}) => {
   return (
     <div>
-      <Link to={link}>
-        <button className=" border flex items-center justify-between p-4  w-[140px] h-[45px]">
-          <span className="text-lg font-light text-gray-600">
-            <FiPlus />
-          </span>
-          <span className="text-lg font-light text-gray-600">{12}</span>
-          <span className="text-lg font-light text-gray-600">
-            <FiMinus />
-          </span>
-        </button>
-      </Link>
+      <button
+        className={`border flex items-center justify-between p-4   `}
+        style={{ width: width, height: height }}
+      >
+        <span
+          className="text-lg font-light text-gray-600"
+          onClick={() => store.dispatch(increaseQuantity(productId))}
+        >
+          <FiPlus />
+        </span>
+        <span className="text-lg font-light text-gray-600">
+          {customerChoiceProductQuantity}
+        </span>
+        <span
+          className="text-lg font-light text-gray-600"
+          onClick={() => store.dispatch(decreaseQuantity(productId))}
+        >
+          <FiMinus />
+        </span>
+      </button>
     </div>
   );
 };

@@ -16,7 +16,6 @@ const ProductDetailsPage = () => {
   return (
     <div>
       <ProductDetails />
-
       <YouMayAlsoLike relatedProductsFilterWithoutMainProductById={id} />
     </div>
   );

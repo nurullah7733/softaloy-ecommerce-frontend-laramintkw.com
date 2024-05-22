@@ -10,13 +10,30 @@ import {
   setAllProducts,
   setTotal,
 } from "../../../redux/features/searchProductsSlice/searchProductsSlice";
+import { useLocation, useNavigate } from "react-router-dom";
+import Pagination from "../../components/common/pagination";
+
+const useQuery = () => {
+  const location = useLocation();
+  return new URLSearchParams(location.search);
+};
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
-
   const { loading, total, products } = useSelector(
     (state) => state.searchProducts
   );
+  const query = useQuery();
+  const navigate = useNavigate();
+
+  // its for pagination
+  const perPage = parseInt(query.get("perPage")) || 30;
+  const pageNo = parseInt(query.get("pageNo")) || 1;
+
+  const handlePageClick = async ({ selected }) => {
+    query.set("pageNo", selected + 1);
+    navigate({ search: query.toString() });
+  };
 
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
@@ -25,20 +42,29 @@ const SearchPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (searchTerm !== "0" && searchTerm !== "") {
+      query.set("pageNo", pageNo);
+      query.set("perPage", perPage);
+      query.set("searchKeyword", searchTerm);
+      navigate({ search: query.toString() });
       await getSearchProductsRequest(
-        `pageNo=1&perPage=3000&searchKeyword=${searchTerm}`
+        `pageNo=${pageNo}&perPage=${perPage}&searchKeyword=${searchTerm}`
       );
     }
   };
-
+  // when search term is empty it
   useEffect(() => {
     if (searchTerm === "") {
       store.dispatch(setLoading(false));
       store.dispatch(setAllProducts([]));
       store.dispatch(setTotal(0));
+      query.delete("searchKeyword");
+      query.delete("pageNo");
+      query.delete("perPage");
+      navigate({ search: query.toString() });
     }
   }, [searchTerm]);
 
+  // when search is done
   useEffect(() => {
     return () => {
       store.dispatch(setLoading(false));
@@ -46,6 +72,16 @@ const SearchPage = () => {
       store.dispatch(setTotal(0));
     };
   }, []);
+
+  // when page cahnge to load new products
+  useEffect(() => {
+    (async () => {
+      if (searchTerm === "") return;
+      await getSearchProductsRequest(
+        `pageNo=${pageNo}&perPage=${perPage}&searchKeyword=${searchTerm}`
+      );
+    })();
+  }, [pageNo]);
 
   return (
     <div className="max-w-5xl lg:w-full px-4 py-10 mx-auto">
@@ -86,6 +122,11 @@ const SearchPage = () => {
                   </Fragment>
                 ))}
               </div>
+              <Pagination
+                total={total / perPage}
+                handlePageClick={handlePageClick}
+                pageNo={pageNo}
+              />
             </>
           ) : (
             <></>

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
 
-const Pagination = ({ total, handlePageClick }) => {
+const Pagination = ({ total, pageNo, handlePageClick }) => {
   return (
     <div>
       <ReactPaginate
@@ -20,8 +20,9 @@ const Pagination = ({ total, handlePageClick }) => {
         pageRangeDisplayed={5}
         containerClassName="flex justify-center mt-4"
         activeClassName="bg-gray-200 text-white"
-        pageCount={total}
+        pageCount={Math.ceil(total)}
         onPageChange={handlePageClick}
+        forcePage={pageNo - 1}
       />
     </div>
   );

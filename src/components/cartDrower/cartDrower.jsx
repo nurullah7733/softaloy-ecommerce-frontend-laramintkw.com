@@ -5,10 +5,19 @@ import "react-modern-drawer/dist/index.css";
 import Button from "../common/button";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { useWindowSize } from "../../../utils/windowSize/useWindowSize";
-
-const arr = Array.from(Array(4).keys());
+import { useSelector } from "react-redux";
+import ButtonProductsIncreaseAndDecrease from "../common/buttonPrdouctsIncreaseAndDecrease";
+import store from "../../../redux/store";
+import { removeProductFromCarts } from "../../../redux/features/addToCartSlice/addToCartSlice";
 
 const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
+  const { allProductsSubTotal, products } = useSelector(
+    (state) => state.addToCarts
+  );
+
+  const selectedCurrency = useSelector(
+    (state) => state.multipleCurrency.selectedCurrency
+  );
   return (
     <>
       <Drawer
@@ -21,7 +30,7 @@ const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
         <div className="flex !justify-between flex-col h-full">
           {/* header */}
           <div className="flex justify-between items-center p-6 border-b ">
-            <h1 className="text-2xl">Cart</h1>
+            <h1 className="text-2xl">Cart {products?.length > 0 && "(1)"}</h1>
             <MdOutlineClose
               className="cursor-pointer"
               onClick={handleCartSidebarClose}
@@ -30,37 +39,48 @@ const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
           </div>
           {/* content */}
           <div className="px-6 pt-10 pb-5 overflow-x-auto  ">
-            {arr.map((item, index) => (
-              <Fragment key={index}>
-                <div className="flex  pb-5">
+            {products?.map((product) => (
+              <Fragment key={product?._id}>
+                <div className="flex pb-5">
                   <div className="w-1/2">
-                    <img src={`/products/${index + 1}.webp`} alt="" />
+                    <img
+                      src={product?.img?.slice(-1)[0]?.secure_url}
+                      alt={product?.name}
+                    />
                   </div>
                   <div>
                     <div>
                       <h3 className="text-[12px] uppercase pb-2">
-                        TRICOVEL ANTI DANDRUFF HA...
+                        {product?.name.length > 25
+                          ? product?.name.slice(0, 25) + "..."
+                          : product?.name}
                       </h3>
                       <p className="text-[11px] uppercase">
-                        11.550 KWD{" "}
+                        {(
+                          Number(product?.finalPrice) *
+                          Number(selectedCurrency?.currency)
+                        ).toFixed(2)}{" "}
+                        {selectedCurrency?.currencyCode}
                         <span className="line-through pl-2">15.020 KWD</span>
                       </p>
                     </div>
                     <div className="flex justify-between items-center pt-5 gap-2">
                       <div>
-                        <button className=" border flex items-center justify-between p-4  w-[100px] h-[40px]">
-                          <span className="text-sm font-light text-gray-600">
-                            <FiPlus />
-                          </span>
-                          <span className="text-sm font-light text-gray-600">
-                            {12}
-                          </span>
-                          <span className="text-sm font-light text-gray-600">
-                            <FiMinus />
-                          </span>
-                        </button>
+                        <ButtonProductsIncreaseAndDecrease
+                          productId={product?._id}
+                          customerChoiceProductQuantity={
+                            product?.customerChoiceProductQuantity
+                          }
+                          width={100}
+                          height={40}
+                        />
                       </div>
-                      <p className="text-[11px] underline uppercase  ">
+                      <p
+                        className="text-[11px] underline uppercase cursor-pointer "
+                        onClick={() =>
+                          store.dispatch(removeProductFromCarts(product?._id))
+                        }
+                      >
                         Remove
                       </p>
                     </div>
@@ -76,7 +96,14 @@ const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
               Shipping & taxes calculated at checkout
             </p>
             <div onClick={handleCartSidebarClose}>
-              <Button text={`Checkout ${500} kwd`} link="/checkout" />
+              <Button
+                text={`Checkout   ${(
+                  Number(allProductsSubTotal) *
+                  Number(selectedCurrency?.currency)
+                ).toFixed(2)} 
+                        ${selectedCurrency?.currencyCode}`}
+                link="/checkout"
+              />
             </div>
           </div>
         </div>

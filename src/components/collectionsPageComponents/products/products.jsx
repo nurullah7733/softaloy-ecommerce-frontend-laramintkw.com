@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Product from "../../common/product";
 import LoadingCollectionPageProducts from "./LoadingCollectionsPageProducts";
 import { useSelector } from "react-redux";
@@ -7,7 +7,8 @@ import Pagination from "../../common/pagination";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
+  const location = useLocation();
+  return new URLSearchParams(location.search);
 };
 
 const Products = () => {
@@ -18,12 +19,12 @@ const Products = () => {
 
   const query = useQuery();
   // its for pagination
-  const perPage = query.get("perPage") || 30;
+  const perPage = parseInt(query.get("perPage")) || 30;
+  const pageNo = parseInt(query.get("pageNo")) || 1;
 
   const handlePageClick = ({ selected }) => {
     query.set("pageNo", selected + 1);
     navigate({ search: query.toString() });
-    window.scrollTo(0, 0);
   };
 
   return (
@@ -51,6 +52,7 @@ const Products = () => {
                   <Pagination
                     total={total / perPage}
                     handlePageClick={handlePageClick}
+                    pageNo={pageNo}
                   />
                 </center>
               </>

@@ -12,6 +12,7 @@ import relatedProductsSlice from "./features/relatedProductsSlice/relatedProduct
 import allProductsSlice from "./features/allProductsSlice/allProductsSlice";
 import subSubCategoriesSlice from "./features/subSubCategorySlice/subSubCategorySlice";
 import searchProductsSlice from "./features/searchProductsSlice/searchProductsSlice";
+import addToCartProductsSlice from "./features/addToCartSlice/addToCartSlice";
 
 export default configureStore({
   reducer: {
@@ -28,5 +29,6 @@ export default configureStore({
     allProducts: allProductsSlice,
     subSubCategories: subSubCategoriesSlice,
     searchProducts: searchProductsSlice,
+    addToCarts: addToCartProductsSlice,
   },
 });
