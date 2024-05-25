@@ -5,7 +5,7 @@ const arr = Array.from(Array(4).keys());
 
 const Summary = () => {
   return (
-    <div className="py-10 px-6 bg-gray-100 h-full  ">
+    <div className="py-10 px-6 bg-gray-50 h-full  ">
       <div>
         {/* products details */}
         {arr.map((item, index) => (
@@ -43,7 +43,7 @@ const Summary = () => {
               <input
                 type="submit"
                 value="Apply"
-                className="bg-gray-300 px-5 py-3 h-[46px] border border-gray-500 rounded-md  cursor-pointer"
+                className="bg-gray-50 px-5 py-3 h-[46px] border border-gray-500 rounded-md  cursor-pointer flex items-center justify-center"
               />
             </div>
           </form>

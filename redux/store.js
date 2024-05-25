@@ -13,6 +13,7 @@ import allProductsSlice from "./features/allProductsSlice/allProductsSlice";
 import subSubCategoriesSlice from "./features/subSubCategorySlice/subSubCategorySlice";
 import searchProductsSlice from "./features/searchProductsSlice/searchProductsSlice";
 import addToCartProductsSlice from "./features/addToCartSlice/addToCartSlice";
+import settingsSlice from "./features/settingsSlice/settingsSlice";
 
 export default configureStore({
   reducer: {
@@ -30,5 +31,6 @@ export default configureStore({
     subSubCategories: subSubCategoriesSlice,
     searchProducts: searchProductsSlice,
     addToCarts: addToCartProductsSlice,
+    settings: settingsSlice,
   },
 });
