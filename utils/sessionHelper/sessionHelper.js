@@ -78,6 +78,7 @@ class SessionHelper {
   sessionDestroy() {
     window.localStorage.removeItem("token");
     window.localStorage.removeItem("email");
+    window.localStorage.removeItem("userData");
     window.localStorage.removeItem("otp");
     window.location.href = "/";
   }
