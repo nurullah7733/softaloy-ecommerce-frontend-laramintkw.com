@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { Button, Tooltip } from "flowbite-react";
+import { useSelector } from "react-redux";
+import {
+  setShippingAddressFormValue,
+  setShippingAddressFormValueDiffentBillingAddress,
+} from "../../../redux/features/shippingAddressFormSlice/shippingAddressFormSlice";
+import store from "../../../redux/store";
 
 const BillingAddress = () => {
   const [expanded, setExpanded] = useState(3);
   const Expanded = (value) => {
     setExpanded(value);
   };
+
+  const formValue = useSelector((state) => state.shippingAddressForm.formValue);
   return (
     <div className="pt-10">
       <div>
@@ -22,6 +30,16 @@ const BillingAddress = () => {
           >
             <div className="cursor-pointer flex items-center w-full ">
               <input
+                onChange={(e) =>
+                  store.dispatch(
+                    setShippingAddressFormValue({
+                      Name: "billingMethod",
+                      Value: e.target.value,
+                    })
+                  )
+                }
+                defaultValue={formValue.billingMethod}
+                value={"sameAsShippingAddress"}
                 type="radio"
                 id="same_as_shipping_address"
                 name="same_as_shipping_address"
@@ -29,7 +47,15 @@ const BillingAddress = () => {
                 className="mr-2 w-4 h-4 text-gray-600 bg-gray-100 border-gray-300  focus:ring-0"
               />
               <label
-                onClick={() => Expanded(3)}
+                onClick={() => {
+                  Expanded(3),
+                    store.dispatch(
+                      setShippingAddressFormValue({
+                        Name: "billingMethod",
+                        Value: "sameAsShippingAddress",
+                      })
+                    );
+                }}
                 className="cursor-pointer select-none block w-full"
                 htmlFor="same_as_shipping_address"
               >
@@ -69,6 +95,16 @@ const BillingAddress = () => {
           >
             <div className="cursor-pointer flex items-center w-full ">
               <input
+                onChange={(e) =>
+                  store.dispatch(
+                    setShippingAddressFormValue({
+                      Name: "billingMethod",
+                      Value: e.target.value,
+                    })
+                  )
+                }
+                defaultValue={formValue.billingMethod}
+                value={"differentBillingAddress"}
                 type="radio"
                 id="use_different_billing_address"
                 name="use_different_billing_address"
@@ -76,7 +112,15 @@ const BillingAddress = () => {
                 className="mr-2 w-4 h-4 text-gray-600 bg-gray-100 border-gray-300  focus:ring-0"
               />
               <label
-                onClick={() => Expanded(4)}
+                onClick={() => {
+                  Expanded(4),
+                    store.dispatch(
+                      setShippingAddressFormValue({
+                        Name: "billingMethod",
+                        Value: "differentBillingAddress",
+                      })
+                    );
+                }}
                 className="cursor-pointer select-none block w-full"
                 htmlFor="use_different_billing_address"
               >
@@ -102,12 +146,21 @@ const BillingAddress = () => {
                 <div>
                   <div>
                     <label
-                      for="countries"
+                      htmlFor="countries"
                       className="block text-gray-600 mb-2 text-sm font-medium   dark:text-gray-400"
                     >
                       Select an country
                     </label>
                     <select
+                      onChange={(e) =>
+                        store.dispatch(
+                          setShippingAddressFormValueDiffentBillingAddress({
+                            Name: "country",
+                            Value: e.target.value,
+                          })
+                        )
+                      }
+                      value={formValue.billingAddress.country}
                       id="countries"
                       className="py-3 border  focus:border-black  text-sm rounded-md focus:ring-0 block w-full"
                     >
@@ -278,20 +331,47 @@ const BillingAddress = () => {
                       </option>
                     </select>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-1 gap-4 pt-2">
+                  <div className="grid grid-cols-2 lg:grid-cols-1 lg:gap-0 gap-4  pt-2">
                     <input
                       type="text"
-                      placeholder="Email or Phone number"
+                      placeholder="First Name"
                       className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+                      onChange={(e) =>
+                        store.dispatch(
+                          setShippingAddressFormValueDiffentBillingAddress({
+                            Name: "firstName",
+                            Value: e.target.value,
+                          })
+                        )
+                      }
+                      value={formValue.billingAddress.firstName}
                     />
                     <input
+                      onChange={(e) =>
+                        store.dispatch(
+                          setShippingAddressFormValueDiffentBillingAddress({
+                            Name: "lastName",
+                            Value: e.target.value,
+                          })
+                        )
+                      }
+                      value={formValue.billingAddress.lastName}
                       type="text"
-                      placeholder="Email or Phone number"
+                      placeholder="Last Name"
                       className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
                     />
                   </div>
                   <div className="">
                     <input
+                      onChange={(e) =>
+                        store.dispatch(
+                          setShippingAddressFormValueDiffentBillingAddress({
+                            Name: "address",
+                            Value: e.target.value,
+                          })
+                        )
+                      }
+                      value={formValue.billingAddress.address}
                       type="text"
                       placeholder="Address"
                       className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
@@ -302,20 +382,65 @@ const BillingAddress = () => {
                       type="text"
                       placeholder="Appartment, suite, etc. (optional)"
                       className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+                      onChange={(e) =>
+                        store.dispatch(
+                          setShippingAddressFormValueDiffentBillingAddress({
+                            Name: "apartment",
+                            Value: e.target.value,
+                          })
+                        )
+                      }
+                      value={formValue.billingAddress.apartment}
                     />
                   </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      placeholder="City"
-                      className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
-                    />
+                  <div className="grid grid-cols-2 lg:grid-cols-1 lg:gap-0 gap-4">
+                    <div className="">
+                      <input
+                        type="text"
+                        placeholder="City"
+                        className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+                        onChange={(e) =>
+                          store.dispatch(
+                            setShippingAddressFormValueDiffentBillingAddress({
+                              Name: "city",
+                              Value: e.target.value,
+                            })
+                          )
+                        }
+                        value={formValue.billingAddress.city}
+                      />
+                    </div>
+                    <div className="">
+                      <input
+                        type="text"
+                        placeholder="Postal code"
+                        className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+                        onChange={(e) =>
+                          store.dispatch(
+                            setShippingAddressFormValueDiffentBillingAddress({
+                              Name: "postalCode",
+                              Value: e.target.value,
+                            })
+                          )
+                        }
+                        value={formValue.billingAddress.postalCode}
+                      />
+                    </div>
                   </div>
                   <div className="">
                     <input
                       type="text"
                       placeholder="Phone"
                       className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+                      onChange={(e) =>
+                        store.dispatch(
+                          setShippingAddressFormValueDiffentBillingAddress({
+                            Name: "phone",
+                            Value: e.target.value,
+                          })
+                        )
+                      }
+                      value={formValue.billingAddress.phone}
                     />
                   </div>
                 </div>

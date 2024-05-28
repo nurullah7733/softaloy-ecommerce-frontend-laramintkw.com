@@ -16,6 +16,9 @@ import { getMultipleCurrencyRequest } from "../../../APIRequest/multipleCurrency
 import CartDrowser from "../../cartDrower/cartDrower";
 import { getCategoryRequest } from "../../../APIRequest/getCategoryApi";
 import { getMegaMenuProductsRequest } from "../../../APIRequest/productsApi";
+import PriceConverterByCountry from "../../../../utils/priceConverterByCountry/priceConverterByCountry";
+import { getToken } from "../../../../utils/sessionHelper/sessionHelper";
+import { logoutRequest } from "../../../APIRequest/userApi";
 
 const Header = () => {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(0);
@@ -23,6 +26,7 @@ const Header = () => {
   const [searchbarOpen, setSearchbarOpen] = useState(false);
   const [multipleCurrency, setMultipleCurrency] = useState(false);
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
+  const [userOrderDropdown, setUserOrderDropdown] = useState(false);
 
   const [
     ignoreBlankMegaMenuWhenMegaMenuIsEmpty,
@@ -34,9 +38,7 @@ const Header = () => {
   const megaMenuProducts = useSelector(
     (state) => state.megaMenuProducts?.products
   );
-  const selectedCurrency = useSelector(
-    (state) => state.multipleCurrency.selectedCurrency
-  );
+
   const addToCartsProducts = useSelector((state) => state.addToCarts.products);
 
   const handleMenuHover = (index) => {
@@ -48,6 +50,11 @@ const Header = () => {
   };
 
   const handleCartSidebarClose = () => setIsCartSidebarOpen(!isCartSidebarOpen);
+  const token = getToken();
+
+  const handleLogout = async () => {
+    await logoutRequest();
+  };
 
   useEffect(() => {
     (async () => {
@@ -162,13 +169,9 @@ const Header = () => {
                                               {product?.name}
                                             </h2>
                                             <p className="pb-1 text-[12px] text-gray-600 uppercase">
-                                              {(
-                                                Number(product?.finalPrice) *
-                                                Number(
-                                                  selectedCurrency?.currency
-                                                )
-                                              ).toFixed(2)}{" "}
-                                              {selectedCurrency?.currencyCode}
+                                              <PriceConverterByCountry
+                                                price={product?.finalPrice}
+                                              />
                                             </p>
                                           </center>
                                         </Link>
@@ -199,9 +202,48 @@ const Header = () => {
               <img src="/lara-mint-logo.jpg" width={200} />
             </Link>
           </div>
-          <div className="flex gap-x-5">
+          <div className="flex gap-x-5 xxs:gap-1">
             <div>
-              <LuUser2 size={25} className="cursor-pointer" />
+              {token?.length > 0 && token ? (
+                <div
+                  className="relative"
+                  onMouseEnter={() => setUserOrderDropdown(true)}
+                  onMouseLeave={() => setUserOrderDropdown(false)}
+                >
+                  <LuUser2 size={25} className="cursor-pointer" />
+                  {userOrderDropdown && (
+                    <div
+                      onMouseEnter={() => setUserOrderDropdown(true)}
+                      className="z-10 absolute h-auto -right-20 top-6 p-2 !bg-white rounded-lg shadow w-40 dark:bg-gray-700"
+                    >
+                      <ul className="list-none  ">
+                        <li className="p-2 hover:bg-gray-100">
+                          <Link to="/running-orders">Running Orders</Link>
+                        </li>
+                        <li className="p-2 hover:bg-gray-100">
+                          <Link to="/delivery-orders">Delivery Orders</Link>
+                        </li>
+                        <li className="p-2 hover:bg-gray-100">
+                          <Link to="/return-orders">Return Orders</Link>
+                        </li>
+                        <li className="p-2 hover:bg-gray-100">
+                          <Link to="/cancel-orders">Cancel Orders</Link>
+                        </li>
+                        <li
+                          className="p-2 hover:bg-gray-100 cursor-pointer"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link to="/login">
+                  <LuUser2 size={25} className="cursor-pointer" />
+                </Link>
+              )}
             </div>
             <div>
               <GrSearch
@@ -242,7 +284,7 @@ const Header = () => {
                         ?.secure_url
                     }
                     className={`${
-                      useWindowSize().width > 768 ? "w-6" : "w-20"
+                      useWindowSize().width > 490 ? "w-6" : "w-6"
                     } h-6`}
                   />
                 )}

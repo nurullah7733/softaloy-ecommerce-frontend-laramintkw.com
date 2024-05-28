@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
-import { Button, Tooltip } from "flowbite-react";
+import { Tooltip } from "flowbite-react";
+import { setShippingAddressFormValue } from "../../../redux/features/shippingAddressFormSlice/shippingAddressFormSlice";
+import store from "../../../redux/store";
+import { useSelector } from "react-redux";
 
 const Payment = () => {
   const [expanded, setExpanded] = useState(1);
   const Expanded = (value) => {
     setExpanded(value);
   };
+
+  const formValue = useSelector((state) => state.shippingAddressForm.formValue);
+
   return (
     <div className="pt-10">
       <div>
@@ -25,6 +31,15 @@ const Payment = () => {
           >
             <div className="cursor-pointer flex items-center w-full ">
               <input
+                onChange={(e) =>
+                  store.dispatch(
+                    setShippingAddressFormValue({
+                      Name: "paymentMethod",
+                      Value: e.target.value,
+                    })
+                  )
+                }
+                value={formValue.paymentMethod}
                 type="radio"
                 id="myFatoorah"
                 name="paymentMethod"
@@ -32,7 +47,15 @@ const Payment = () => {
                 className="mr-2 w-4 h-4 text-gray-600 bg-gray-100 border-gray-300  focus:ring-0"
               />
               <label
-                onClick={() => Expanded(1)}
+                onClick={() => {
+                  Expanded(1),
+                    store.dispatch(
+                      setShippingAddressFormValue({
+                        Name: "paymentMethod",
+                        Value: "myFatoorah",
+                      })
+                    );
+                }}
                 className="cursor-pointer select-none block w-full"
                 htmlFor="myFatoorah"
               >
@@ -70,13 +93,13 @@ const Payment = () => {
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="-270.8 371 102 52"
-                    class="eHdoK"
+                    className="eHdoK"
                   >
                     <path
                       fill="none"
                       stroke="currentColor"
-                      stroke-miterlimit="10"
-                      stroke-width="2"
+                      strokeMiterlimit="10"
+                      strokeWidth="2"
                       d="M-182 404v16.8c0 .7-.4 1.2-1 1.2h-75.7c-.7 0-1.2-.6-1.2-1.2v-47.6c0-.7.6-1.2 1.2-1.2h75.7c.7 0 1 .6 1 1.2V395m-78-14h78m-17 18h27m-3.9-4.6 4.5 4.6-4.5 4.6"
                     ></path>
                     <circle
@@ -116,6 +139,16 @@ const Payment = () => {
           >
             <div className="cursor-pointer flex items-center w-full ">
               <input
+                onChange={(e) =>
+                  store.dispatch(
+                    setShippingAddressFormValue({
+                      Name: "paymentMethod",
+                      Value: e.target.value,
+                    })
+                  )
+                }
+                value={formValue.paymentMethod}
+                defaultValue={"cashOnDelivery"}
                 type="radio"
                 id="Cash_on_Delivery"
                 name="paymentMethod"
@@ -123,7 +156,15 @@ const Payment = () => {
                 className="mr-2 w-4 h-4 text-gray-600 bg-gray-100 border-gray-300  focus:ring-0"
               />
               <label
-                onClick={() => Expanded(2)}
+                onClick={() => {
+                  Expanded(2),
+                    store.dispatch(
+                      setShippingAddressFormValue({
+                        Name: "paymentMethod",
+                        Value: "cashOnDelivery",
+                      })
+                    );
+                }}
                 className="cursor-pointer select-none block w-full"
                 htmlFor="Cash_on_Delivery"
               >

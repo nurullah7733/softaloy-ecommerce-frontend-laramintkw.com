@@ -1,6 +1,10 @@
 import React from "react";
+import store from "../../../redux/store";
+import { setShippingAddressFormValue } from "../../../redux/features/shippingAddressFormSlice/shippingAddressFormSlice";
+import { useSelector } from "react-redux";
 
 const Delivery = () => {
+  const { formValue } = useSelector((state) => state.shippingAddressForm);
   return (
     <div className="pt-10">
       <h2 className="font-semibold text-xl">Delivery</h2>
@@ -8,12 +12,21 @@ const Delivery = () => {
       <div>
         <div>
           <label
-            for="countries"
+            htmlFor="countries"
             className="block text-gray-600 mb-2 text-sm font-medium   dark:text-gray-400"
           >
             Select an country
           </label>
           <select
+            onChange={(e) =>
+              store.dispatch(
+                setShippingAddressFormValue({
+                  Name: "country",
+                  Value: e.target.value,
+                })
+              )
+            }
+            value={formValue.country}
             id="countries"
             className="py-3 border  focus:border-black  text-sm rounded-md focus:ring-0 block w-full"
           >
@@ -172,16 +185,34 @@ const Delivery = () => {
             </option>
           </select>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-1 gap-4 pt-2">
+        <div className="grid grid-cols-2 lg:grid-cols-1 lg:gap-0 gap-4 pt-2">
           <input
             type="text"
-            placeholder="Email or Phone number"
+            placeholder="First Name (optional)"
             className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+            onChange={(e) =>
+              store.dispatch(
+                setShippingAddressFormValue({
+                  Name: "firstName",
+                  Value: e.target.value,
+                })
+              )
+            }
+            value={formValue.firstName}
           />
           <input
             type="text"
-            placeholder="Email or Phone number"
+            placeholder="Last Name"
             className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+            onChange={(e) =>
+              store.dispatch(
+                setShippingAddressFormValue({
+                  Name: "lastName",
+                  Value: e.target.value,
+                })
+              )
+            }
+            value={formValue.lastName}
           />
         </div>
         <div className="">
@@ -189,6 +220,15 @@ const Delivery = () => {
             type="text"
             placeholder="Address"
             className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+            onChange={(e) =>
+              store.dispatch(
+                setShippingAddressFormValue({
+                  Name: "address",
+                  Value: e.target.value,
+                })
+              )
+            }
+            value={formValue.address}
           />
         </div>
         <div className="">
@@ -196,20 +236,65 @@ const Delivery = () => {
             type="text"
             placeholder="Appartment, suite, etc. (optional)"
             className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+            onChange={(e) =>
+              store.dispatch(
+                setShippingAddressFormValue({
+                  Name: "apartment",
+                  Value: e.target.value,
+                })
+              )
+            }
+            value={formValue.apartment}
           />
         </div>
-        <div className="">
-          <input
-            type="text"
-            placeholder="City"
-            className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
-          />
+        <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-0">
+          <div className="">
+            <input
+              type="text"
+              placeholder="City"
+              className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+              onChange={(e) =>
+                store.dispatch(
+                  setShippingAddressFormValue({
+                    Name: "city",
+                    Value: e.target.value,
+                  })
+                )
+              }
+              value={formValue.city}
+            />
+          </div>
+          <div className="">
+            <input
+              type="text"
+              placeholder="Postal code"
+              className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+              onChange={(e) =>
+                store.dispatch(
+                  setShippingAddressFormValue({
+                    Name: "postalCode",
+                    Value: e.target.value,
+                  })
+                )
+              }
+              value={formValue.postalCode}
+            />
+          </div>
         </div>
         <div className="">
           <input
             type="text"
             placeholder="Phone"
             className="border w-full rounded focus:ring-0 focus:outline-none focus:border-black my-2 text-sm py-3"
+            onChange={(e) =>
+              store.dispatch(
+                setShippingAddressFormValue({
+                  Name: "phone",
+                  Value: e.target.value,
+                })
+              )
+            }
+            value={formValue.phone}
           />
         </div>
       </div>

@@ -14,6 +14,13 @@ class SessionHelper {
   getTotalProductsPriceInLocalStorage() {
     return JSON.parse(window.localStorage.getItem("totalProductsPrice"));
   }
+  setSubTotalProductsPriceInLocalStorage(value) {
+    window.localStorage.setItem("subTotalProductsPrice", JSON.stringify(value));
+  }
+
+  getSubTotalProductsPriceInLocalStorage() {
+    return JSON.parse(window.localStorage.getItem("subTotalProductsPrice"));
+  }
 
   setUserTotalProductsPriceWithoutDiscountInLocalStorage(value) {
     window.localStorage.setItem(
@@ -69,14 +76,10 @@ class SessionHelper {
     }
   }
   sessionDestroy() {
-    if (typeof window !== "undefined") {
-      window.localStorage.removeItem("userData2");
-      window.localStorage.removeItem("token");
-      window.localStorage.removeItem("email");
-      window.localStorage.removeItem("otp");
-      window.location.href = "/";
-      window.localStorage.clear();
-    }
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("email");
+    window.localStorage.removeItem("otp");
+    window.location.href = "/";
   }
 }
 export const {
@@ -89,7 +92,8 @@ export const {
   getOtp,
   setOtp,
   sessionDestroy,
-
+  getSubTotalProductsPriceInLocalStorage,
+  setSubTotalProductsPriceInLocalStorage,
   setAddToCartInLocalStorage,
   getAddToCartInLocalStorage,
   getTotalProductsPriceInLocalStorage,

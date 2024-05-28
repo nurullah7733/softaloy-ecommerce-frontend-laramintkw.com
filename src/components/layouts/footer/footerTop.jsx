@@ -7,7 +7,23 @@ import {
   FaTwitter,
   FaPinterest,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
 const FooterTop = () => {
+  const socialLinks = useSelector((state) => state.settings.socialLinks);
+
+  const facebook = socialLinks?.find(
+    (item) => item.name?.toLowerCase() === "facebook"
+  );
+  const instagram = socialLinks?.find(
+    (item) => item.name?.toLowerCase() === "instagram"
+  );
+  const twitter = socialLinks?.find(
+    (item) => item.name?.toLowerCase() === "twitter" || "x"
+  );
+  const pinterest = socialLinks?.find(
+    (item) => item.name?.toLowerCase() === "pinterest"
+  );
+
   return (
     <div className="border-t-[10px] py-10 px-32 lg:px-4 border-b">
       <div className="grid grid-cols-4 lg:grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-8 items-center ">
@@ -33,26 +49,34 @@ const FooterTop = () => {
         </div>
 
         <div className="flex items-center justify-center gap-2">
-          <div className="border p-2 rounded-full">
-            <a href="#">
-              <FaFacebookF className="text-gray-800" />
-            </a>
-          </div>
-          <div className="border p-2 rounded-full">
-            <a href="#">
-              <FaInstagram className="text-gray-800" />
-            </a>
-          </div>
-          <div className="border p-2 rounded-full">
-            <a href="#">
-              <FaTwitter className="text-gray-800" />
-            </a>
-          </div>
-          <div className="border p-2 rounded-full">
-            <a href="#">
-              <FaPinterest className="text-gray-800" />
-            </a>
-          </div>
+          {facebook && (
+            <div className="border p-2 rounded-full">
+              <a href={facebook?.socialLink} target="_blank">
+                <FaFacebookF className="text-gray-600" />
+              </a>
+            </div>
+          )}
+          {instagram && (
+            <div className="border p-2 rounded-full">
+              <a href={instagram?.socialLink} target="_blank">
+                <FaInstagram className="text-gray-600" />
+              </a>
+            </div>
+          )}
+          {twitter && (
+            <div className="border p-2 rounded-full">
+              <a href={twitter?.socialLink} target="_blank">
+                <FaTwitter className="text-gray-600" />
+              </a>
+            </div>
+          )}
+          {pinterest && (
+            <div className="border p-2 rounded-full">
+              <a href={pinterest?.socialLink} target="_blank">
+                <FaPinterest className="text-gray-600" />
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,12 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import PriceConverterByCountry from "../../../utils/priceConverterByCountry/priceConverterByCountry";
 
 const Product = ({ id, productName, price, img }) => {
-  const selectedCurrency = useSelector(
-    (state) => state.multipleCurrency.selectedCurrency
-  );
-
   return (
     <div className="text-center">
       <Link to={`/product-details/${id}`}>
@@ -15,8 +12,7 @@ const Product = ({ id, productName, price, img }) => {
           {productName}
         </h2>
         <h3 className="text-black uppercase text-[11px] mt-1">
-          {(Number(price) * Number(selectedCurrency?.currency)).toFixed(2)}{" "}
-          {selectedCurrency?.currencyCode}
+          <PriceConverterByCountry price={price} />
         </h3>
       </Link>
     </div>

@@ -3,7 +3,6 @@ import Drawer from "react-modern-drawer";
 import { MdOutlineClose } from "react-icons/md";
 import "react-modern-drawer/dist/index.css";
 import Button from "../common/button";
-import { FiMinus, FiPlus } from "react-icons/fi";
 import { useWindowSize } from "../../../utils/windowSize/useWindowSize";
 import { useSelector } from "react-redux";
 import ButtonProductsIncreaseAndDecrease from "../common/buttonPrdouctsIncreaseAndDecrease";
@@ -30,7 +29,9 @@ const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
         <div className="flex !justify-between flex-col h-full">
           {/* header */}
           <div className="flex justify-between items-center p-6 border-b ">
-            <h1 className="text-2xl">Cart {products?.length > 0 && "(1)"}</h1>
+            <h1 className="text-2xl">
+              Cart ({products?.length > 0 && products?.length})
+            </h1>
             <MdOutlineClose
               className="cursor-pointer"
               onClick={handleCartSidebarClose}
@@ -39,20 +40,21 @@ const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
           </div>
           {/* content */}
           <div className="px-6 pt-10 pb-5 overflow-x-auto  ">
-            {products?.map((product) => (
-              <Fragment key={product?._id}>
-                <div className="flex pb-5">
-                  <div className="w-1/2">
+            {products?.map((product, index) => (
+              <div key={index}>
+                <div className="flex pb-5 gap-3 justify-between">
+                  <div className="w-1/3">
                     <img
+                      className="w-full"
                       src={product?.img?.slice(-1)[0]?.secure_url}
                       alt={product?.name}
                     />
                   </div>
-                  <div>
+                  <div className="w-2/3">
                     <div>
                       <h3 className="text-[12px] uppercase pb-2">
-                        {product?.name.length > 25
-                          ? product?.name.slice(0, 25) + "..."
+                        {product?.name?.length > 25
+                          ? product?.name?.slice(0, 25) + "..."
                           : product?.name}
                       </h3>
                       <p className="text-[11px] uppercase">
@@ -85,8 +87,8 @@ const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
                       </p>
                     </div>
                   </div>
-                </div>{" "}
-              </Fragment>
+                </div>
+              </div>
             ))}
           </div>
           {/* footer */}

@@ -159,7 +159,7 @@ const FooterMiddle = () => {
             placeholder="Enter your email"
             onChange={(e) => setSubscribeEmail(e.target.value)}
             value={SubscribeEmail}
-            className="my-6 p-3  focus:outline-none focus:ring-0 focus:border-black w-full "
+            className="mt-6 mb-4 p-3  focus:outline-none focus:ring-0 focus:border-black w-full "
           />
 
           <div onClick={handleSubcriptionEmail}>

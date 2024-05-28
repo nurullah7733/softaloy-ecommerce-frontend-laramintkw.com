@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getPrivacyPolicyRequest } from "../../APIRequest/privacyPolicyApi";
+import parser from "html-react-parser";
 
 const PrivacyPolicyPage = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const data = await getPrivacyPolicyRequest();
+      setData(data);
+    })();
+  }, []);
+
   return (
     <div className="max-w-5xl lg:w-full px-4 py-10 mx-auto">
       <div>
@@ -8,7 +18,7 @@ const PrivacyPolicyPage = () => {
       </div>
       {/* contact inof */}
       <div className=" pt-10">
-        <h1 className="text-xl">Welcome</h1>
+        {data?.length > 0 && parser(data[0]?.privacyPolicy)}
       </div>
     </div>
   );

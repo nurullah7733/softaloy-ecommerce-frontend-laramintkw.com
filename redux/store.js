@@ -14,6 +14,7 @@ import subSubCategoriesSlice from "./features/subSubCategorySlice/subSubCategory
 import searchProductsSlice from "./features/searchProductsSlice/searchProductsSlice";
 import addToCartProductsSlice from "./features/addToCartSlice/addToCartSlice";
 import settingsSlice from "./features/settingsSlice/settingsSlice";
+import shippingAddressFormSlice from "./features/shippingAddressFormSlice/shippingAddressFormSlice";
 
 export default configureStore({
   reducer: {
@@ -32,5 +33,6 @@ export default configureStore({
     searchProducts: searchProductsSlice,
     addToCarts: addToCartProductsSlice,
     settings: settingsSlice,
+    shippingAddressForm: shippingAddressFormSlice,
   },
 });

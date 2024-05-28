@@ -19,6 +19,19 @@ import SignupPage from "./pages/signup/signup";
 import RefundPage from "./pages/refundPolicy/refundPolicy";
 import ScrollToTop from "../utils/scrollToTop/scrollToTop";
 import BestSalesPage from "./pages/bestSales/bestSales";
+import RunningOrders from "./pages/account/order/runningOrderPage";
+import DeliveryOrders from "./pages/account/order/devliveryOrderPage";
+import ReturnOrders from "./pages/account/order/returnOrderPage";
+import CancelOrders from "./pages/account/order/cancelOrderPage";
+import { getToken } from "../utils/sessionHelper/sessionHelper";
+import EmailPage from "./pages/forgetPassword/email";
+import VerifyOtp from "./pages/forgetPassword/verifyOtp";
+import CreateNewPassword from "./pages/forgetPassword/create-new-password";
+
+const ProtectedRoute = ({ children }) => {
+  const token = getToken();
+  return token ? children : <Navigate to="/login" />;
+};
 
 function App() {
   return (
@@ -52,6 +65,45 @@ function App() {
 
             <Route path="/login" element={<SigninPage />} />
             <Route path="/sign-up" element={<SignupPage />} />
+            <Route path="/forget-password" element={<EmailPage />} />
+            <Route path="/verify-otp" element={<VerifyOtp />} />
+            <Route
+              path="/create-new-password"
+              element={<CreateNewPassword />}
+            />
+
+            <Route
+              path="/running-orders"
+              element={
+                <ProtectedRoute>
+                  <RunningOrders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/delivery-orders"
+              element={
+                <ProtectedRoute>
+                  <DeliveryOrders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/return-orders"
+              element={
+                <ProtectedRoute>
+                  <ReturnOrders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cancel-orders"
+              element={
+                <ProtectedRoute>
+                  <CancelOrders />
+                </ProtectedRoute>
+              }
+            />
           </Route>
         </Routes>
       </BrowserRouter>
