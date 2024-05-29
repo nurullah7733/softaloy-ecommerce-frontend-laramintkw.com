@@ -14,6 +14,7 @@ import {
   successAlert,
 } from "../../../utils/notificationAlert/notificationAlert";
 import { createOrderRequest } from "../../APIRequest/orderApi";
+import { setAddToCartInLocalStorage } from "../../../utils/sessionHelper/sessionHelper";
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -186,6 +187,7 @@ const CheckoutPage = () => {
         successAlert(
           "Order Placed Successfully! Please check your email. Thank you"
         );
+        setAddToCartInLocalStorage([]);
         navigate("/");
       }
     } else {
@@ -197,6 +199,7 @@ const CheckoutPage = () => {
         successAlert(
           "Order Placed Successfully! Please check your email. Thank you"
         );
+        setAddToCartInLocalStorage([]);
         navigate("/");
       }
     }
