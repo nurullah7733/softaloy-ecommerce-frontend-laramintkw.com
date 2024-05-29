@@ -123,7 +123,7 @@ const CheckoutPage = () => {
     const orderDataWithShippingAddress = {
       allProducts: simplifiedProducts,
       "paymentIntent.paymentMethod": formValue.paymentMethod,
-      "paymentIntent.amount": allProductsSubTotal,
+      "paymentIntent.amount": totalPrice,
       voucherDiscount: couponDiscount,
       saveAmount: saveAmount,
       otherCost: otherCost,
@@ -147,7 +147,7 @@ const CheckoutPage = () => {
     const orderDataWithShippingAddressAndBillingAddress = {
       allProducts: simplifiedProducts,
       "paymentIntent.paymentMethod": formValue.paymentMethod,
-      "paymentIntent.amount": allProductsSubTotal,
+      "paymentIntent.amount": totalPrice,
       voucherDiscount: couponDiscount,
       saveAmount: saveAmount,
       otherCost: otherCost,
