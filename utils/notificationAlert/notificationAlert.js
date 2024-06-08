@@ -10,6 +10,16 @@ export const successAlert = (message) => {
   });
 };
 
+export const warningAlert = (message) => {
+  toast.error(message, {
+    style: {
+      border: "1px solid #713200",
+      padding: "16px",
+      color: "#713200",
+      backgroundColor: "yellow",
+    },
+  });
+};
 export const errorAlert = (message) => {
   toast.error(message, {
     style: { border: "1px solid #713200", padding: "16px", color: "#713200" },

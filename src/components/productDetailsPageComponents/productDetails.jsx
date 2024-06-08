@@ -10,6 +10,7 @@ import LoadingPrductDetailsPage from "../common/loading/LoadingProductDetailsPag
 import store from "../../../redux/store";
 import { setAddToCart } from "../../../redux/features/addToCartSlice/addToCartSlice";
 import { AddTocartButton, AddedTocartButton } from "../common/cartButton";
+import { setCartSidebarOpen } from "../../../redux/features/sidebarCartsOpen/sidebarCartsOpenSlice";
 
 const ProductDetails = () => {
   const [selectionDescriptionTab, setSelectionDescriptionTab] =
@@ -53,7 +54,7 @@ const ProductDetails = () => {
                   className="w-full"
                 />
               </div>
-              <div className="col-span-1 max-w-xl mx-auto lg:mt-5">
+              <div className="col-span-1   mx-auto w-full lg:mt-5">
                 <div className="border-b mb-6 md:text-center">
                   <h3 className="text-gray-600 uppercase">
                     {productDetails[0]?.name?.split(" ").slice(0, 2).join(" ")}
@@ -109,7 +110,7 @@ const ProductDetails = () => {
                             : ""
                         }  `}
                       >
-                        Features {productDetails[0]?.features?.length}
+                        Features
                       </button>
                       <button
                         disabled={productDetails[0]?.ingredients?.length < 1}
@@ -187,7 +188,14 @@ const ProductDetails = () => {
                     {productDetails[0]?.quantity > 0 ? (
                       <>
                         {exitsProducts === undefined ? (
-                          <div onClick={handleAddToCart}>
+                          <div
+                            onClick={() => {
+                              handleAddToCart(),
+                                setTimeout(() => {
+                                  store.dispatch(setCartSidebarOpen());
+                                }, 500);
+                            }}
+                          >
                             <AddTocartButton text="Add to cart" />
                           </div>
                         ) : (

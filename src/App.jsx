@@ -27,6 +27,11 @@ import { getToken } from "../utils/sessionHelper/sessionHelper";
 import EmailPage from "./pages/forgetPassword/email";
 import VerifyOtp from "./pages/forgetPassword/verifyOtp";
 import CreateNewPassword from "./pages/forgetPassword/create-new-password";
+import UserDashboardPage from "./pages/user-dashboard/userDashboardPage";
+import RunningOrderPage from "./pages/user-dashboard/runningOrderPage";
+import DeliveryOrderPage from "./pages/user-dashboard/deliveryOrderPage";
+import ReturnOrderPage from "./pages/user-dashboard/returnOrderPage";
+import CancelOrderPage from "./pages/user-dashboard/cancelOrderPage";
 
 const ProtectedRoute = ({ children }) => {
   const token = getToken();
@@ -104,6 +109,49 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            {/* start user dashboard route */}
+            <Route
+              path="/user-dashboard"
+              element={
+                <ProtectedRoute>
+                  <UserDashboardPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user-dashboard/orders/running-orders"
+              element={
+                <ProtectedRoute>
+                  <RunningOrderPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user-dashboard/orders/delivery-orders"
+              element={
+                <ProtectedRoute>
+                  <DeliveryOrderPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user-dashboard/orders/return-orders"
+              element={
+                <ProtectedRoute>
+                  <ReturnOrderPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user-dashboard/orders/cancel-orders"
+              element={
+                <ProtectedRoute>
+                  <CancelOrderPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* start user dashboard route */}
           </Route>
         </Routes>
       </BrowserRouter>

@@ -8,6 +8,7 @@ import {
 import {
   errorAlert,
   successAlert,
+  warningAlert,
 } from "../../utils/notificationAlert/notificationAlert";
 
 let baseUrl = import.meta.env.VITE_API_URL;
@@ -15,6 +16,25 @@ let AxiosHeader = {
   headers: {
     "Content-Type": "application/json",
   },
+};
+
+export let registerUserRequest = async (data) => {
+  try {
+    let URL = baseUrl + `/registration`;
+    let res = await axios.post(URL, data, AxiosHeader);
+
+    if (res.data?.status === "success") {
+      return true;
+    } else if (res.data?.data?.keyPattern?.email == 1) {
+      errorAlert("Email already exist");
+      return false;
+    } else {
+      console.log("something went wrong");
+      return false;
+    }
+  } catch (e) {
+    return false;
+  }
 };
 
 export let loginUserRequest = async (data) => {

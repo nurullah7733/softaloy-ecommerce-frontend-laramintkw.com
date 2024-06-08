@@ -8,10 +8,15 @@ import { useSelector } from "react-redux";
 import ButtonProductsIncreaseAndDecrease from "../common/buttonPrdouctsIncreaseAndDecrease";
 import store from "../../../redux/store";
 import { removeProductFromCarts } from "../../../redux/features/addToCartSlice/addToCartSlice";
+import { setCartSidebarOpen } from "../../../redux/features/sidebarCartsOpen/sidebarCartsOpenSlice";
 
-const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
+const CartDrower = () => {
   const { allProductsSubTotal, products } = useSelector(
     (state) => state.addToCarts
+  );
+
+  const isCartSidebarOpen = useSelector(
+    (state) => state.sidebarCartsOpen.isCartSidebarOpen
   );
 
   const selectedCurrency = useSelector(
@@ -21,7 +26,7 @@ const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
     <>
       <Drawer
         open={isCartSidebarOpen}
-        onClose={handleCartSidebarClose}
+        onClose={() => store.dispatch(setCartSidebarOpen())}
         direction="right"
         className=""
         size={useWindowSize().width > 768 ? 400 : 300}
@@ -34,7 +39,7 @@ const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
             </h1>
             <MdOutlineClose
               className="cursor-pointer"
-              onClick={handleCartSidebarClose}
+              onClick={() => store.dispatch(setCartSidebarOpen())}
               size={30}
             />
           </div>
@@ -97,7 +102,7 @@ const CartDrower = ({ handleCartSidebarClose, isCartSidebarOpen }) => {
             <p className="text-sm pb-5">
               Shipping & taxes calculated at checkout
             </p>
-            <div onClick={handleCartSidebarClose}>
+            <div onClick={() => store.dispatch(setCartSidebarOpen())}>
               <Button
                 text={`Checkout   ${(
                   Number(allProductsSubTotal) *

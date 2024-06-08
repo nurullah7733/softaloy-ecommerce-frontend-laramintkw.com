@@ -19,13 +19,13 @@ import { getMegaMenuProductsRequest } from "../../../APIRequest/productsApi";
 import PriceConverterByCountry from "../../../../utils/priceConverterByCountry/priceConverterByCountry";
 import { getToken } from "../../../../utils/sessionHelper/sessionHelper";
 import { logoutRequest } from "../../../APIRequest/userApi";
+import { setCartSidebarOpen } from "../../../../redux/features/sidebarCartsOpen/sidebarCartsOpenSlice";
 
 const Header = () => {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchbarOpen, setSearchbarOpen] = useState(false);
   const [multipleCurrency, setMultipleCurrency] = useState(false);
-  const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
   const [userOrderDropdown, setUserOrderDropdown] = useState(false);
 
   const [
@@ -40,6 +40,9 @@ const Header = () => {
   );
 
   const addToCartsProducts = useSelector((state) => state.addToCarts.products);
+  const isCartSidebarOpen = useSelector(
+    (state) => state.sidebarCartsOpen.isCartSidebarOpen
+  );
 
   const handleMenuHover = (index) => {
     setIsMegaMenuOpen(index !== 0 ? index : 0);
@@ -49,7 +52,9 @@ const Header = () => {
     setSearchbarOpen(!searchbarOpen);
   };
 
-  const handleCartSidebarClose = () => setIsCartSidebarOpen(!isCartSidebarOpen);
+  const handleCartSidebarClose = () => {
+    store.dispatch(setCartSidebarOpen());
+  };
   const token = getToken();
 
   const handleLogout = async () => {
@@ -218,17 +223,9 @@ const Header = () => {
                     >
                       <ul className="list-none  ">
                         <li className="p-2 hover:bg-gray-100">
-                          <Link to="/running-orders">Running Orders</Link>
+                          <Link to="/user-dashboard">User Dashboard</Link>
                         </li>
-                        <li className="p-2 hover:bg-gray-100">
-                          <Link to="/delivery-orders">Delivery Orders</Link>
-                        </li>
-                        <li className="p-2 hover:bg-gray-100">
-                          <Link to="/return-orders">Return Orders</Link>
-                        </li>
-                        <li className="p-2 hover:bg-gray-100">
-                          <Link to="/cancel-orders">Cancel Orders</Link>
-                        </li>
+
                         <li
                           className="p-2 hover:bg-gray-100 cursor-pointer"
                           onClick={handleLogout}
@@ -253,7 +250,7 @@ const Header = () => {
               />
             </div>
             <div
-              onClick={() => setIsCartSidebarOpen(!isCartSidebarOpen)}
+              onClick={() => store.dispatch(setCartSidebarOpen())}
               className="relative cursor-pointer"
             >
               {addToCartsProducts?.length > 0 && (
@@ -272,7 +269,7 @@ const Header = () => {
               >
                 {multipleCurrencies.loading ? (
                   <img
-                    src="/loading-speaner.svg"
+                    src="/loading-spinner.svg"
                     className={`${
                       useWindowSize().width > 768 ? "w-6" : "w-20"
                     } h-6`}
@@ -303,7 +300,7 @@ const Header = () => {
                     {multipleCurrencies?.multipleCurrency?.map(
                       (item, index) => (
                         <li
-                          className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                          className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 capitalize dark:hover:text-white cursor-pointer"
                           key={index}
                           onClick={() => {
                             setMultipleCurrency(false);
@@ -312,7 +309,7 @@ const Header = () => {
                         >
                           <img
                             src={item?.img?.slice(-1)[0]?.secure_url}
-                            className="w-6 h-6 mr-2"
+                            className="w-6 h-6 mr-2 "
                           />
                           {item?.countryName}
                         </li>
@@ -343,7 +340,6 @@ const Header = () => {
       <CartDrowser
         handleCartSidebarClose={handleCartSidebarClose}
         isCartSidebarOpen={isCartSidebarOpen}
-        setIsCartSidebarOpen={setIsCartSidebarOpen}
       />
     </div>
   );

@@ -7,8 +7,18 @@ const PriceConverterByCountry = ({ price }) => {
   );
   return (
     <>
-      {(Number(price) * Number(selectedCurrency?.currency)).toFixed(2)}{" "}
-      {selectedCurrency?.currencyCode?.toUpperCase()}
+      {selectedCurrency?.currencyCode == "us" ||
+      selectedCurrency?.currencyCode == "usd" ||
+      selectedCurrency?.currencyCode == "usa" ? (
+        <>
+          ${(Number(price) * Number(selectedCurrency?.currency)).toFixed(3)} USD
+        </>
+      ) : (
+        <>
+          {(Number(price) * Number(selectedCurrency?.currency)).toFixed(3)}{" "}
+          {selectedCurrency?.currencyCode?.toUpperCase()}
+        </>
+      )}
     </>
   );
 };
