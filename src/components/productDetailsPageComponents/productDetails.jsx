@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { FaFacebookF, FaTwitter, FaPinterest } from "react-icons/fa";
-import Button from "../../components/common/button";
 import ButtonProductsIncreaseAndDecrease from "../../components/common/buttonPrdouctsIncreaseAndDecrease";
 import { useSelector } from "react-redux";
 import NoProductsFound from "../common/noProductsFound";
@@ -11,13 +10,12 @@ import store from "../../../redux/store";
 import { setAddToCart } from "../../../redux/features/addToCartSlice/addToCartSlice";
 import { AddTocartButton, AddedTocartButton } from "../common/cartButton";
 import { setCartSidebarOpen } from "../../../redux/features/sidebarCartsOpen/sidebarCartsOpenSlice";
+import PriceConverterByCountry from "../../../utils/priceConverterByCountry/priceConverterByCountry";
 
 const ProductDetails = () => {
   const [selectionDescriptionTab, setSelectionDescriptionTab] =
     useState("Description");
-  const selectedCurrency = useSelector(
-    (state) => state.multipleCurrency.selectedCurrency
-  );
+
   const { loading, productDetails } = useSelector(
     (state) => state.productDetails
   );
@@ -64,21 +62,20 @@ const ProductDetails = () => {
                   </h1>
                   <div className="flex gap-3 mb-6 items-center">
                     <h4 className="text-gray-600 uppercase ">
-                      {" "}
-                      {(
-                        Number(productDetails[0]?.finalPrice) *
-                        Number(selectedCurrency?.currency)
-                      ).toFixed(2)}{" "}
-                      {selectedCurrency?.currencyCode}
+                      {
+                        <PriceConverterByCountry
+                          price={productDetails[0]?.finalPrice}
+                        />
+                      }
                     </h4>
                     {productDetails[0]?.finalPrice !==
                       productDetails[0]?.price && (
                       <h3 className="text-gray-600 uppercase text-sm line-through">
-                        {(
-                          Number(productDetails[0]?.price) *
-                          Number(selectedCurrency?.currency)
-                        ).toFixed(2)}{" "}
-                        {selectedCurrency?.currencyCode}
+                        {
+                          <PriceConverterByCountry
+                            price={productDetails[0]?.price}
+                          />
+                        }
                       </h3>
                     )}
                   </div>

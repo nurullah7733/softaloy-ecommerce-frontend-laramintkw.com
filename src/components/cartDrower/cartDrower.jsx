@@ -9,6 +9,8 @@ import ButtonProductsIncreaseAndDecrease from "../common/buttonPrdouctsIncreaseA
 import store from "../../../redux/store";
 import { removeProductFromCarts } from "../../../redux/features/addToCartSlice/addToCartSlice";
 import { setCartSidebarOpen } from "../../../redux/features/sidebarCartsOpen/sidebarCartsOpenSlice";
+import PriceConverterByCountry from "../../../utils/priceConverterByCountry/priceConverterByCountry";
+import { Link } from "react-router-dom";
 
 const CartDrower = () => {
   const { allProductsSubTotal, products } = useSelector(
@@ -63,12 +65,15 @@ const CartDrower = () => {
                           : product?.name}
                       </h3>
                       <p className="text-[11px] uppercase">
-                        {(
-                          Number(product?.finalPrice) *
-                          Number(selectedCurrency?.currency)
-                        ).toFixed(2)}{" "}
-                        {selectedCurrency?.currencyCode}
-                        <span className="line-through pl-2">15.020 KWD</span>
+                        {
+                          <PriceConverterByCountry
+                            price={product?.finalPrice}
+                          />
+                        }
+
+                        <span className="line-through pl-2">
+                          {<PriceConverterByCountry price={product?.price} />}
+                        </span>
                       </p>
                     </div>
                     <div className="flex justify-between items-center pt-5 gap-2">
@@ -103,14 +108,14 @@ const CartDrower = () => {
               Shipping & taxes calculated at checkout
             </p>
             <div onClick={() => store.dispatch(setCartSidebarOpen())}>
-              <Button
-                text={`Checkout   ${(
-                  Number(allProductsSubTotal) *
-                  Number(selectedCurrency?.currency)
-                ).toFixed(2)} 
-                        ${selectedCurrency?.currencyCode}`}
-                link="/checkout"
-              />
+              <Link to="/checkout">
+                <button className="button_slider_animate w-full disabled:opacity-50 disabled:cursor-not-allowed">
+                  <span className="content">
+                    Checkout{" "}
+                    <PriceConverterByCountry price={allProductsSubTotal} />
+                  </span>
+                </button>
+              </Link>
             </div>
           </div>
         </div>
