@@ -30,7 +30,7 @@ const CancelOrder = () => {
       setData(allData);
     })();
   }, []);
-  console.log(loading, "loading");
+
   let finalData;
   if (data?.total?.length < 1) {
     finalData = <h1 className="px-5 text-2xl">No Cancel orders</h1>;

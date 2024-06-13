@@ -37,10 +37,13 @@ const RunningOrders = () => {
       }
     }
   };
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   useEffect(() => {
     (async () => {
+      setLoading(true);
       var allData = await runningOrdersRequest();
+      setLoading(false);
       setData(allData);
     })();
   }, []);
@@ -443,7 +446,13 @@ const RunningOrders = () => {
           </div>
           <div className="p-5">
             {/* content here */}
-            <div className="bg-white dark:bg-gray-800">{finalData}</div>
+            <div className="bg-white dark:bg-gray-800">
+              {loading ? (
+                <h1 className="text-center text-black">Loading...</h1>
+              ) : (
+                finalData
+              )}
+            </div>
           </div>
         </div>
       </div>
