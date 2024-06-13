@@ -20,14 +20,17 @@ const CancelOrder = () => {
   }, [windowSize.width]);
   const pathname = window.location.pathname;
 
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   useEffect(() => {
     (async () => {
+      setLoading(true);
       var allData = await cancelOrdersRequest();
+      setLoading(false);
       setData(allData);
     })();
   }, []);
-
+  console.log(loading, "loading");
   let finalData;
   if (data?.total?.length < 1) {
     finalData = <h1 className="px-5 text-2xl">No Cancel orders</h1>;
@@ -420,7 +423,13 @@ const CancelOrder = () => {
           </div>
           <div className="p-5">
             {/* content here */}
-            <div className="bg-white dark:bg-gray-800">{finalData}</div>
+            <div className="bg-white dark:bg-gray-800">
+              {loading ? (
+                <h1 className="text-center text-black">Loading...</h1>
+              ) : (
+                finalData
+              )}
+            </div>
           </div>
         </div>
       </div>

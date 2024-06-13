@@ -23,17 +23,14 @@ export let getMultipleCurrencyRequest = async () => {
       store.dispatch(setMultipleCurrency(res?.data?.data[0]?.rows));
 
       let allCurrencies = res?.data?.data[0]?.rows;
-      if (allCurrencies?.length > 0) {
-        let kuwait = allCurrencies.find((item) => item.countryName == "kuwait");
-        let us = allCurrencies.find((item) => item.countryName == "us");
-        let usa = allCurrencies.find((item) => item.countryName == "usa");
 
-        if (Object.keys(kuwait).length > 0) {
+      if (allCurrencies?.length > 0) {
+        allCurrencies.find((item) => console.log(item.countryName));
+        let kuwait = allCurrencies.find(
+          (item) => item.countryName.toLowerCase() == "kuwait"
+        );
+        if (kuwait && Object.keys(kuwait || {}).length > 0) {
           store.dispatch(setSelectedCurrency(kuwait));
-        } else if (Object.keys(us).length > 0) {
-          store.dispatch(setSelectedCurrency(us));
-        } else if (Object.keys(usa).length > 0) {
-          store.dispatch(setSelectedCurrency(usa));
         } else {
           store.dispatch(setSelectedCurrency(res?.data?.data[0]?.rows?.[0]));
         }

@@ -1,6 +1,9 @@
 import axios from "axios";
 import store from "../../redux/store";
-import { getToken } from "../../utils/sessionHelper/sessionHelper";
+import {
+  getToken,
+  sessionDestroy,
+} from "../../utils/sessionHelper/sessionHelper";
 import {
   errorAlert,
   successAlert,
@@ -24,6 +27,9 @@ export let createOrderRequest = async (data) => {
       return false;
     }
   } catch (e) {
+    if (e.response.status === 401) {
+      sessionDestroy();
+    }
     return false;
   }
 };
@@ -44,6 +50,9 @@ export let changeOrderStatusRequest = async (id, data) => {
       return false;
     }
   } catch (e) {
+    if (e.response.status === 401) {
+      sessionDestroy();
+    }
     return false;
   }
 };
@@ -57,12 +66,16 @@ export let runningOrdersRequest = async () => {
         "Content-Type": "application/json",
       },
     });
+    console.log(res, "hi");
     if (res.data.status === "success") {
       return res.data?.data[0];
     } else {
       return res.data.data;
     }
   } catch (e) {
+    if (e.response.status === 401) {
+      sessionDestroy();
+    }
     return false;
   }
 };
@@ -82,6 +95,9 @@ export let deliveryOrdersRequest = async () => {
       return res.data.data;
     }
   } catch (e) {
+    if (e.response.status === 401) {
+      sessionDestroy();
+    }
     return false;
   }
 };
@@ -100,6 +116,9 @@ export let returnOrdersRequest = async () => {
       return res.data.data;
     }
   } catch (e) {
+    if (e.response.status === 401) {
+      sessionDestroy();
+    }
     return false;
   }
 };
@@ -118,6 +137,9 @@ export let cancelOrdersRequest = async () => {
       return res.data.data;
     }
   } catch (e) {
+    if (e.response.status === 401) {
+      sessionDestroy();
+    }
     return false;
   }
 };
