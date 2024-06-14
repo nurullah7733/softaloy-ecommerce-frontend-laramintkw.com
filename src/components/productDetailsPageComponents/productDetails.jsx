@@ -44,7 +44,7 @@ const ProductDetails = () => {
       ) : (
         <>
           {productDetails?.length > 0 ? (
-            <div className="lg:block grid grid-cols-3 lg:w-full xl:max-w-5xl max-w-7xl gap-5  ">
+            <div className="lg:block grid grid-cols-3 lg:w-full xl:max-w-5xl max-w-7xl gap-5">
               <div className="col-span-2">
                 <img
                   alt={productDetails[0]?.name}
@@ -52,7 +52,7 @@ const ProductDetails = () => {
                   className="w-full"
                 />
               </div>
-              <div className="col-span-1   mx-auto w-full lg:mt-5">
+              <div className="col-span-1 mx-auto w-full lg:mt-5">
                 <div className="border-b mb-6 md:text-center">
                   <h3 className="text-gray-600 uppercase">
                     {productDetails[0]?.name?.split(" ").slice(0, 2).join(" ")}
@@ -61,29 +61,25 @@ const ProductDetails = () => {
                     {productDetails[0]?.name}
                   </h1>
                   <div className="flex gap-3 mb-6 items-center">
-                    <h4 className="text-gray-600 uppercase ">
-                      {
-                        <PriceConverterByCountry
-                          price={productDetails[0]?.finalPrice}
-                        />
-                      }
+                    <h4 className="text-gray-600 uppercase">
+                      <PriceConverterByCountry
+                        price={productDetails[0]?.finalPrice}
+                      />
                     </h4>
                     {productDetails[0]?.finalPrice !==
                       productDetails[0]?.price && (
                       <h3 className="text-gray-600 uppercase text-sm line-through">
-                        {
-                          <PriceConverterByCountry
-                            price={productDetails[0]?.price}
-                          />
-                        }
+                        <PriceConverterByCountry
+                          price={productDetails[0]?.price}
+                        />
                       </h3>
                     )}
                   </div>
                 </div>
-                {/* tab description */}
-                <div>
+                {/* Tab Description */}
+                <div className="xl:max-w-5xl max-w-7xl mx-auto">
                   <div>
-                    {/* button */}
+                    {/* Buttons */}
                     <div className="flex justify-between gap-2">
                       <button
                         disabled={productDetails[0]?.description?.length < 1}
@@ -94,18 +90,18 @@ const ProductDetails = () => {
                           selectionDescriptionTab === "Description"
                             ? "bg-gray-300"
                             : ""
-                        }  `}
+                        }`}
                       >
                         Description
                       </button>
                       <button
                         disabled={productDetails[0]?.features?.length < 1}
                         onClick={() => setSelectionDescriptionTab("Features")}
-                        className={`border disabled:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed  uppercase text-sm border-b-0 w-full sm:p-1 p-2 text-gray-600 ${
+                        className={`border disabled:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed uppercase text-sm border-b-0 w-full sm:p-1 p-2 text-gray-600 ${
                           selectionDescriptionTab === "Features"
                             ? "bg-gray-300"
                             : ""
-                        }  `}
+                        }`}
                       >
                         Features
                       </button>
@@ -114,47 +110,50 @@ const ProductDetails = () => {
                         onClick={() =>
                           setSelectionDescriptionTab("Ingredients")
                         }
-                        className={`border disabled:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed  uppercase text-sm border-b-0 w-full sm:p-1 p-2 text-gray-600 ${
+                        className={`border disabled:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed uppercase text-sm border-b-0 w-full sm:p-1 p-2 text-gray-600 ${
                           selectionDescriptionTab === "Ingredients"
                             ? "bg-gray-300"
                             : ""
-                        }  `}
+                        }`}
                       >
                         Ingredients
                       </button>
                     </div>
                   </div>
                   <div className="border">
-                    {/* description */}
-                    <div className="p-5 text-gray-600">
-                      <p>
-                        {selectionDescriptionTab === "Description"
-                          ? productDetails[0]?.description?.length &&
-                            parse(productDetails[0]?.description)
-                          : selectionDescriptionTab === "Features"
-                          ? productDetails[0]?.features?.length &&
-                            parse(productDetails[0]?.features)
-                          : productDetails[0]?.ingredients?.length &&
-                            parse(productDetails[0]?.ingredients)}
-                      </p>
+                    {/* Description */}
+                    <div className="p-5 text-gray-600 break-words">
+                      {selectionDescriptionTab === "Description" &&
+                        productDetails[0]?.description?.length > 0 && (
+                          <>{parse(productDetails[0].description)}</>
+                        )}
+                      {selectionDescriptionTab === "Features" &&
+                        productDetails[0]?.features?.length > 0 && (
+                          <>{parse(productDetails[0].features)}</>
+                        )}
+                      {selectionDescriptionTab === "Ingredients" &&
+                        productDetails[0]?.ingredients?.length > 0 && (
+                          <div className="ingredients-container max-w-lg mx-auto">
+                            {parse(productDetails[0].ingredients)}
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>
-
-                {/* share buttons */}
+                {/* Share Buttons */}
                 <div className="flex items-center text-gray-500 uppercase gap-3 my-5">
                   <p className="text-[12px]">share</p>
                   <a
                     target="_blank"
                     href={`https://www.facebook.com/sharer.php?u=${window.location.href}`}
                   >
-                    <FaFacebookF className="text-[12px]" />{" "}
+                    <FaFacebookF className="text-[12px]" />
                   </a>
                   <a
                     target="_blank"
                     href={`https://x.com/intent/post?text=${productDetails[0]?.name}&url=${window.location.href}`}
                   >
-                    <FaTwitter className="text-[12px]" />{" "}
+                    <FaTwitter className="text-[12px]" />
                   </a>
                   <a
                     target="_blank"
@@ -167,7 +166,7 @@ const ProductDetails = () => {
                     <FaPinterest className="text-[12px]" />
                   </a>
                 </div>
-                {/* add to cart buttons */}
+                {/* Add to Cart Buttons */}
                 <div>
                   <div className="py-5">
                     <ButtonProductsIncreaseAndDecrease
@@ -187,10 +186,10 @@ const ProductDetails = () => {
                         {exitsProducts === undefined ? (
                           <div
                             onClick={() => {
-                              handleAddToCart(),
-                                setTimeout(() => {
-                                  store.dispatch(setCartSidebarOpen());
-                                }, 500);
+                              handleAddToCart();
+                              setTimeout(() => {
+                                dispatch(setCartSidebarOpen());
+                              }, 500);
                             }}
                           >
                             <AddTocartButton text="Add to cart" />

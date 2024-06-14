@@ -251,7 +251,7 @@ const Header = () => {
             </div>
             <div
               onClick={() => store.dispatch(setCartSidebarOpen())}
-              className="relative cursor-pointer"
+              className="relative cursor-pointer pl-1"
             >
               {addToCartsProducts?.length > 0 && (
                 <div className="absolute bg-black w-4 h-4 left-4 text-[10px] rounded-full flex justify-center items-center text-white">

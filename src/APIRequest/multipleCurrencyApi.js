@@ -25,7 +25,6 @@ export let getMultipleCurrencyRequest = async () => {
       let allCurrencies = res?.data?.data[0]?.rows;
 
       if (allCurrencies?.length > 0) {
-        allCurrencies.find((item) => console.log(item.countryName));
         let kuwait = allCurrencies.find(
           (item) => item.countryName.toLowerCase() == "kuwait"
         );
