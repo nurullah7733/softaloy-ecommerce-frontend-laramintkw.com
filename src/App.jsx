@@ -32,6 +32,8 @@ import RunningOrderPage from "./pages/user-dashboard/runningOrderPage";
 import DeliveryOrderPage from "./pages/user-dashboard/deliveryOrderPage";
 import ReturnOrderPage from "./pages/user-dashboard/returnOrderPage";
 import CancelOrderPage from "./pages/user-dashboard/cancelOrderPage";
+import FailPayment from "./pages/payment/failPayment";
+import SuccessPayment from "./pages/payment/successPayment";
 
 const ProtectedRoute = ({ children }) => {
   const token = getToken();
@@ -76,6 +78,9 @@ function App() {
               path="/create-new-password"
               element={<CreateNewPassword />}
             />
+
+            <Route path="/payment-success" element={<SuccessPayment />} />
+            <Route path="/payment-fail" element={<FailPayment />} />
 
             <Route
               path="/running-orders"

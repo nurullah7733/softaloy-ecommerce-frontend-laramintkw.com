@@ -13,7 +13,10 @@ import {
   errorAlert,
   successAlert,
 } from "../../../utils/notificationAlert/notificationAlert";
-import { createOrderRequest } from "../../APIRequest/orderApi";
+import {
+  createOrderByMyFatoorahRequest,
+  createOrderRequest,
+} from "../../APIRequest/orderApi";
 import { setAddToCartInLocalStorage } from "../../../utils/sessionHelper/sessionHelper";
 
 const CheckoutPage = () => {
@@ -124,6 +127,7 @@ const CheckoutPage = () => {
       allProducts: simplifiedProducts,
       "paymentIntent.paymentMethod": formValue.paymentMethod,
       "paymentIntent.amount": totalPrice,
+      "paymentIntent.paymentStatus": "cashOnDelivery",
       voucherDiscount: couponDiscount,
       saveAmount: saveAmount,
       otherCost: otherCost,
@@ -148,6 +152,7 @@ const CheckoutPage = () => {
       allProducts: simplifiedProducts,
       "paymentIntent.paymentMethod": formValue.paymentMethod,
       "paymentIntent.amount": totalPrice,
+      "paymentIntent.paymentStatus": "cashOnDelivery",
       voucherDiscount: couponDiscount,
       saveAmount: saveAmount,
       otherCost: otherCost,
@@ -182,25 +187,48 @@ const CheckoutPage = () => {
     if (formValue.billingMethod === "sameAsShippingAddress") {
       setLoadingCreateOrder(true);
 
-      const result = await createOrderRequest(orderDataWithShippingAddress);
-      if (result) {
-        successAlert(
-          "Order Placed Successfully! Please check your email. Thank you"
+      if (formValue.paymentMethod === "myFatoorah") {
+        const result = await createOrderByMyFatoorahRequest(
+          orderDataWithShippingAddress
         );
-        setAddToCartInLocalStorage([]);
-        navigate("/");
+
+        if (Object.keys(result || {}).length > 0) {
+          window.location.href = result?.PaymentURL;
+        } else {
+          setLoadingCreateOrder(false);
+          errorAlert("Something went wrong. Please try again later");
+          navigate("/");
+        }
+      } else {
+        const result = await createOrderRequest(orderDataWithShippingAddress);
+        if (result) {
+          successAlert(
+            "Order Placed Successfully! Please check your email. Thank you"
+          );
+          setAddToCartInLocalStorage([]);
+          navigate("/");
+        }
       }
     } else {
       setLoadingCreateOrder(true);
-      const result = await createOrderRequest(
-        orderDataWithShippingAddressAndBillingAddress
-      );
-      if (result) {
-        successAlert(
-          "Order Placed Successfully! Please check your email. Thank you"
+
+      if (formValue.paymentMethod === "myFatoorah") {
+        const result = await createOrderByMyFatoorahRequest(
+          orderDataWithShippingAddressAndBillingAddress
         );
-        setAddToCartInLocalStorage([]);
-        navigate("/");
+
+        //  ///////////////
+      } else {
+        const result = await createOrderRequest(
+          orderDataWithShippingAddressAndBillingAddress
+        );
+        if (result) {
+          successAlert(
+            "Order Placed Successfully! Please check your email. Thank you"
+          );
+          setAddToCartInLocalStorage([]);
+          navigate("/");
+        }
       }
     }
   };

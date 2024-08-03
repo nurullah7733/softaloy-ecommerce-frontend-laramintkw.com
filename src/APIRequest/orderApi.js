@@ -33,6 +33,27 @@ export let createOrderRequest = async (data) => {
     return false;
   }
 };
+
+// create order by myfatoorah payment
+export let createOrderByMyFatoorahRequest = async (data) => {
+  console.log(data);
+  try {
+    let URL = baseUrl + `/create-order-by-myfatoorah-executive-payment`;
+    let res = await axios.post(URL, data, AxiosHeader);
+
+    if (res.data.status === "success") {
+      return res?.data?.paymentData?.Data;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    if (e.response.status === 401) {
+      sessionDestroy();
+    }
+    return false;
+  }
+};
+
 export let changeOrderStatusRequest = async (id, data) => {
   try {
     let URL = baseUrl + `/change-order-status/${id}`;
@@ -101,6 +122,7 @@ export let deliveryOrdersRequest = async () => {
     return false;
   }
 };
+
 export let returnOrdersRequest = async () => {
   try {
     let URL = baseUrl + `/get-returned-order/1/100/0`;
@@ -122,6 +144,7 @@ export let returnOrdersRequest = async () => {
     return false;
   }
 };
+
 export let cancelOrdersRequest = async () => {
   try {
     let URL = baseUrl + `/get-cancelled-order/1/100/0`;

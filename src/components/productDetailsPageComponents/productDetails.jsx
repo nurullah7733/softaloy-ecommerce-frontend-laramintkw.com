@@ -188,7 +188,7 @@ const ProductDetails = () => {
                             onClick={() => {
                               handleAddToCart();
                               setTimeout(() => {
-                                dispatch(setCartSidebarOpen());
+                                store.dispatch(setCartSidebarOpen());
                               }, 500);
                             }}
                           >
