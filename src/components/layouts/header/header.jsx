@@ -20,6 +20,7 @@ import PriceConverterByCountry from "../../../../utils/priceConverterByCountry/p
 import { getToken } from "../../../../utils/sessionHelper/sessionHelper";
 import { logoutRequest } from "../../../APIRequest/userApi";
 import { setCartSidebarOpen } from "../../../../redux/features/sidebarCartsOpen/sidebarCartsOpenSlice";
+import { getUserData } from "../../../../utils/sessionHelper/sessionHelper";
 
 const Header = () => {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(0);
@@ -215,11 +216,20 @@ const Header = () => {
                   onMouseEnter={() => setUserOrderDropdown(true)}
                   onMouseLeave={() => setUserOrderDropdown(false)}
                 >
-                  <LuUser2 size={25} className="cursor-pointer" />
+                  {console.log(getUserData(), "hi")}
+                  {token?.length > 0 && token ? (
+                    <img
+                      src={getUserData()?.photo[0]?.secure_url}
+                      className="w-7 h-7 rounded-full cursor-pointer"
+                    />
+                  ) : (
+                    <LuUser2 size={25} className="cursor-pointer" />
+                  )}
+
                   {userOrderDropdown && (
                     <div
                       onMouseEnter={() => setUserOrderDropdown(true)}
-                      className="z-10 absolute h-auto -right-20 top-6 p-2 !bg-white rounded-lg shadow w-40 dark:bg-gray-700"
+                      className="z-10 absolute h-auto -right-20 top-7 p-2 !bg-white rounded-lg shadow w-40 dark:bg-gray-700"
                     >
                       <ul className="list-none  ">
                         <li className="p-2 hover:bg-gray-100">
