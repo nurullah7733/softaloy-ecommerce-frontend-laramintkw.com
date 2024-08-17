@@ -4,6 +4,7 @@ import YouMayAlsoLike from "../../components/productDetailsPageComponents/youMay
 import { useParams } from "react-router-dom";
 import { getProductDetailsRequest } from "../../APIRequest/productsApi";
 import LoadingPrductDetailsPage from "../../components/common/loading/LoadingProductDetailsPage";
+import RecentlyViewedProducts from "../../components/productDetailsPageComponents/recentlyViewedProducts";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ const ProductDetailsPage = () => {
     <div>
       <ProductDetails />
       <YouMayAlsoLike relatedProductsFilterWithoutMainProductById={id} />
+      <RecentlyViewedProducts />
     </div>
   );
 };

@@ -203,7 +203,7 @@ const Header = () => {
               <RxHamburgerMenu size={30} />
             </button>
           </div>
-          <div>
+          <div className="xl:mr-0 mr-[235px]">
             <Link to="/">
               <img src="/lara-mint-logo.jpg" width={200} />
             </Link>
@@ -216,7 +216,6 @@ const Header = () => {
                   onMouseEnter={() => setUserOrderDropdown(true)}
                   onMouseLeave={() => setUserOrderDropdown(false)}
                 >
-                  {console.log(getUserData(), "hi")}
                   {token?.length > 0 && token ? (
                     <img
                       src={getUserData()?.photo[0]?.secure_url}

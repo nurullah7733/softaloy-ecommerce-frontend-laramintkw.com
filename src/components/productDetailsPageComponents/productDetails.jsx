@@ -11,6 +11,7 @@ import { setAddToCart } from "../../../redux/features/addToCartSlice/addToCartSl
 import { AddTocartButton, AddedTocartButton } from "../common/cartButton";
 import { setCartSidebarOpen } from "../../../redux/features/sidebarCartsOpen/sidebarCartsOpenSlice";
 import PriceConverterByCountry from "../../../utils/priceConverterByCountry/priceConverterByCountry";
+import addProductToRecentlyViewed from "../../../utils/recentlyViewProduct/recentlyViewProduct";
 
 const ProductDetails = () => {
   const [selectionDescriptionTab, setSelectionDescriptionTab] =
@@ -37,6 +38,11 @@ const ProductDetails = () => {
     })();
   }, [productDetails[0]?.subCategory[0]?.name]);
 
+  useEffect(() => {
+    if (productDetails?.length > 0) {
+      addProductToRecentlyViewed(productDetails[0]);
+    }
+  }, [productDetails]);
   return (
     <div className="px-8 mx-auto py-10 ">
       {loading ? (

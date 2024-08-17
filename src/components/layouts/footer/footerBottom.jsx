@@ -6,9 +6,17 @@ const FooterBottom = () => {
       <div className="flex md:flex-col md:gap-4   justify-between">
         <div className="flex flex-col">
           <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} INAYA DERMA
+            © {new Date().getFullYear()} LARAMINT
           </p>
-          <p className="text-sm mt-1 text-gray-600">Powered by Inaya Derma</p>
+          <p className="text-sm mt-1 text-gray-600">
+            Powered by{" "}
+            <a
+              href="https://laramintkw.com"
+              className="text-green-600 font-semibold"
+            >
+              laramintkw.com
+            </a>
+          </p>
         </div>
         <div className="flex gap-5">
           <div>

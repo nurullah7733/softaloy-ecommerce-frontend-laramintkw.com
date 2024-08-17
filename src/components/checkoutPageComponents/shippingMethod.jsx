@@ -18,7 +18,7 @@ const ShippingMethod = () => {
     (item) => item.region.toLowerCase() === "kuwait"
   );
 
-  // filter other country for shippingfor shipping
+  // filter other country for shipping
   const otherCountryMethod = shippingAddressMethod.filter(
     (item) => item.region.toLowerCase() !== "kuwait"
   );

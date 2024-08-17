@@ -50,7 +50,7 @@ const SignupPage = () => {
           password: "",
           confirmPassword: "",
         });
-        successAlert("Registration Successfully");
+        successAlert("Registration Successfully, Please Check Your Email.");
         navigate("/login");
       }
     }

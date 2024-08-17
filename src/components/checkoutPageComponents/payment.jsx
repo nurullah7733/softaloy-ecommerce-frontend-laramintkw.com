@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
-import { Tooltip } from "flowbite-react";
 import { setShippingAddressFormValue } from "../../../redux/features/shippingAddressFormSlice/shippingAddressFormSlice";
 import store from "../../../redux/store";
 import { useSelector } from "react-redux";
 
 const Payment = () => {
-  const [expanded, setExpanded] = useState(1);
+  const [expanded, setExpanded] = useState(2);
   const Expanded = (value) => {
     setExpanded(value);
   };
@@ -23,8 +22,9 @@ const Payment = () => {
       </div>
       <div className="border">
         {/* bank options */}
-        <div className=" cursor-pointer  w-full border-b">
-          {/* title */}
+
+        {/* <div className=" cursor-pointer  w-full border-b">
+     
           <div
             className="flex items-center justify-between w-full  py-4 px-2 "
             onClick={() => Expanded(1)}
@@ -81,7 +81,7 @@ const Payment = () => {
               {expanded == 1 ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}
             </div>
           </div>
-          {/* content */}
+    
           <div
             className={` overflow-hidden transition-[min-height] duration-200 ease-in ${
               expanded == 1 ? "min-h-40" : "max-h-0"
@@ -129,7 +129,7 @@ const Payment = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* cash on delivery */}
         <div className=" cursor-pointer  w-full">
           {/* title */}

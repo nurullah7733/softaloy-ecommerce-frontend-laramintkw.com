@@ -18,7 +18,7 @@ const initialState = {
     postalCode: "",
     phone: "",
     shippingMethod: "",
-    paymentMethod: "myFatoorah",
+    paymentMethod: "cashOnDelivery",
     billingMethod: "sameAsShippingAddress",
     billingAddress: {
       country: "kuwait",

@@ -5,6 +5,7 @@ import LoadingSearchPage from "../../components/common/loading/LoadingSearchPage
 import NoProductsFound from "../../components/common/noProductsFound";
 import { getSearchProductsRequest } from "../../APIRequest/searchProductsApi";
 import store from "../../../redux/store";
+import debounce from "lodash.debounce";
 import {
   setLoading,
   setAllProducts,
@@ -39,8 +40,7 @@ const SearchPage = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const performSearch = async () => {
     if (searchTerm !== "0" && searchTerm !== "") {
       query.set("pageNo", pageNo);
       query.set("perPage", perPage);
@@ -51,6 +51,20 @@ const SearchPage = () => {
       );
     }
   };
+
+  // this use effect for searchbar
+  useEffect(() => {
+    const debouncedSearch = debounce((value) => {
+      performSearch(value);
+    }, 300); // Adjust the delay as needed
+
+    debouncedSearch(searchTerm);
+
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [searchTerm]);
+
   // when search term is empty it
   useEffect(() => {
     if (searchTerm === "") {
@@ -90,7 +104,7 @@ const SearchPage = () => {
         <p className="text-base  text-center">
           Enter a word to search our products:
         </p>
-        <form onSubmit={handleSubmit} className="flex justify-center py-5">
+        <form className="flex justify-center py-5">
           <div>
             <input
               type="text"

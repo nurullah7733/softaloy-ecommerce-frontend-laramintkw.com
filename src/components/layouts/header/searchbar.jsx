@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
+import debounce from "lodash.debounce";
 import { GrSearch } from "react-icons/gr";
 import { IoMdClose } from "react-icons/io";
 import { getSearchProductsRequest } from "../../../APIRequest/searchProductsApi";
@@ -7,6 +8,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import store from "../../../../redux/store";
 import PriceConverterByCountry from "../../../../utils/priceConverterByCountry/priceConverterByCountry";
+import NoProductFound from "../../common/noProductsFound";
 
 import {
   setAllProducts,
@@ -23,17 +25,31 @@ const Searchbar = ({ searchbarOpen, handleSearchbar }) => {
     (state) => state.searchProducts
   );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await getSearchProductsRequest(
-      `pageNo=1&perPage=6&searchKeyword=${searchTerm}`
-    );
+  const performSearch = async (searchTerm) => {
+    if (searchTerm !== "0" && searchTerm !== "") {
+      await getSearchProductsRequest(
+        `pageNo=1&perPage=6&searchKeyword=${searchTerm}`
+      );
+    }
   };
 
   const handleScroll = () => {
     const position = window.scrollY;
     setScrollPosition(position);
   };
+
+  // this useEffect for searchbar
+  useEffect(() => {
+    const debouncedSearch = debounce((value) => {
+      performSearch(value);
+    }, 300); // Adjust the delay as needed
+
+    debouncedSearch(searchTerm);
+
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [searchTerm]);
 
   useEffect(() => {
     if (searchbarOpen && searchRef.current) {
@@ -62,17 +78,7 @@ const Searchbar = ({ searchbarOpen, handleSearchbar }) => {
         }  px-4 inset-0 overflow-hidden z-50 `}
       >
         {/* Content above the overlay */}
-        <div
-          className={`absolute bottom-0 left-0 w-full ${
-            scrollPosition > 40
-              ? products?.length > 0
-                ? "h-[0vh]"
-                : "h-[70vh]"
-              : products?.length > 0
-              ? "h-[0vh]"
-              : "h-[65vh]"
-          }   bg-black bg-opacity-50`}
-        ></div>
+        <div className={`absolute bottom-0 left-0 w-full h-[0vh] `}></div>
 
         <div
           className={`mx-auto ${
@@ -81,7 +87,7 @@ const Searchbar = ({ searchbarOpen, handleSearchbar }) => {
         >
           {/* Set width to screen width */}
           <div className="bg-white w-full max-w-full  p-4  ">
-            <form onSubmit={handleSubmit}>
+            <form>
               <div className="flex items-center">
                 <GrSearch size={25} />
                 <input
@@ -156,7 +162,7 @@ const Searchbar = ({ searchbarOpen, handleSearchbar }) => {
                   </div>
                 </>
               ) : (
-                <></>
+                <>{<NoProductFound />}</>
               )}
             </div>
           </div>
