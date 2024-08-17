@@ -39,6 +39,7 @@ const Header = () => {
   const megaMenuProducts = useSelector(
     (state) => state.megaMenuProducts?.products
   );
+  console.log("megaMenuProducts", megaMenuProducts);
 
   const addToCartsProducts = useSelector((state) => state.addToCarts.products);
   const isCartSidebarOpen = useSelector(
@@ -151,7 +152,7 @@ const Header = () => {
                                   {megaMenuProducts
                                     ?.filter(
                                       (product) =>
-                                        product?.remarkByCategory?.toLowerCase() ===
+                                        product?.remarkByCategory?.toLowerCase() ==
                                         category?.name?.toLowerCase()
                                     )
                                     ?.slice(-2)

@@ -13,10 +13,10 @@ let AxiosHeader = {
   },
 };
 
-export let getBestSalesRequest = async (pageNo, PerPage, searchKeyword) => {
+export let getBestSalesRequest = async (allQueryParams) => {
   try {
     store.dispatch(setLoading(true));
-    let URL = baseUrl + `/best-sales/${pageNo}/${PerPage}/${searchKeyword}/`;
+    let URL = baseUrl + `/best-sales?${allQueryParams}`;
     let res = await axios.get(URL, AxiosHeader);
     store.dispatch(setLoading(false));
     if (res.data.status === "success" && res?.data?.data[0]?.rows?.length > 0) {
@@ -24,6 +24,8 @@ export let getBestSalesRequest = async (pageNo, PerPage, searchKeyword) => {
       store.dispatch(setProducts(res?.data?.data[0]?.rows));
       return true;
     } else {
+      store.dispatch(setTotal(0));
+      store.dispatch(setProducts([]));
       return false;
     }
   } catch (e) {

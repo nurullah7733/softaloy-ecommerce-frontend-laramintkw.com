@@ -11,7 +11,7 @@ const BestSales = () => {
 
   useEffect(() => {
     (async () => {
-      await getBestSalesRequest("1", "4", "0");
+      await getBestSalesRequest("pageNo=1&perPage=4&searchKeyword=0");
     })();
   }, []);
 
@@ -42,7 +42,7 @@ const BestSales = () => {
               </div>
               <div className="flex justify-center mt-20">
                 <Button
-                  link={`/best-sales-products`}
+                  link="best-sales-products?pageNo=1&perPage=30&searchKeyword=0"
                   text="view all products"
                 />
               </div>

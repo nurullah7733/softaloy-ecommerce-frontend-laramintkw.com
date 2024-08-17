@@ -34,6 +34,9 @@ const CheckoutPage = () => {
   } = useSelector((state) => state.addToCarts);
 
   const orderSubmit = async () => {
+    if (products === undefined || products.length === 0) {
+      return errorAlert("Your cart is empty");
+    }
     if (formValue.email === "") {
       return errorAlert("Please enter your email");
     }

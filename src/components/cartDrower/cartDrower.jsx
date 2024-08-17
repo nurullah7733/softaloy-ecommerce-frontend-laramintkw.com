@@ -109,7 +109,10 @@ const CartDrower = () => {
             </p>
             <div onClick={() => store.dispatch(setCartSidebarOpen())}>
               <Link to="/checkout">
-                <button className="button_slider_animate w-full disabled:opacity-50 disabled:cursor-not-allowed">
+                <button
+                  disabled={products?.length > 0 ? false : true}
+                  className="button_slider_animate w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                   <span className="content">
                     Checkout{" "}
                     <PriceConverterByCountry price={allProductsSubTotal} />

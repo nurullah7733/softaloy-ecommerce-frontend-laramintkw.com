@@ -18,7 +18,7 @@ export let getAllSubSubCategoryRequest = async () => {
     let URL = baseUrl + "/list-sub-subcategory/1/5000/0";
 
     let res = await axios.get(URL, AxiosHeader);
-    console.log(res.data.data, "res");
+
     store.dispatch(setLoading(false));
     if (res.data.status === "success" && res?.data?.data[0]?.rows?.length > 0) {
       store.dispatch(setSubSubCategories(res?.data?.data[0]?.rows));

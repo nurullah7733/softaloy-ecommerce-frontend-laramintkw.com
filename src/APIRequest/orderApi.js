@@ -36,7 +36,6 @@ export let createOrderRequest = async (data) => {
 
 // create order by myfatoorah payment
 export let createOrderByMyFatoorahRequest = async (data) => {
-  console.log(data);
   try {
     let URL = baseUrl + `/create-order-by-myfatoorah-executive-payment`;
     let res = await axios.post(URL, data, AxiosHeader);
@@ -87,7 +86,7 @@ export let runningOrdersRequest = async () => {
         "Content-Type": "application/json",
       },
     });
-    console.log(res, "hi");
+
     if (res.data.status === "success") {
       return res.data?.data[0];
     } else {
