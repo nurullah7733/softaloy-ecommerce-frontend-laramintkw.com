@@ -81,7 +81,7 @@ const Brands = () => {
                   >
                     <img
                       src={item?.img[0]?.secure_url}
-                      className="w-[100px]  border brand_logo_shadow h-auto"
+                      className="w-[300px]  h-[50px]  border brand_logo_shadow "
                     />
                   </Link>
                 </div>
@@ -93,7 +93,7 @@ const Brands = () => {
                 {brands?.brands?.map((item, idx) => (
                   <div key={idx}>
                     <img
-                      className="w-[100px] border brand_logo_shadow m-3 px-2"
+                      className="w-[300px]  h-[50px] border brand_logo_shadow m-3 px-2"
                       src={item?.img[0]?.secure_url}
                       alt={`Image ${idx + 1}`}
                     />
