@@ -39,7 +39,6 @@ const Header = () => {
   const megaMenuProducts = useSelector(
     (state) => state.megaMenuProducts?.products
   );
-  console.log("megaMenuProducts", megaMenuProducts);
 
   const addToCartsProducts = useSelector((state) => state.addToCarts.products);
   const isCartSidebarOpen = useSelector(
@@ -201,15 +200,18 @@ const Header = () => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               type="button"
             >
-              <RxHamburgerMenu size={30} />
+              <RxHamburgerMenu size={20} />
             </button>
           </div>
-          <div className="xl:mr-0 mr-[235px]">
+          <div className="xl:mr-0 mr-[235px] md:-mt-1 ">
             <Link to="/">
-              <img src="/lara-mint-logo.jpg" width={200} />
+              <img
+                src="/laramint-logo.jpeg"
+                width={useWindowSize().width > 768 ? 180 : 100}
+              />
             </Link>
           </div>
-          <div className="flex gap-x-5 xxs:gap-1">
+          <div className="flex gap-x-10 xxs:gap-3">
             <div>
               {token?.length > 0 && token ? (
                 <div
@@ -223,7 +225,10 @@ const Header = () => {
                       className="w-7 h-7 rounded-full cursor-pointer"
                     />
                   ) : (
-                    <LuUser2 size={25} className="cursor-pointer" />
+                    <LuUser2
+                      size={useWindowSize().width > 600 ? 25 : 20}
+                      className="cursor-pointer text-lg"
+                    />
                   )}
 
                   {userOrderDropdown && (
@@ -248,13 +253,16 @@ const Header = () => {
                 </div>
               ) : (
                 <Link to="/login">
-                  <LuUser2 size={25} className="cursor-pointer" />
+                  <LuUser2
+                    size={useWindowSize().width > 600 ? 25 : 20}
+                    className="cursor-pointer"
+                  />
                 </Link>
               )}
             </div>
             <div>
               <GrSearch
-                size={25}
+                size={useWindowSize().width > 600 ? 25 : 20}
                 className="cursor-pointer select-none"
                 onClick={handleSearchbar}
               />
@@ -268,7 +276,7 @@ const Header = () => {
                   {addToCartsProducts?.length}
                 </div>
               )}
-              <BsBag size={25} />
+              <BsBag size={useWindowSize().width > 600 ? 25 : 20} />
             </div>
             {/* country dropdown */}
             <div>
@@ -281,7 +289,7 @@ const Header = () => {
                   <img
                     src="/loading-spinner.svg"
                     className={`${
-                      useWindowSize().width > 768 ? "w-6" : "w-20"
+                      useWindowSize().width > 768 ? "w-6" : "w-5"
                     } h-6`}
                   />
                 ) : (
@@ -291,18 +299,12 @@ const Header = () => {
                         ?.secure_url
                     }
                     className={`${
-                      useWindowSize().width > 490 ? "w-6" : "w-6"
-                    } h-6`}
+                      useWindowSize().width > 490 ? "w-8 h-6" : "w-6 h-5"
+                    } `}
                   />
                 )}
 
-                {useWindowSize().width > 768 ? (
-                  <MdKeyboardArrowUp
-                    color="black"
-                    size={20}
-                    className="ml-1.5 "
-                  />
-                ) : null}
+                <MdKeyboardArrowUp color="black" size={20} className=" " />
               </button>
               {multipleCurrency && (
                 <div className="z-10 absolute h-auto right-1 !bg-white rounded-lg shadow w-40 dark:bg-gray-700">

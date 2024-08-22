@@ -2,7 +2,7 @@ import React from "react";
 
 const AnnouncementBar = () => {
   return (
-    <div className="p-[12px] bg-[#265c2e] text-center">
+    <div className="p-[12px] bg-[#265c2e] text-center md:hidden">
       <h1 className="text-white uppercase text-[11px]">
         DELIVERY WITHIN 24HRS
       </h1>

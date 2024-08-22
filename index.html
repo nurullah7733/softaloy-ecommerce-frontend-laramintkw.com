@@ -5,12 +5,23 @@
     <link rel="icon" type="image" href="/lara-mint-logo.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>laramint</title>
+    <style>
+      /* Custom positioning for the JivoSite chat widget */
+      .jivo-btn-wrapper {
+        right: auto !important; /* Disable right positioning */
+        left: 20px !important; /* Move widget to the left side */
+        bottom: 20px !important; /* Adjust bottom as needed */
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- JivoSite widget script -->
+    <script src="//code.jivosite.com/widget/CwBufbQBV0" async></script>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

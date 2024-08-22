@@ -203,6 +203,10 @@ const CheckoutPage = () => {
           navigate("/");
         }
       } else {
+        console.log(
+          orderDataWithShippingAddress,
+          "orderDataWithShippingAddress"
+        );
         const result = await createOrderRequest(orderDataWithShippingAddress);
         if (result) {
           successAlert(
@@ -225,6 +229,7 @@ const CheckoutPage = () => {
         const result = await createOrderRequest(
           orderDataWithShippingAddressAndBillingAddress
         );
+
         if (result) {
           successAlert(
             "Order Placed Successfully! Please check your email. Thank you"

@@ -11,10 +11,9 @@ export const calculateSubTotalAndTotal = (
   otherCost,
   couponDiscount
 ) => {
-  // Ensure inputs are numbers, defaulting to 0 if they are not valid numbers
   const validNumber = (value) => (isNaN(Number(value)) ? 0 : Number(value));
   const validProductQuantity = (value) =>
-    isNaN(Number(value)) ? 1 : Number(value); // Default quantity to 1 if invalid
+    isNaN(Number(value)) ? 1 : Number(value);
 
   const allProductsSubTotal = products.reduce((sum, product) => {
     const quantity = validProductQuantity(
@@ -24,20 +23,18 @@ export const calculateSubTotalAndTotal = (
     return sum + quantity * price;
   }, 0);
 
-  // Apply coupon discount percentage
   const saveAmount = allProductsSubTotal * (validNumber(couponDiscount) / 100);
-
-  // Calculate total price including shipping cost, other cost, and discounts
   const totalPrice =
     allProductsSubTotal +
     validNumber(shippingCost) +
     validNumber(otherCost) -
     saveAmount;
 
+  // Format all amounts to 3 decimal places
   return {
-    allProductsSubTotal,
-    totalPrice,
-    saveAmount,
+    allProductsSubTotal: allProductsSubTotal.toFixed(3),
+    totalPrice: totalPrice.toFixed(3),
+    saveAmount: saveAmount.toFixed(3),
   };
 };
 

@@ -73,16 +73,18 @@ const Searchbar = ({ searchbarOpen, handleSearchbar }) => {
   return (
     <>
       <div
-        className={`fixed xxs:top-20 bg-white ${
-          scrollPosition > 40 ? "top-[85px]" : "top-[125px]"
-        }  px-4 inset-0 overflow-hidden z-50 `}
+        className={`fixed  bg-white ${
+          scrollPosition > 40
+            ? "top-[85px] xxs:top-[95px]"
+            : "top-[120px] xxs:top-[50px]"
+        }  md:pr-4 inset-0 overflow-hidden z-50 `}
       >
         {/* Content above the overlay */}
         <div className={`absolute bottom-0 left-0 w-full h-[0vh] `}></div>
 
         <div
           className={`mx-auto ${
-            scrollPosition > 40 ? "p-2" : "py-0 border-t"
+            scrollPosition > 40 ? "p-2" : "p-0 border-t"
           }   `}
         >
           {/* Set width to screen width */}
@@ -115,7 +117,9 @@ const Searchbar = ({ searchbarOpen, handleSearchbar }) => {
                           id={product?._id}
                           img={`${product?.img?.slice(-1)[0]?.secure_url}`}
                           productName={product?.name}
-                          price={product?.finalPrice}
+                          quantity={product?.quantity}
+                          finalPrice={product?.finalPrice}
+                          price={product?.price}
                         />
                       </div>
                     ))}
@@ -124,33 +128,35 @@ const Searchbar = ({ searchbarOpen, handleSearchbar }) => {
                   <div className=" lg:block hidden">
                     {products?.map((product) => (
                       <div key={product?._id} onClick={handleSearchbar}>
-                        <div className="flex gap-5 pb-3 items-center cursor-pointer px-4">
-                          <img
-                            src={`${product?.img?.slice(-1)[0]?.secure_url}`}
-                            className="w-10 h-10 rounded"
-                          />
-                          <div>
-                            <h2 className="text-black  leading-6 text-sm">
-                              {products?.name?.length > 50 ? (
-                                <>{product?.name.slice(0, 50)} ...</>
-                              ) : (
-                                product?.name
-                              )}
-                            </h2>
-                            <h3 className="text-black  text-[12px] ">
-                              <PriceConverterByCountry
-                                price={product?.finalPrice}
-                              />
-
-                              <span className="ml-5 text-[11px] line-through text-red-600">
-                                {" "}
+                        <Link to={`/product-details/${product?._id}`}>
+                          <div className="flex gap-5 pb-3 items-center cursor-pointer px-4">
+                            <img
+                              src={`${product?.img?.slice(-1)[0]?.secure_url}`}
+                              className="w-10 h-10 rounded"
+                            />
+                            <div>
+                              <h2 className="text-black  leading-6 text-sm">
+                                {products?.name?.length > 50 ? (
+                                  <>{product?.name.slice(0, 50)} ...</>
+                                ) : (
+                                  product?.name
+                                )}
+                              </h2>
+                              <h3 className="  text-[12px] text-red-600 ">
                                 <PriceConverterByCountry
-                                  price={product?.price}
+                                  price={product?.finalPrice}
                                 />
-                              </span>
-                            </h3>
+
+                                <span className="ml-5 text-[11px] line-through text-black ">
+                                  {" "}
+                                  <PriceConverterByCountry
+                                    price={product?.price}
+                                  />
+                                </span>
+                              </h3>
+                            </div>
                           </div>
-                        </div>
+                        </Link>
                       </div>
                     ))}
                   </div>
@@ -162,7 +168,13 @@ const Searchbar = ({ searchbarOpen, handleSearchbar }) => {
                   </div>
                 </>
               ) : (
-                <>{<NoProductFound />}</>
+                <>
+                  {searchTerm !== "" &&
+                  products.length === 0 &&
+                  loading === false ? (
+                    <NoProductFound />
+                  ) : null}
+                </>
               )}
             </div>
           </div>

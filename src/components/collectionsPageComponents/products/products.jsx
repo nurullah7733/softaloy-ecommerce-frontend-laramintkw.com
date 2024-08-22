@@ -41,8 +41,10 @@ const Products = () => {
                     <Fragment key={product?._id}>
                       <Product
                         id={product?._id}
+                        quantity={product?.quantity}
                         productName={product?.name}
-                        price={product?.finalPrice}
+                        finalPrice={product?.finalPrice}
+                        price={product?.price}
                         img={product?.img?.slice(-1)[0]?.secure_url}
                       />
                     </Fragment>

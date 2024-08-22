@@ -36,8 +36,10 @@ const NewArrivals = () => {
                       <Product
                         img={item?.img[0]?.secure_url}
                         id={item?._id}
+                        quantity={item?.quantity}
                         productName={item?.name}
-                        price={item?.finalPrice}
+                        finalPrice={item?.finalPrice}
+                        price={item?.price}
                       />
                     </Fragment>
                   ))}

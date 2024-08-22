@@ -66,8 +66,13 @@ const ProductDetails = () => {
                   <h1 className="py-5 text-xl font-semibold text-gray-600 uppercase">
                     {productDetails[0]?.name}
                   </h1>
-                  <div className="flex gap-3 mb-6 items-center">
-                    <h4 className="text-gray-600 uppercase">
+                  <div className={`flex gap-3 mb-6 items-center`}>
+                    <h4
+                      className={`uppercase  ${
+                        productDetails[0]?.finalPrice !==
+                          productDetails[0]?.price && "text-red-600"
+                      }`}
+                    >
                       <PriceConverterByCountry
                         price={productDetails[0]?.finalPrice}
                       />

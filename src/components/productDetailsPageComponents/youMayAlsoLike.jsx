@@ -23,8 +23,10 @@ const YouMayAlsoLike = ({ relatedProductsFilterWithoutMainProductById }) => {
                 <Product
                   img={product?.img?.slice(-1)[0]?.secure_url}
                   id={product?._id}
+                  quantity={product?.quantity}
                   productName={product?.name}
-                  price={product?.finalPrice}
+                  finalPrice={product?.finalPrice}
+                  price={product?.price}
                 />
               </Fragment>
             ))}

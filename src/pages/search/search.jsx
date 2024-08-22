@@ -129,9 +129,11 @@ const SearchPage = () => {
                   <Fragment key={product?._id}>
                     <Product
                       id={product?._id}
+                      quantity={product?.quantity}
                       img={`${product?.img?.slice(-1)[0]?.secure_url}`}
                       productName={product?.name}
-                      price={product?.finalPrice}
+                      finalPrice={product?.finalPrice}
+                      price={product?.price}
                     />
                   </Fragment>
                 ))}
