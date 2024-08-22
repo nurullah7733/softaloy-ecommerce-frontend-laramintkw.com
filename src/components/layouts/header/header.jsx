@@ -203,7 +203,7 @@ const Header = () => {
               <RxHamburgerMenu size={20} />
             </button>
           </div>
-          <div className="xl:mr-0 mr-[235px] md:-mt-1 ">
+          <div className="xl:mr-0 mr-[180px] md:-mt-1 ">
             <Link to="/">
               <img
                 src="/laramint-logo.jpeg"
@@ -222,7 +222,9 @@ const Header = () => {
                   {token?.length > 0 && token ? (
                     <img
                       src={getUserData()?.photo[0]?.secure_url}
-                      className="w-7 h-7 rounded-full cursor-pointer"
+                      className={`${
+                        useWindowSize().width > 600 ? "w-7 h-7 " : "w-5 h-5 "
+                      }   rounded-full cursor-pointer`}
                     />
                   ) : (
                     <LuUser2
@@ -299,7 +301,7 @@ const Header = () => {
                         ?.secure_url
                     }
                     className={`${
-                      useWindowSize().width > 490 ? "w-8 h-6" : "w-6 h-5"
+                      useWindowSize().width > 490 ? "w-8 h-6" : "w-6 h-[18px]"
                     } `}
                   />
                 )}
