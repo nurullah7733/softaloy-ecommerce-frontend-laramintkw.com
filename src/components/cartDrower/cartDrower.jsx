@@ -80,9 +80,10 @@ const CartDrower = () => {
                       <div>
                         <ButtonProductsIncreaseAndDecrease
                           productId={product?._id}
-                          customerChoiceProductQuantity={
-                            product?.customerChoiceProductQuantity
-                          }
+                          maxQuantity={product?.quantity}
+                          // customerChoiceProductQuantity={
+                          //   product?.customerChoiceProductQuantity
+                          // }
                           width={100}
                           height={40}
                         />

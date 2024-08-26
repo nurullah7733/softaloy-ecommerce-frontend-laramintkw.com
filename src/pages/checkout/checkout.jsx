@@ -261,7 +261,7 @@ const CheckoutPage = () => {
               disabled={loadingCreateOrder}
               className="bg-[#454545] text-white w-full py-3 rounded-md font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loadingCreateOrder ? "Loading..." : "Pay Now"}
+              {loadingCreateOrder ? "Loading..." : "Confirm Order"}
             </button>
           </div>
         </div>
@@ -275,7 +275,7 @@ const CheckoutPage = () => {
           disabled={loadingCreateOrder}
           className="bg-[#454545] text-white w-full py-3 rounded-md font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loadingCreateOrder ? "Loading..." : "Pay Now"}
+          {loadingCreateOrder ? "Loading..." : "Confirm Order"}
         </button>
       </div>
     </div>

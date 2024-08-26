@@ -34,6 +34,7 @@ import ReturnOrderPage from "./pages/user-dashboard/returnOrderPage";
 import CancelOrderPage from "./pages/user-dashboard/cancelOrderPage";
 import FailPayment from "./pages/payment/failPayment";
 import SuccessPayment from "./pages/payment/successPayment";
+import WhatsappChat from "./components/common/whatsappChat/whatsappChat";
 
 const ProtectedRoute = ({ children }) => {
   const token = getToken();
@@ -160,6 +161,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <WhatsappChat />
     </Provider>
   );
 }

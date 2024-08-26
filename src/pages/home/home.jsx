@@ -7,6 +7,7 @@ import NewArrivals from "../../components/HomePageComponents/newArrivals/newArri
 import { getAddToCartInLocalStorage } from "../../../utils/sessionHelper/sessionHelper";
 import store from "../../../redux/store";
 import { setAddToCartFromLocalStorage } from "../../../redux/features/addToCartSlice/addToCartSlice";
+import MainSliderForMobile from "../../components/HomePageComponents/mainSliderForMobile/sliderForMobile";
 
 const HomePage = () => {
   const AddToCartInLocalStorage = getAddToCartInLocalStorage();
@@ -18,8 +19,11 @@ const HomePage = () => {
 
   return (
     <div>
-      <div className="z-[-1px] ">
+      <div className="z-[-1px] block  sm:hidden">
         <MainSlider />
+      </div>
+      <div className="z-[-1px] hidden sm:block ">
+        <MainSliderForMobile />
       </div>
       <Brands />
       <BestSales />

@@ -40,6 +40,7 @@ export const calculateSubTotalAndTotal = (
 
 const initialState = {
   products: [],
+  productQuantities: {}, // Temporary product quantities
   couponDiscount: 0,
   saveAmount: 0,
   shippingCost: 0,
@@ -53,10 +54,25 @@ const addToCartProductsSlice = createSlice({
   initialState,
   reducers: {
     setAddToCart(state, actions) {
-      state.products.push(actions.payload);
-      //   upsert in local storage
+      const productId = actions.payload._id;
+      const existingProduct = state.products.find(
+        (product) => product._id === productId
+      );
+
+      if (existingProduct) {
+        existingProduct.customerChoiceProductQuantity +=
+          state.productQuantities[productId] || 1;
+      } else {
+        actions.payload.customerChoiceProductQuantity =
+          state.productQuantities[productId] || 1;
+        state.products.push(actions.payload);
+      }
+
+      // Reset temporary quantity
+      delete state.productQuantities[productId];
+
+      // Upsert in local storage and update totals
       setAddToCartInLocalStorage(state.products);
-      // update sub total & total
       const { allProductsSubTotal, totalPrice, saveAmount } =
         calculateSubTotalAndTotal(
           state.products,
@@ -64,61 +80,27 @@ const addToCartProductsSlice = createSlice({
           state.otherCost,
           state.couponDiscount
         );
-
       state.allProductsSubTotal = allProductsSubTotal;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;
     },
 
     increaseQuantity(state, actions) {
-      state.products.find((product) => {
-        if (product._id === actions.payload) {
-          product.customerChoiceProductQuantity++;
-          // update sub total & total
-          const { allProductsSubTotal, totalPrice, saveAmount } =
-            calculateSubTotalAndTotal(
-              state.products,
-              state.shippingCost,
-              state.otherCost,
-              state.couponDiscount
-            );
-          //   upsert in local storage
-          setAddToCartInLocalStorage(state.products);
-          state.allProductsSubTotal = allProductsSubTotal;
-          state.totalPrice = totalPrice;
-          state.saveAmount = saveAmount;
-        }
-      });
-    },
-    decreaseQuantity(state, actions) {
-      state.products.find((product) => {
-        if (product._id === actions.payload) {
-          if (product.customerChoiceProductQuantity > 1) {
-            product.customerChoiceProductQuantity--;
-            // update sub total & total
-            const { allProductsSubTotal, totalPrice, saveAmount } =
-              calculateSubTotalAndTotal(
-                state.products,
-                state.shippingCost,
-                state.otherCost,
-                state.couponDiscount
-              );
-            //   upsert in local storage
-            setAddToCartInLocalStorage(state.products);
-
-            state.allProductsSubTotal = allProductsSubTotal;
-            state.totalPrice = totalPrice;
-            state.saveAmount = saveAmount;
-          }
-        }
-      });
-    },
-
-    removeProductFromCarts(state, actions) {
-      state.products = state.products.filter(
-        (product) => product._id !== actions.payload
+      const productId = actions.payload;
+      const productInCart = state.products.find(
+        (product) => product._id === productId
       );
-      // update sub total & total
+
+      if (productInCart) {
+        productInCart.customerChoiceProductQuantity++;
+      } else {
+        if (!state.productQuantities[productId]) {
+          state.productQuantities[productId] = 1;
+        }
+        state.productQuantities[productId]++;
+      }
+
+      // Update subtotal, total, and other calculations
       const { allProductsSubTotal, totalPrice, saveAmount } =
         calculateSubTotalAndTotal(
           state.products,
@@ -126,9 +108,59 @@ const addToCartProductsSlice = createSlice({
           state.otherCost,
           state.couponDiscount
         );
-      //   upsert in local storage
-      setAddToCartInLocalStorage(state.products);
 
+      setAddToCartInLocalStorage(state.products);
+      state.allProductsSubTotal = allProductsSubTotal;
+      state.totalPrice = totalPrice;
+      state.saveAmount = saveAmount;
+    },
+
+    decreaseQuantity(state, actions) {
+      const productId = actions.payload;
+      const productInCart = state.products.find(
+        (product) => product._id === productId
+      );
+
+      if (productInCart) {
+        if (productInCart.customerChoiceProductQuantity > 1) {
+          productInCart.customerChoiceProductQuantity--;
+        }
+      } else {
+        if (
+          state.productQuantities[productId] &&
+          state.productQuantities[productId] > 1
+        ) {
+          state.productQuantities[productId]--;
+        }
+      }
+
+      // Update subtotal, total, and other calculations
+      const { allProductsSubTotal, totalPrice, saveAmount } =
+        calculateSubTotalAndTotal(
+          state.products,
+          state.shippingCost,
+          state.otherCost,
+          state.couponDiscount
+        );
+
+      setAddToCartInLocalStorage(state.products);
+      state.allProductsSubTotal = allProductsSubTotal;
+      state.totalPrice = totalPrice;
+      state.saveAmount = saveAmount;
+    },
+
+    removeProductFromCarts(state, actions) {
+      state.products = state.products.filter(
+        (product) => product._id !== actions.payload
+      );
+      const { allProductsSubTotal, totalPrice, saveAmount } =
+        calculateSubTotalAndTotal(
+          state.products,
+          state.shippingCost,
+          state.otherCost,
+          state.couponDiscount
+        );
+      setAddToCartInLocalStorage(state.products);
       state.allProductsSubTotal = allProductsSubTotal;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;
@@ -136,7 +168,6 @@ const addToCartProductsSlice = createSlice({
 
     setDiscountCoupon(state, actions) {
       state.couponDiscount = actions.payload;
-      // update sub total & total
       const { allProductsSubTotal, totalPrice, saveAmount } =
         calculateSubTotalAndTotal(
           state.products,
@@ -144,9 +175,7 @@ const addToCartProductsSlice = createSlice({
           state.otherCost,
           state.couponDiscount
         );
-      //   upsert in local storage
       setAddToCartInLocalStorage(state.products);
-
       state.allProductsSubTotal = allProductsSubTotal;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;
@@ -154,7 +183,6 @@ const addToCartProductsSlice = createSlice({
 
     setShippingCost(state, actions) {
       state.shippingCost = actions.payload;
-      // update sub total & total
       const { allProductsSubTotal, totalPrice, saveAmount } =
         calculateSubTotalAndTotal(
           state.products,
@@ -162,17 +190,14 @@ const addToCartProductsSlice = createSlice({
           state.otherCost,
           state.couponDiscount
         );
-
-      //   upsert in local storage
       setAddToCartInLocalStorage(state.products);
-
       state.allProductsSubTotal = allProductsSubTotal;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;
     },
+
     setOtherCost(state, actions) {
       state.otherCost = actions.payload;
-      // update sub total & total
       const { allProductsSubTotal, totalPrice, saveAmount } =
         calculateSubTotalAndTotal(
           state.products,
@@ -180,15 +205,12 @@ const addToCartProductsSlice = createSlice({
           state.otherCost,
           state.couponDiscount
         );
-      //   upsert in local storage
       setAddToCartInLocalStorage(state.products);
-
       state.allProductsSubTotal = allProductsSubTotal;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;
     },
 
-    // set add to cart products from localstroge
     setAddToCartFromLocalStorage(state, actions) {
       state.products = actions.payload;
       const { allProductsSubTotal, totalPrice, saveAmount } =
@@ -198,9 +220,7 @@ const addToCartProductsSlice = createSlice({
           state.otherCost,
           state.couponDiscount
         );
-      //   upsert in local storage
       setAddToCartInLocalStorage(state.products);
-
       state.allProductsSubTotal = allProductsSubTotal;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;

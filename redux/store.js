@@ -4,6 +4,7 @@ import bestSalesSlice from "./features/bestSalesSlice/bestSalesSlice";
 import trendingProductsSlice from "./features/trendingProductsSlice/trendingProductsSlice";
 import newProductsSlice from "./features/newProductsSlice/newProductsSlice";
 import mainSlidersSlice from "./features/getMainSliders/getMainSliders";
+import mainSlidersForMobileSlice from "./features/getMainSlidersForMobile/getMainSlidersForMobile";
 import brandsSlice from "./features/getBrands/getBrands";
 import getCategorySlice from "./features/getCategorySlice/getCategorySlice";
 import megaMenuProductsSlice from "./features/megaMenuProductsSlice/megaMenuProductsSlice";
@@ -24,6 +25,7 @@ export default configureStore({
     trendingProducts: trendingProductsSlice,
     newProducts: newProductsSlice,
     mainSliders: mainSlidersSlice,
+    mainSlidersForMobile: mainSlidersForMobileSlice,
     brands: brandsSlice,
     categories: getCategorySlice,
     megaMenuProducts: megaMenuProductsSlice,

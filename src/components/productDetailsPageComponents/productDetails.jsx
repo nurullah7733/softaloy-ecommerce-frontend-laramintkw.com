@@ -20,15 +20,15 @@ const ProductDetails = () => {
   const { loading, productDetails } = useSelector(
     (state) => state.productDetails
   );
-  const addTocartProducts = useSelector((state) => state.addToCarts.products);
+  const { products } = useSelector((state) => state.addToCarts);
 
   const handleAddToCart = () => {
     const product = { ...productDetails[0], customerChoiceProductQuantity: 1 };
     store.dispatch(setAddToCart(product));
   };
 
-  // conditionally rendering cart button and product order quantity
-  let exitsProducts = addTocartProducts?.find(
+  // conditionally rendering add to cart button or added to cart  and product order quantity
+  let exitsProducts = products?.find(
     (prod) => prod?._id === productDetails[0]?._id
   );
 
@@ -182,11 +182,12 @@ const ProductDetails = () => {
                   <div className="py-5">
                     <ButtonProductsIncreaseAndDecrease
                       productId={productDetails[0]?._id}
-                      customerChoiceProductQuantity={
-                        exitsProducts === undefined
-                          ? 1
-                          : exitsProducts?.customerChoiceProductQuantity
-                      }
+                      maxQuantity={productDetails[0]?.quantity}
+                      // customerChoiceProductQuantity={
+                      //   exitsProducts === undefined
+                      //     ? 1
+                      //     : exitsProducts?.customerChoiceProductQuantity
+                      // }
                       width="140px"
                       height="45px"
                     />
