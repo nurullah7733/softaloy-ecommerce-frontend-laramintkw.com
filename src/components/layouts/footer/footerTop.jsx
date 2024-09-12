@@ -36,7 +36,7 @@ const FooterTop = () => {
           <PiPhoneThin size={40} />
           <div>
             <h2 className="text-sm text-gray-400">Phone Support</h2>
-            <p className="mt-2">+965 60010797</p>
+            <p className="mt-2">+965 50073108</p>
           </div>
         </div>
 

@@ -102,6 +102,7 @@ const Header = () => {
                     </p>
                   </div>
                 </div>
+
                 {/* mega menu 1 */}
                 {category?.subCategories?.length > 0 &&
                   ignoreBlankMegaMenuWhenMegaMenuIsEmpty > 0 && (
@@ -193,6 +194,11 @@ const Header = () => {
                   )}
               </div>
             ))}
+            <p className="uppercase text-sm mt-8 ">
+              <Link to={`/offers?pageNo=1&perPage=30&searchKeyword=0`}>
+                {"Offers"}
+              </Link>
+            </p>
           </div>
           {/*  Hamburger */}
           <div className="xl:block hidden ">

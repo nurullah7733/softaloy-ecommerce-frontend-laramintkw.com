@@ -120,6 +120,7 @@ const Searchbar = ({ searchbarOpen, handleSearchbar }) => {
                           quantity={product?.quantity}
                           finalPrice={product?.finalPrice}
                           price={product?.price}
+                          offers={product?.offers}
                         />
                       </div>
                     ))}

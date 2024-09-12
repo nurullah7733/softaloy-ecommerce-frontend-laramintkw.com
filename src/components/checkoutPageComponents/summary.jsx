@@ -78,7 +78,11 @@ const Summary = () => {
                     <p className="text-sm text-gray-600">{item?.name}</p>
                   </div>
                   <div className=" text-sm text-gray-600 w-32">
-                    <p className="text-[12px] line-through">
+                    <p
+                      className={`text-[12px] line-through !text-red-600 ${
+                        item?.price !== item?.finalPrice ? "block" : "hidden"
+                      }`}
+                    >
                       <PriceConverterByCountry price={item?.price} />
                     </p>
                     <p>
@@ -117,6 +121,12 @@ const Summary = () => {
               <p className="text-gray-600">Subtotal</p>
               <p className="text-gray-600">
                 <PriceConverterByCountry price={allProductsSubTotal} />
+              </p>
+            </div>
+            <div className="flex justify-between pb-2">
+              <p className="text-gray-600">Save Amount</p>
+              <p className="text-gray-600">
+                <PriceConverterByCountry price={saveAmount} />
               </p>
             </div>
 

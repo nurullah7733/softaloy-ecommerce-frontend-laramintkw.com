@@ -27,6 +27,7 @@ const YouMayAlsoLike = ({ relatedProductsFilterWithoutMainProductById }) => {
                   productName={product?.name}
                   finalPrice={product?.finalPrice}
                   price={product?.price}
+                  offers={product?.offers}
                 />
               </Fragment>
             ))}

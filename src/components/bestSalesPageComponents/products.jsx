@@ -42,6 +42,7 @@ const Products = () => {
                         productName={product?.name}
                         finalPrice={product?.finalPrice}
                         price={product?.price}
+                        offers={product?.offers}
                         img={product?.img?.slice(-1)[0]?.secure_url}
                       />
                     </Fragment>

@@ -6,13 +6,13 @@ const WhatsappChat = () => {
       <a
         aria-label="Chat on WhatsApp"
         target="_blank"
-        href="https://wa.me/+8801739162420?text=Hi"
+        href="https://wa.me/+96550073108?text=Hi"
         style={{
           position: "fixed",
           padding: "5px 5px",
 
           fontSize: "20px",
-          bottom: "60px",
+          bottom: "30px",
           right: "-3px",
 
           color: "#fff",

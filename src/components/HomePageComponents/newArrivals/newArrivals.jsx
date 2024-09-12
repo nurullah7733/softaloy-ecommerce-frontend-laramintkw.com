@@ -40,6 +40,7 @@ const NewArrivals = () => {
                         productName={item?.name}
                         finalPrice={item?.finalPrice}
                         price={item?.price}
+                        offers={item?.offers}
                       />
                     </Fragment>
                   ))}

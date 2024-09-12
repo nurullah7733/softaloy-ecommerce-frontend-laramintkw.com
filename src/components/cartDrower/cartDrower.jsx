@@ -71,7 +71,13 @@ const CartDrower = () => {
                           />
                         }
 
-                        <span className="line-through pl-2">
+                        <span
+                          className={`line-through pl-2 text-red-600 ${
+                            product?.price !== product?.finalPrice
+                              ? "block"
+                              : "hidden"
+                          }`}
+                        >
                           {<PriceConverterByCountry price={product?.price} />}
                         </span>
                       </p>

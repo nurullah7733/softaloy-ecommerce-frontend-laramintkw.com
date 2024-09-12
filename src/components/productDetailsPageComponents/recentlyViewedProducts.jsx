@@ -29,6 +29,7 @@ const RecentlyViewedProducts = () => {
                   productName={product?.name}
                   finalPrice={product?.finalPrice}
                   price={product?.price}
+                  offers={product?.offers}
                 />
               </Fragment>
             ))}

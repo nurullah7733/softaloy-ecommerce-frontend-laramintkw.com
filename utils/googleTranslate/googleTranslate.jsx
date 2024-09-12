@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import "./GoogleTranslate.css"; // Import the CSS file
 
 const GoogleTranslate = () => {
   const googleTranslateRef = useRef(null);
@@ -22,8 +23,8 @@ const GoogleTranslate = () => {
         new window.google.translate.TranslateElement(
           {
             pageLanguage: "en",
-            includedLanguages: "en,ar,hi", // include this for selected languages
-            autoDisplay: false,
+            includedLanguages: "en,fr,ar,hi", // include this for selected languages
+            autoDisplay: true,
           },
           googleTranslateRef.current
         );
@@ -51,7 +52,11 @@ const GoogleTranslate = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  return <div ref={googleTranslateRef}></div>;
+  return (
+    <div className="translate-wrapper">
+      <div ref={googleTranslateRef}></div>
+    </div>
+  );
 };
 
 export default GoogleTranslate;

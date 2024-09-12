@@ -35,6 +35,7 @@ import CancelOrderPage from "./pages/user-dashboard/cancelOrderPage";
 import FailPayment from "./pages/payment/failPayment";
 import SuccessPayment from "./pages/payment/successPayment";
 import WhatsappChat from "./components/common/whatsappChat/whatsappChat";
+import OffersPage from "./pages/offers/offers";
 
 const ProtectedRoute = ({ children }) => {
   const token = getToken();
@@ -55,6 +56,7 @@ function App() {
             />
             <Route path="/best-sales-products" element={<BestSalesPage />} />
             <Route path="/collections" element={<CollectionsPage />} />
+            <Route path="/offers" element={<OffersPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
 
             <Route path="/contact-us" element={<ContactPage />} />

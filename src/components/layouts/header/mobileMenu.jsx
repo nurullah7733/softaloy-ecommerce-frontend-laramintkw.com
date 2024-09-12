@@ -146,6 +146,11 @@ const MobileMenu = ({ mobileMenuOpen, setMobileMenuOpen }) => {
               ))}
             </ul>
           </div>
+          <p className="uppercase text-sm mt-8 ">
+            <Link to={`/offers?pageNo=1&perPage=30&searchKeyword=0`}>
+              {"Offers"}
+            </Link>
+          </p>
         </div>
       </div>
 
