@@ -17,10 +17,14 @@ const WhatsappChat = () => {
 
           color: "#fff",
           textAlign: "center",
-          zIndex: 100,
+          zIndex: 10,
         }}
       >
-        <img alt="Chat on WhatsApp" src="/WhatsAppButtonGreenMedium.svg" />
+        <img
+          alt="Chat on WhatsApp"
+          src="/WhatsAppButtonGreenMedium.svg"
+          width={180}
+        />
       </a>
     </>
   );
