@@ -72,9 +72,12 @@ const ProductDetails = () => {
             <div className="lg:block grid grid-cols-3 lg:w-full xl:max-w-5xl max-w-7xl gap-5">
               <div className="col-span-2">
                 <div className="relative ">
-                  <div className="absolute top-0 left-0 p-2 bg-green-500 text-white shadow-[0_0_10px_0_rgba(0,0,0,0.1)] w-32 h-6 rounded  flex items-center justify-center">
-                    <h2 className="uppercase text-[12px] ">{offerLabel}</h2>
-                  </div>
+                  {offerLabel && (
+                    <div className="absolute top-0 left-0 p-2 bg-green-500 text-white shadow-[0_0_10px_0_rgba(0,0,0,0.1)] w-32 h-6 rounded  flex items-center justify-center">
+                      <h2 className="uppercase text-[12px] ">{offerLabel}</h2>
+                    </div>
+                  )}
+
                   <img
                     alt={productDetails[0]?.name}
                     src={productDetails[0]?.img?.slice(-1)[0]?.secure_url}

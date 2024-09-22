@@ -3,6 +3,10 @@
   bottom: 30px !important;
   left: 550px;
 }
+.slick-slide > div {
+  width: 120% !important; /* Set your custom width here */
+}
+
 @media only screen and (min-width: 700px) and (max-width: 1300px) {
   .slick-dots {
     left: 300px !important;
