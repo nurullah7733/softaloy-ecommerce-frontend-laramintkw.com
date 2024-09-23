@@ -8,6 +8,7 @@ import { getAddToCartInLocalStorage } from "../../../utils/sessionHelper/session
 import store from "../../../redux/store";
 import { setAddToCartFromLocalStorage } from "../../../redux/features/addToCartSlice/addToCartSlice";
 import MainSliderForMobile from "../../components/HomePageComponents/mainSliderForMobile/sliderForMobile";
+import PopupNotification from "../../components/popupNotification/popupNotification";
 
 const HomePage = () => {
   const AddToCartInLocalStorage = getAddToCartInLocalStorage();
@@ -29,6 +30,7 @@ const HomePage = () => {
       <BestSales />
       <TrandingAndRecomended />
       <NewArrivals />
+      <PopupNotification />
     </div>
   );
 };
