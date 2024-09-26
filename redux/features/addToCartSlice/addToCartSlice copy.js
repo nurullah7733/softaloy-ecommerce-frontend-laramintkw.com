@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import {
   setAddToCartInLocalStorage,
   setSubTotalProductsPriceInLocalStorage,
@@ -15,7 +15,6 @@ const calculateSubTotalAndTotal = (
   const validProductQuantity = (value) =>
     isNaN(Number(value)) ? 1 : Number(value);
 
-  let allProductsSubTotalBeforeDiscount = 0;
   let allProductsSubTotal = 0;
   let saveAmount = 0;
 
@@ -34,7 +33,6 @@ const calculateSubTotalAndTotal = (
       const paidItems = quantity - freeItems;
       allProductsSubTotal += paidItems * price;
       saveAmount += freeItems * price;
-      allProductsSubTotalBeforeDiscount += quantity * price;
     }
     // Handling B2G1 offer for individual products
     else if (product?.offers?.isEachProductB2G1 && quantity >= 3) {
@@ -42,7 +40,6 @@ const calculateSubTotalAndTotal = (
       const paidItems = quantity - freeItems;
       allProductsSubTotal += paidItems * price;
       saveAmount += freeItems * price;
-      allProductsSubTotalBeforeDiscount += quantity * price;
     }
     // Push category/brand B1G1 products to list
     else if (product?.offers?.isCategoryBrandB1G1) {
@@ -55,7 +52,6 @@ const calculateSubTotalAndTotal = (
     // Regular product calculation
     else {
       allProductsSubTotal += quantity * price;
-      allProductsSubTotalBeforeDiscount += quantity * price;
     }
   });
 
@@ -68,28 +64,17 @@ const calculateSubTotalAndTotal = (
     const paidProduct = categoryBrandB1G1Products[0]; // Most expensive product
     const freeProduct = categoryBrandB1G1Products[1]; // Least expensive product
 
-    const paidProductQuantity = validProductQuantity(
-      paidProduct?.customerChoiceProductQuantity
-    );
-    const freeProductQuantity = validProductQuantity(
-      freeProduct?.customerChoiceProductQuantity
-    );
-
     allProductsSubTotal +=
-      paidProductQuantity * validNumber(paidProduct.finalPrice);
-    allProductsSubTotalBeforeDiscount +=
-      paidProductQuantity * validNumber(paidProduct.finalPrice);
+      validProductQuantity(paidProduct?.customerChoiceProductQuantity) *
+      validNumber(paidProduct.finalPrice);
 
-    if (freeProductQuantity > 1) {
+    if (validProductQuantity(freeProduct?.customerChoiceProductQuantity) > 1) {
       saveAmount += validNumber(freeProduct.finalPrice); // Only one product free
       allProductsSubTotal +=
-        (freeProductQuantity - 1) * validNumber(freeProduct.finalPrice); // Charge for the remaining items
-      allProductsSubTotalBeforeDiscount +=
-        freeProductQuantity * validNumber(freeProduct.finalPrice);
+        (validProductQuantity(freeProduct?.customerChoiceProductQuantity) - 1) *
+        validNumber(freeProduct.finalPrice); // Charge for the remaining items
     } else {
       saveAmount += validNumber(freeProduct.finalPrice); // If only one free product
-      allProductsSubTotalBeforeDiscount +=
-        freeProductQuantity * validNumber(freeProduct.finalPrice);
     }
   } else if (categoryBrandB1G1Products.length === 1) {
     const singleProduct = categoryBrandB1G1Products[0];
@@ -103,18 +88,14 @@ const calculateSubTotalAndTotal = (
       const paidItems = quantity - freeItems;
       allProductsSubTotal += paidItems * validNumber(singleProduct.finalPrice);
       saveAmount += freeItems * validNumber(singleProduct.finalPrice);
-      allProductsSubTotalBeforeDiscount +=
-        quantity * validNumber(singleProduct.finalPrice);
     } else {
       allProductsSubTotal += quantity * validNumber(singleProduct.finalPrice);
-      allProductsSubTotalBeforeDiscount +=
-        quantity * validNumber(singleProduct.finalPrice);
     }
   }
 
   // Handle isCategoryBrandB2G1 offer (same or different products)
-
   if (categoryBrandB2G1Products.length > 0) {
+    // Sort by price, ascending (cheapest first)
     categoryBrandB2G1Products.sort(
       (a, b) => validNumber(a.finalPrice) - validNumber(b.finalPrice)
     );
@@ -133,22 +114,21 @@ const calculateSubTotalAndTotal = (
       );
       const price = validNumber(product.finalPrice);
 
-      // Add full price for all products (including free products) to allProductsSubTotalBeforeDiscount
-      allProductsSubTotalBeforeDiscount += quantity * price;
-
       if (freeProductsCount > 0) {
         if (quantity <= freeProductsCount) {
-          saveAmount += quantity * price; // All quantity of this product is free
+          // If all quantity of this product is free
+          saveAmount += quantity * price;
           freeProductsCount -= quantity;
         } else {
-          saveAmount += freeProductsCount * price; // Some quantity of this product is free
+          // Some quantity of this product is free, the rest are charged
+          saveAmount += freeProductsCount * price;
 
-          // Add paid products to allProductsSubTotal (those that are not free)
           allProductsSubTotal += (quantity - freeProductsCount) * price;
+
           freeProductsCount = 0;
         }
       } else {
-        // If no free products left, add all products to allProductsSubTotal
+        // All products are charged if no more free products are left
         allProductsSubTotal += quantity * price;
       }
     });
@@ -161,8 +141,6 @@ const calculateSubTotalAndTotal = (
     validNumber(couponDiscount);
 
   return {
-    allProductsSubTotalBeforeDiscount:
-      allProductsSubTotalBeforeDiscount.toFixed(3),
     allProductsSubTotal: allProductsSubTotal.toFixed(3),
     totalPrice: totalPrice.toFixed(3),
     saveAmount: saveAmount.toFixed(3),
@@ -177,7 +155,6 @@ const initialState = {
   shippingCost: 0,
   otherCost: 0,
   allProductsSubTotal: 0,
-  allProductsSubTotalBeforeDiscount: 0,
   totalPrice: 0,
 };
 
@@ -200,24 +177,20 @@ const addToCartProductsSlice = createSlice({
         state.products.push(actions.payload);
       }
 
+      // Reset temporary quantity
       delete state.productQuantities[productId];
 
+      // Upsert in local storage and update totals
       setAddToCartInLocalStorage(state.products);
 
-      const {
-        allProductsSubTotalBeforeDiscount,
-        allProductsSubTotal,
-        totalPrice,
-        saveAmount,
-      } = calculateSubTotalAndTotal(
-        state.products || [],
-        state.shippingCost || 0,
-        state.otherCost || 0,
-        state.couponDiscount || 0
-      );
+      const { allProductsSubTotal, totalPrice, saveAmount } =
+        calculateSubTotalAndTotal(
+          state.products || [],
+          state.shippingCost || 0,
+          state.otherCost || 0,
+          state.couponDiscount || 0
+        );
       state.allProductsSubTotal = allProductsSubTotal;
-      state.allProductsSubTotalBeforeDiscount =
-        allProductsSubTotalBeforeDiscount;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;
     },
@@ -237,22 +210,17 @@ const addToCartProductsSlice = createSlice({
         state.productQuantities[productId]++;
       }
 
-      const {
-        allProductsSubTotal,
-        allProductsSubTotalBeforeDiscount,
-        totalPrice,
-        saveAmount,
-      } = calculateSubTotalAndTotal(
-        state.products || [],
-        state.shippingCost || 0,
-        state.otherCost || 0,
-        state.couponDiscount || 0
-      );
+      // Update subtotal, total, and other calculations
+      const { allProductsSubTotal, totalPrice, saveAmount } =
+        calculateSubTotalAndTotal(
+          state.products || [],
+          state.shippingCost || 0,
+          state.otherCost || 0,
+          state.couponDiscount || 0
+        );
 
       setAddToCartInLocalStorage(state.products);
       state.allProductsSubTotal = allProductsSubTotal;
-      state.allProductsSubTotalBeforeDiscount =
-        allProductsSubTotalBeforeDiscount;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;
     },
@@ -263,26 +231,30 @@ const addToCartProductsSlice = createSlice({
         (product) => product._id === productId
       );
 
-      if (productInCart && productInCart.customerChoiceProductQuantity > 1) {
-        productInCart.customerChoiceProductQuantity--;
+      if (productInCart) {
+        if (productInCart.customerChoiceProductQuantity > 1) {
+          productInCart.customerChoiceProductQuantity--;
+        }
+      } else {
+        if (
+          state.productQuantities[productId] &&
+          state.productQuantities[productId] > 1
+        ) {
+          state.productQuantities[productId]--;
+        }
       }
 
-      const {
-        allProductsSubTotal,
-        allProductsSubTotalBeforeDiscount,
-        totalPrice,
-        saveAmount,
-      } = calculateSubTotalAndTotal(
-        state.products || [],
-        state.shippingCost || 0,
-        state.otherCost || 0,
-        state.couponDiscount || 0
-      );
+      // Update subtotal, total, and other calculations
+      const { allProductsSubTotal, totalPrice, saveAmount } =
+        calculateSubTotalAndTotal(
+          state.products || [],
+          state.shippingCost || 0,
+          state.otherCost || 0,
+          state.couponDiscount || 0
+        );
 
       setAddToCartInLocalStorage(state.products);
       state.allProductsSubTotal = allProductsSubTotal;
-      state.allProductsSubTotalBeforeDiscount =
-        allProductsSubTotalBeforeDiscount;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;
     },
@@ -291,42 +263,30 @@ const addToCartProductsSlice = createSlice({
       state.products = state.products.filter(
         (product) => product._id !== actions.payload
       );
-      const {
-        allProductsSubTotal,
-        allProductsSubTotalBeforeDiscount,
-        totalPrice,
-        saveAmount,
-      } = calculateSubTotalAndTotal(
-        state.products || [],
-        state.shippingCost || 0,
-        state.otherCost || 0,
-        state.couponDiscount || 0
-      );
+      const { allProductsSubTotal, totalPrice, saveAmount } =
+        calculateSubTotalAndTotal(
+          state.products || [],
+          state.shippingCost || 0,
+          state.otherCost || 0,
+          state.couponDiscount || 0
+        );
       setAddToCartInLocalStorage(state.products);
       state.allProductsSubTotal = allProductsSubTotal;
       state.totalPrice = totalPrice;
-      state.allProductsSubTotalBeforeDiscount =
-        allProductsSubTotalBeforeDiscount;
       state.saveAmount = saveAmount;
     },
 
     setDiscountCoupon(state, actions) {
       state.couponDiscount = actions.payload;
-      const {
-        allProductsSubTotal,
-        allProductsSubTotalBeforeDiscount,
-        totalPrice,
-        saveAmount,
-      } = calculateSubTotalAndTotal(
-        state.products || [],
-        state.shippingCost || 0,
-        state.otherCost || 0,
-        state.couponDiscount || 0
-      );
+      const { allProductsSubTotal, totalPrice, saveAmount } =
+        calculateSubTotalAndTotal(
+          state.products || [],
+          state.shippingCost || 0,
+          state.otherCost || 0,
+          state.couponDiscount || 0
+        );
       setAddToCartInLocalStorage(state.products);
       state.allProductsSubTotal = allProductsSubTotal;
-      state.allProductsSubTotalBeforeDiscount =
-        allProductsSubTotalBeforeDiscount;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;
     },
@@ -342,50 +302,37 @@ const addToCartProductsSlice = createSlice({
         );
       setAddToCartInLocalStorage(state.products);
       state.allProductsSubTotal = allProductsSubTotal;
-      state.allProductsSubTotalBeforeDiscount = allProductsSubTotal;
       state.totalPrice = totalPrice;
       state.saveAmount = saveAmount;
     },
 
     setOtherCost(state, actions) {
       state.otherCost = actions.payload;
-      const {
-        allProductsSubTotal,
-        allProductsSubTotalBeforeDiscount,
-        totalPrice,
-        saveAmount,
-      } = calculateSubTotalAndTotal(
-        state.products || [],
-        state.shippingCost || 0,
-        state.otherCost || 0,
-        state.couponDiscount || 0
-      );
+      const { allProductsSubTotal, totalPrice, saveAmount } =
+        calculateSubTotalAndTotal(
+          state.products || [],
+          state.shippingCost || 0,
+          state.otherCost || 0,
+          state.couponDiscount || 0
+        );
       setAddToCartInLocalStorage(state.products);
       state.allProductsSubTotal = allProductsSubTotal;
       state.totalPrice = totalPrice;
-      state.allProductsSubTotalBeforeDiscount =
-        allProductsSubTotalBeforeDiscount;
       state.saveAmount = saveAmount;
     },
 
     setAddToCartFromLocalStorage(state, actions) {
       state.products = actions.payload;
-      const {
-        allProductsSubTotal,
-        allProductsSubTotalBeforeDiscount,
-        totalPrice,
-        saveAmount,
-      } = calculateSubTotalAndTotal(
-        state.products || [],
-        state.shippingCost || 0,
-        state.otherCost || 0,
-        state.couponDiscount || 0
-      );
+      const { allProductsSubTotal, totalPrice, saveAmount } =
+        calculateSubTotalAndTotal(
+          state.products || [],
+          state.shippingCost || 0,
+          state.otherCost || 0,
+          state.couponDiscount || 0
+        );
       setAddToCartInLocalStorage(state.products);
       state.allProductsSubTotal = allProductsSubTotal;
       state.totalPrice = totalPrice;
-      state.allProductsSubTotalBeforeDiscount =
-        allProductsSubTotalBeforeDiscount;
       state.saveAmount = saveAmount;
     },
   },

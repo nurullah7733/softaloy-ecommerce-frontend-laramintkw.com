@@ -12,6 +12,7 @@ import { AddTocartButton, AddedTocartButton } from "../common/cartButton";
 import { setCartSidebarOpen } from "../../../redux/features/sidebarCartsOpen/sidebarCartsOpenSlice";
 import PriceConverterByCountry from "../../../utils/priceConverterByCountry/priceConverterByCountry";
 import addProductToRecentlyViewed from "../../../utils/recentlyViewProduct/recentlyViewProduct";
+import { Link } from "react-router-dom";
 
 const ProductDetails = () => {
   const [selectionDescriptionTab, setSelectionDescriptionTab] =
@@ -114,6 +115,38 @@ const ProductDetails = () => {
                     )}
                   </div>
                 </div>
+                {/* offer label  */}
+                {offerLabel && (
+                  <div className="border rounded-md p-4 mb-5">
+                    <h2 className="uppercase  pb-3">
+                      {productDetails?.[0]?.category?.[0]?.name}{" "}
+                      {offerLabel == "BUY 1 GET 1" ? "B1G1" : "B2G1"}
+                    </h2>
+                    <div className="border border-red-500 p-1 bg-red-100 ">
+                      <p className=" inline ">
+                        This offer is valid for collection of{" "}
+                      </p>
+                      <Link
+                        className="underline uppercase inline"
+                        to={`/offers?pageNo=1&perPage=30&searchKeyword=0&${
+                          offerLabel == "BUY 1 GET 1 (ADD 2)"
+                            ? "each_product_b1g1=true"
+                            : offerLabel == "BUY 2 GET 1 (ADD 3)"
+                            ? "each_product_b2g1=true"
+                            : offerLabel == "BUY 1 GET 1"
+                            ? "brand_or_category_b1g1=true"
+                            : offerLabel == "BUY 2 GET 1"
+                            ? "brand_or_category_b2g1=true"
+                            : "offers"
+                        }`}
+                      >
+                        {productDetails?.[0]?.category?.[0]?.name}{" "}
+                        {offerLabel == "BUY 1 GET 1" ? "B1G1" : "B2G1"} label
+                      </Link>
+                    </div>
+                  </div>
+                )}
+                {console.log(productDetails, "prd")}
                 {/* Tab Description */}
                 <div className="xl:max-w-5xl max-w-7xl mx-auto">
                   <div>

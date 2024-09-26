@@ -17,6 +17,7 @@ const Summary = () => {
   const {
     products,
     allProductsSubTotal,
+    allProductsSubTotalBeforeDiscount,
     couponDiscount,
     saveAmount,
     totalPrice,
@@ -120,13 +121,45 @@ const Summary = () => {
             <div className="flex justify-between pb-2">
               <p className="text-gray-600">Subtotal</p>
               <p className="text-gray-600">
-                <PriceConverterByCountry price={allProductsSubTotal} />
+                <PriceConverterByCountry
+                  price={allProductsSubTotalBeforeDiscount}
+                />
               </p>
             </div>
             <div className="flex justify-between pb-2">
-              <p className="text-gray-600">Save Amount</p>
-              <p className="text-gray-600">
+              <p
+                className={` ${
+                  saveAmount > 0 ? "text-red-600" : "text-gray-600"
+                }`}
+              >
+                Save Amount
+              </p>
+              <p
+                className={` ${
+                  saveAmount > 0 ? "text-red-600" : "text-gray-600"
+                }`}
+              >
                 <PriceConverterByCountry price={saveAmount} />
+              </p>
+            </div>
+            <div className="flex justify-between pb-2">
+              <p
+                className={`text-gray-600 font-semibold border-t w-full ${
+                  allProductsSubTotal == allProductsSubTotalBeforeDiscount
+                    ? "text-gray-600"
+                    : "text-red-600"
+                }`}
+              >
+                Subtotal After Save
+              </p>
+              <p
+                className={` border-t w-full flex justify-end font-semibold ${
+                  allProductsSubTotal == allProductsSubTotalBeforeDiscount
+                    ? "text-gray-600"
+                    : "text-red-600"
+                }`}
+              >
+                <PriceConverterByCountry price={allProductsSubTotal} />
               </p>
             </div>
 
