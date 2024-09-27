@@ -44,12 +44,26 @@ const calculateSubTotalAndTotal = (
       saveAmount += freeItems * price;
       allProductsSubTotalBeforeDiscount += quantity * price;
     }
-    // Push category/brand B1G1 products to list
-    else if (product?.offers?.isCategoryBrandB1G1) {
+    // Push category/brand B1G1 products to list (Ensure same category and brand)
+    else if (
+      product?.offers?.isCategoryBrandB1G1 &&
+      products.every(
+        (p) =>
+          p.category.some((cat) => cat.name === product.category[0]?.name) &&
+          p.brands.some((brand) => brand.name === product.brands[0]?.name)
+      )
+    ) {
       categoryBrandB1G1Products.push(product);
     }
-    // Push category/brand B2G1 products to list
-    else if (product?.offers?.isCategoryBrandB2G1) {
+    // Push category/brand B2G1 products to list (Ensure same category and brand)
+    else if (
+      product?.offers?.isCategoryBrandB2G1 &&
+      products.every(
+        (p) =>
+          p.category.some((cat) => cat.name === product.category[0]?.name) &&
+          p.brands.some((brand) => brand.name === product.brands[0]?.name)
+      )
+    ) {
       categoryBrandB2G1Products.push(product);
     }
     // Regular product calculation
@@ -113,7 +127,6 @@ const calculateSubTotalAndTotal = (
   }
 
   // Handle isCategoryBrandB2G1 offer (same or different products)
-
   if (categoryBrandB2G1Products.length > 0) {
     categoryBrandB2G1Products.sort(
       (a, b) => validNumber(a.finalPrice) - validNumber(b.finalPrice)

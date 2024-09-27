@@ -128,7 +128,9 @@ const ProductDetails = () => {
                       </p>
                       <Link
                         className="underline uppercase inline"
-                        to={`/offers?pageNo=1&perPage=30&searchKeyword=0&${
+                        to={`/offers?pageNo=1&perPage=30&searchKeyword=0&category=${
+                          productDetails?.[0]?.category?.[0]?.name
+                        }&${
                           offerLabel == "BUY 1 GET 1 (ADD 2)"
                             ? "each_product_b1g1=true"
                             : offerLabel == "BUY 2 GET 1 (ADD 3)"
@@ -146,7 +148,7 @@ const ProductDetails = () => {
                     </div>
                   </div>
                 )}
-                {console.log(productDetails, "prd")}
+
                 {/* Tab Description */}
                 <div className="xl:max-w-5xl max-w-7xl mx-auto">
                   <div>

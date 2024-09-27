@@ -11,8 +11,6 @@ export let getPopupNotificationRequest = async () => {
     let URL = baseUrl + "/get-popup-notifications/1/100/0";
     let res = await axios.get(URL, AxiosHeader);
     if (res.data.status === "success" && res?.data?.data[0]?.rows?.length > 0) {
-      console.log(res.data.data);
-
       return res?.data?.data[0]?.rows;
     } else {
       return [];

@@ -203,10 +203,6 @@ const CheckoutPage = () => {
           navigate("/");
         }
       } else {
-        console.log(
-          orderDataWithShippingAddress,
-          "orderDataWithShippingAddress"
-        );
         const result = await createOrderRequest(orderDataWithShippingAddress);
         if (result) {
           successAlert(
