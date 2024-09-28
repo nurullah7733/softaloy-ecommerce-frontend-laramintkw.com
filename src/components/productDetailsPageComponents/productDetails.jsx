@@ -11,7 +11,7 @@ import { setAddToCart } from "../../../redux/features/addToCartSlice/addToCartSl
 import { AddTocartButton, AddedTocartButton } from "../common/cartButton";
 import { setCartSidebarOpen } from "../../../redux/features/sidebarCartsOpen/sidebarCartsOpenSlice";
 import PriceConverterByCountry from "../../../utils/priceConverterByCountry/priceConverterByCountry";
-import addProductToRecentlyViewed from "../../../utils/recentlyViewProduct/updateRecentlyViewProducts";
+import addProductToRecentlyViewed from "../../../utils/recentlyViewProduct/recentlyViewProduct";
 import { Link } from "react-router-dom";
 
 const ProductDetails = () => {
