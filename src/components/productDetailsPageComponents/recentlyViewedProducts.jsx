@@ -1,14 +1,18 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Product from "../common/product";
 import NoProductsFound from "../common/noProductsFound";
+import updateRecentlyViewedProducts from "../../../utils/recentlyViewProduct/updateRecentlyViewProducts";
 
 const RecentlyViewedProducts = () => {
   const [recentlyViewedProducts, setRecentlyViewedProducts] = useState([]);
 
   useEffect(() => {
-    setRecentlyViewedProducts(
-      JSON.parse(localStorage.getItem("recentlyViewed"))
-    );
+    (async () => {
+      await updateRecentlyViewedProducts();
+      setRecentlyViewedProducts(
+        JSON.parse(localStorage.getItem("recentlyViewed"))
+      );
+    })();
   }, []);
   return (
     <div className="mb-20 px-8 mx-auto">

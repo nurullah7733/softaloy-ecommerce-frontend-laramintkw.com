@@ -19,8 +19,11 @@ const calculateSubTotalAndTotal = (
   let allProductsSubTotal = 0;
   let saveAmount = 0;
 
-  let categoryBrandB1G1Products = [];
-  let categoryBrandB2G1Products = [];
+  let categoryBrandB1G1Products = {};
+  let categoryBrandB2G1Products = {};
+
+  // Initialize an array to store the prices of valid products for B2G1 offer
+  let pricesForB2G1 = [];
 
   products.forEach((product) => {
     const quantity = validProductQuantity(
@@ -28,143 +31,137 @@ const calculateSubTotalAndTotal = (
     );
     const price = validNumber(product?.finalPrice);
 
-    // Handling B1G1 offer for individual products
-    if (product?.offers?.isEachProductB1G1 && quantity >= 2) {
-      const freeItems = Math.floor(quantity / 2);
-      const paidItems = quantity - freeItems;
-      allProductsSubTotal += paidItems * price;
-      saveAmount += freeItems * price;
-      allProductsSubTotalBeforeDiscount += quantity * price;
+    // Handle isEachProductB1G1 offer
+    if (product?.offers?.isEachProductB1G1) {
+      if (quantity >= 2) {
+        const freeItems = Math.floor(quantity / 2);
+        const paidItems = quantity - freeItems;
+        allProductsSubTotal += paidItems * validNumber(price);
+        saveAmount += freeItems * validNumber(price);
+      } else {
+        allProductsSubTotal += quantity * validNumber(price);
+      }
+      allProductsSubTotalBeforeDiscount += quantity * validNumber(price);
+      return; // Skip further processing for this product
     }
-    // Handling B2G1 offer for individual products
-    else if (product?.offers?.isEachProductB2G1 && quantity >= 3) {
-      const freeItems = Math.floor(quantity / 3);
-      const paidItems = quantity - freeItems;
-      allProductsSubTotal += paidItems * price;
-      saveAmount += freeItems * price;
-      allProductsSubTotalBeforeDiscount += quantity * price;
+
+    // Handle isEachProductB2G1 offer
+    if (product?.offers?.isEachProductB2G1) {
+      const setsOfThree = Math.floor(quantity / 3);
+      const paidItems = quantity - setsOfThree;
+      allProductsSubTotal += paidItems * validNumber(price);
+      saveAmount += setsOfThree * validNumber(price);
+      allProductsSubTotalBeforeDiscount += quantity * validNumber(price);
+      return; // Skip further processing for this product
     }
-    // Push category/brand B1G1 products to list (Ensure same category and brand)
-    else if (
-      product?.offers?.isCategoryBrandB1G1 &&
-      products.every(
-        (p) =>
-          p.category.some((cat) => cat.name === product.category[0]?.name) &&
-          p.brands.some((brand) => brand.name === product.brands[0]?.name)
-      )
-    ) {
-      categoryBrandB1G1Products.push(product);
-    }
-    // Push category/brand B2G1 products to list (Ensure same category and brand)
-    else if (
-      product?.offers?.isCategoryBrandB2G1 &&
-      products.every(
-        (p) =>
-          p.category.some((cat) => cat.name === product.category[0]?.name) &&
-          p.brands.some((brand) => brand.name === product.brands[0]?.name)
-      )
-    ) {
-      categoryBrandB2G1Products.push(product);
-    }
-    // Regular product calculation
-    else {
+
+    // Collect products for B1G1 and B2G1 offers based on categoryId and brandId
+    if (product?.offers?.isCategoryBrandB1G1) {
+      const key = `${product.categoryId}-${product.brandId}`;
+      if (!categoryBrandB1G1Products[key]) {
+        categoryBrandB1G1Products[key] = [];
+      }
+      categoryBrandB1G1Products[key].push({ ...product, quantity });
+    } else if (product?.offers?.isCategoryBrandB2G1) {
+      const key = `${product.categoryId}-${product.brandId}`;
+      if (!categoryBrandB2G1Products[key]) {
+        categoryBrandB2G1Products[key] = [];
+      }
+      categoryBrandB2G1Products[key].push({ ...product, quantity });
+    } else {
+      // Regular product calculation
       allProductsSubTotal += quantity * price;
       allProductsSubTotalBeforeDiscount += quantity * price;
     }
   });
 
   // Handle isCategoryBrandB1G1 offer (same or different products)
-  if (categoryBrandB1G1Products.length > 1) {
-    categoryBrandB1G1Products.sort(
-      (a, b) => validNumber(b.finalPrice) - validNumber(a.finalPrice)
-    );
+  for (const key in categoryBrandB1G1Products) {
+    const products = categoryBrandB1G1Products[key];
+    if (products.length > 1) {
+      products.sort(
+        (a, b) => validNumber(b.finalPrice) - validNumber(a.finalPrice)
+      );
 
-    const paidProduct = categoryBrandB1G1Products[0]; // Most expensive product
-    const freeProduct = categoryBrandB1G1Products[1]; // Least expensive product
+      const paidProduct = products[0]; // Most expensive product
+      const freeProduct = products[1]; // Least expensive product
 
-    const paidProductQuantity = validProductQuantity(
-      paidProduct?.customerChoiceProductQuantity
-    );
-    const freeProductQuantity = validProductQuantity(
-      freeProduct?.customerChoiceProductQuantity
-    );
+      const paidProductQuantity = validProductQuantity(paidProduct?.quantity);
+      const freeProductQuantity = validProductQuantity(freeProduct?.quantity);
 
-    allProductsSubTotal +=
-      paidProductQuantity * validNumber(paidProduct.finalPrice);
-    allProductsSubTotalBeforeDiscount +=
-      paidProductQuantity * validNumber(paidProduct.finalPrice);
-
-    if (freeProductQuantity > 1) {
-      saveAmount += validNumber(freeProduct.finalPrice); // Only one product free
       allProductsSubTotal +=
-        (freeProductQuantity - 1) * validNumber(freeProduct.finalPrice); // Charge for the remaining items
+        paidProductQuantity * validNumber(paidProduct.finalPrice);
       allProductsSubTotalBeforeDiscount +=
-        freeProductQuantity * validNumber(freeProduct.finalPrice);
-    } else {
-      saveAmount += validNumber(freeProduct.finalPrice); // If only one free product
-      allProductsSubTotalBeforeDiscount +=
-        freeProductQuantity * validNumber(freeProduct.finalPrice);
-    }
-  } else if (categoryBrandB1G1Products.length === 1) {
-    const singleProduct = categoryBrandB1G1Products[0];
-    const quantity = validProductQuantity(
-      singleProduct?.customerChoiceProductQuantity
-    );
+        paidProductQuantity * validNumber(paidProduct.finalPrice);
 
-    // Apply B1G1 for the same product
-    if (quantity >= 2) {
-      const freeItems = Math.floor(quantity / 2);
-      const paidItems = quantity - freeItems;
-      allProductsSubTotal += paidItems * validNumber(singleProduct.finalPrice);
-      saveAmount += freeItems * validNumber(singleProduct.finalPrice);
-      allProductsSubTotalBeforeDiscount +=
-        quantity * validNumber(singleProduct.finalPrice);
-    } else {
-      allProductsSubTotal += quantity * validNumber(singleProduct.finalPrice);
-      allProductsSubTotalBeforeDiscount +=
-        quantity * validNumber(singleProduct.finalPrice);
+      if (freeProductQuantity > 1) {
+        saveAmount += validNumber(freeProduct.finalPrice); // Only one product free
+        allProductsSubTotal +=
+          (freeProductQuantity - 1) * validNumber(freeProduct.finalPrice); // Charge for the remaining items
+        allProductsSubTotalBeforeDiscount +=
+          freeProductQuantity * validNumber(freeProduct.finalPrice);
+      } else {
+        saveAmount += validNumber(freeProduct.finalPrice); // If only one free product
+        allProductsSubTotalBeforeDiscount +=
+          freeProductQuantity * validNumber(freeProduct.finalPrice);
+      }
+    } else if (products.length === 1) {
+      const singleProduct = products[0];
+      const quantity = validProductQuantity(singleProduct?.quantity);
+
+      // Apply B1G1 for the same product
+      if (quantity >= 2) {
+        const freeItems = Math.floor(quantity / 2);
+        const paidItems = quantity - freeItems;
+        allProductsSubTotal +=
+          paidItems * validNumber(singleProduct.finalPrice);
+        saveAmount += freeItems * validNumber(singleProduct.finalPrice);
+        allProductsSubTotalBeforeDiscount +=
+          quantity * validNumber(singleProduct.finalPrice);
+      } else {
+        allProductsSubTotal += quantity * validNumber(singleProduct.finalPrice);
+        allProductsSubTotalBeforeDiscount +=
+          quantity * validNumber(singleProduct.finalPrice);
+      }
     }
   }
 
   // Handle isCategoryBrandB2G1 offer (same or different products)
-  if (categoryBrandB2G1Products.length > 0) {
-    categoryBrandB2G1Products.sort(
-      (a, b) => validNumber(a.finalPrice) - validNumber(b.finalPrice)
-    );
+  for (const key in categoryBrandB2G1Products) {
+    const products = categoryBrandB2G1Products[key];
 
-    let totalProductsCount = categoryBrandB2G1Products.reduce(
-      (sum, product) =>
-        sum + validProductQuantity(product?.customerChoiceProductQuantity),
+    // Collect prices for B2G1 offer
+    for (const product of products) {
+      const quantity = validProductQuantity(product.quantity);
+      for (let i = 0; i < quantity; i++) {
+        pricesForB2G1.push(validNumber(product.finalPrice));
+      }
+    }
+
+    // Sort prices to find the cheapest ones
+    pricesForB2G1.sort((a, b) => a - b);
+
+    // Calculate the number of free products (1 free for every 3 products)
+    const totalProducts = pricesForB2G1.length;
+    const freeProductsCount = Math.floor(totalProducts / 3); // 1 free for every 3 products
+
+    if (freeProductsCount > 0) {
+      const cheapestPrice = pricesForB2G1[0];
+      saveAmount += freeProductsCount * cheapestPrice; // Total savings from free products
+    }
+
+    // Total price for the valid products
+    allProductsSubTotalBeforeDiscount += pricesForB2G1.reduce(
+      (acc, curr) => acc + curr,
       0
     );
+    // The subtotal after discounts
+    allProductsSubTotal +=
+      pricesForB2G1.reduce((acc, curr) => acc + curr, 0) -
+      freeProductsCount * pricesForB2G1[0]; // Deduct the cheapest product's price for the free items
 
-    let freeProductsCount = Math.floor(totalProductsCount / 3); // For every 3 products, 1 is free
-
-    categoryBrandB2G1Products.forEach((product) => {
-      const quantity = validProductQuantity(
-        product?.customerChoiceProductQuantity
-      );
-      const price = validNumber(product.finalPrice);
-
-      // Add full price for all products (including free products) to allProductsSubTotalBeforeDiscount
-      allProductsSubTotalBeforeDiscount += quantity * price;
-
-      if (freeProductsCount > 0) {
-        if (quantity <= freeProductsCount) {
-          saveAmount += quantity * price; // All quantity of this product is free
-          freeProductsCount -= quantity;
-        } else {
-          saveAmount += freeProductsCount * price; // Some quantity of this product is free
-
-          // Add paid products to allProductsSubTotal (those that are not free)
-          allProductsSubTotal += (quantity - freeProductsCount) * price;
-          freeProductsCount = 0;
-        }
-      } else {
-        // If no free products left, add all products to allProductsSubTotal
-        allProductsSubTotal += quantity * price;
-      }
-    });
+    // Reset pricesForB2G1 for the next group
+    pricesForB2G1 = [];
   }
 
   const totalPrice =

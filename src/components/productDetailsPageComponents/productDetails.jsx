@@ -11,7 +11,7 @@ import { setAddToCart } from "../../../redux/features/addToCartSlice/addToCartSl
 import { AddTocartButton, AddedTocartButton } from "../common/cartButton";
 import { setCartSidebarOpen } from "../../../redux/features/sidebarCartsOpen/sidebarCartsOpenSlice";
 import PriceConverterByCountry from "../../../utils/priceConverterByCountry/priceConverterByCountry";
-import addProductToRecentlyViewed from "../../../utils/recentlyViewProduct/recentlyViewProduct";
+import addProductToRecentlyViewed from "../../../utils/recentlyViewProduct/updateRecentlyViewProducts";
 import { Link } from "react-router-dom";
 
 const ProductDetails = () => {
@@ -124,7 +124,7 @@ const ProductDetails = () => {
                     </h2>
                     <div className="border border-red-500 p-1 bg-red-100 ">
                       <p className=" inline ">
-                        This offer is valid for collection of{" "}
+                        This offer is valid for collection of Category{" "}
                       </p>
                       <Link
                         className="underline uppercase inline"
@@ -143,8 +143,29 @@ const ProductDetails = () => {
                         }`}
                       >
                         {productDetails?.[0]?.category?.[0]?.name}{" "}
-                        {offerLabel == "BUY 1 GET 1" ? "B1G1" : "B2G1"} label
+                        {offerLabel == "BUY 1 GET 1" ? "B1G1" : "B2G1"}{" "}
                       </Link>
+                      <p className="inline leading-7"> And Brand </p>
+                      <Link
+                        className="underline uppercase inline"
+                        to={`/offers?pageNo=1&perPage=30&searchKeyword=0&brand=${
+                          productDetails?.[0]?.brands?.[0]?.name
+                        }&${
+                          offerLabel == "BUY 1 GET 1 (ADD 2)"
+                            ? "each_product_b1g1=true"
+                            : offerLabel == "BUY 2 GET 1 (ADD 3)"
+                            ? "each_product_b2g1=true"
+                            : offerLabel == "BUY 1 GET 1"
+                            ? "brand_or_category_b1g1=true"
+                            : offerLabel == "BUY 2 GET 1"
+                            ? "brand_or_category_b2g1=true"
+                            : "offers"
+                        }`}
+                      >
+                        {productDetails?.[0]?.brands?.[0]?.name}{" "}
+                        {offerLabel == "BUY 1 GET 1" ? "B1G1" : "B2G1"}{" "}
+                      </Link>
+                      Label
                     </div>
                   </div>
                 )}
