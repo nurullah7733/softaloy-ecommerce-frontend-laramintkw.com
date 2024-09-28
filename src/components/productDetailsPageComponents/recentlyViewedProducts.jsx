@@ -13,7 +13,7 @@ const RecentlyViewedProducts = () => {
         JSON.parse(localStorage.getItem("recentlyViewed"))
       );
     })();
-  }, [recentlyViewedProducts]);
+  }, []);
   return (
     <div className="mb-20 px-8 mx-auto">
       <div className="border-t pt-20">
